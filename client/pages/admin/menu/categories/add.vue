@@ -26,7 +26,7 @@
     <form>
       <div class="row">
         <div class="form-group col-lg-7">
-          <small id="emailHelp" class="form-text text-muted">Название категории</small>
+          <small id="emailHelp" class="form-text text-muted">Название категории ру</small>
           <input type="text" name="title-ua" class="form-control">
         </div>
 		<div class="form-group col-lg-7">
