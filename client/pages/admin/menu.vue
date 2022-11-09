@@ -19,8 +19,8 @@
 			</div>
 		</div>
 		<div class="row seacrh-block mt-4">
-			<div class="form-group col-md-6">
-				<input type="text" name="title-ua" class="form-control" placeholder="Поиск">
+			<div class="form-group col-md-12">
+				<input type="text" class="form-control" placeholder="Поиск">
 			</div>
 		</div>
 
