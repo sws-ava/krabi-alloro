@@ -67,11 +67,6 @@
 			</tbody>
 		</table>
 
-
-
-
-		
-
 	</div>
 </template>
 
@@ -89,11 +84,10 @@ export default {
 				{id:4, item:34, title:'Cheese pizza Cheese pizza Cheese pizza pizza Cheese pizza Cheese pizza', weight:'470гр', price:150.99},
 			]
 		}
-	}
+	},
 
 
 }
-
 </script>
 
 <style lang="scss" scoped>
