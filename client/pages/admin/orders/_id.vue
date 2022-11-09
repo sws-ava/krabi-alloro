@@ -15,28 +15,28 @@
       </div>
       <div class="review-header mb-2">
         <div class="row">
-          <div class="col-lg-5">
+          <div class="form-group col-lg-5">
             <div class="option-title">Имя:</div>
-            <input class="w-100" type="text" :value="order.name" />
+            <input class="form-text w-100" type="text" :value="order.name" />
             <!-- <div class="option-text">{{ order.name }}</div> -->
           </div>
-          <div class="col-lg-4">
+          <div class="form-group col-lg-4">
             <div class="option-title">Телефон:</div>
-            <input class="w-100" type="text" :value="order.phone" />
+            <input class="form-text w-100" type="text" :value="order.phone" />
             <!-- <div class="option-text">{{ order.phone }}</div> -->
           </div>
-          <div class="col-lg-3">
+          <div class="form-group col-lg-3">
             <div class="option-title">Сумма:</div>
             <div class="option-text">{{ order.total }}</div>
           </div>
-          <div v-if="order.address" class="mb-2 col-lg-6">
+          <div v-if="order.address" class="mb-2 col-lg-6 form-group ">
             <span class="option-title">Адрес:</span>
-            <input class="w-100" type="text" :value="order.address" />
+            <input class="form-text w-100" type="text" :value="order.address" />
             <!-- <span class="option-text">{{ order.address }}</span> -->
           </div>
-          <div v-if="order.comment" class="mb-2 col-12">
+          <div v-if="order.comment" class="form-group mb-2 col-12">
             <span class="option-title">Комментарий к заказу:</span>
-            <input class="w-100" type="text" :value="order.comment" />
+            <input class="form-text w-100" type="text" :value="order.comment" />
             <!-- <span class="option-text">{{ order.comment }}</span> -->
           </div>
         </div>
