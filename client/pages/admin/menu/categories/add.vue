@@ -33,6 +33,10 @@
 			<small id="emailHelp" class="form-text text-muted">Название категории укр</small>
 			<input   type="text" name="title-ua" class="form-control">
 		</div>
+		<div class="form-group col-lg-7">
+			<small class="form-text text-muted">Ссылка категории</small>
+			<input type="text" name="slug" class="form-control">
+		</div>
         <div class="form-group col-lg-7 mt-2">
           <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>

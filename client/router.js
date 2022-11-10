@@ -46,11 +46,11 @@ const routes = [
   {path: '/admin/menu', name: 'admin-menu', component: page('admin/menu.vue')},
 
   {path: '/admin/menu-categories', name: 'admin-menu-categories', component: page('admin/menu/categories.vue')},
-  {path: '/admin/menu-category/:id?', name: 'admin-menu-category', component: page('admin/menu/categories/_id.vue')},
   {path: '/admin/menu-category/add', name: 'admin-menu-category-add', component: page('admin/menu/categories/add.vue')},
+  {path: '/admin/menu-category/:id?', name: 'admin-menu-category', component: page('admin/menu/categories/_id.vue')},
 
-  {path: '/admin/menu/:id?', name: 'admin-menu-edit', component: page('admin/menu/menu/_id.vue')},
   {path: '/admin/menu/add', name: 'admin-menu-add', component: page('admin/menu/menu/add.vue')},
+  {path: '/admin/menu/:id?', name: 'admin-menu-edit', component: page('admin/menu/menu/_id.vue')},
 ]
 
 export function createRouter () {

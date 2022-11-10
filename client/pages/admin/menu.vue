@@ -36,20 +36,24 @@
 			<tbody>
 				<tr v-for="item in menuItems" :key="item.id">
 					<th scope="row">{{ item.id }}</th>
-					<td>{{item.title}}</td>
-					<td class="price-holder">
-						<input
-							:value="item.price"
-							type="text"
-							class="w-100"
-
-						>
-						<div class="done">
-							<font-awesome-icon 
-								:icon="['fas', 'check']"
-								style="width:13px; height: 13px"
-								class="fa-icon"
-							/>
+					<td class="w-100">{{item.title}}</td>
+					<td>
+						<div v-for="subItem in item.items" :key="subItem.id" class="price-holder">
+							<small class="form-text text-muted nowrap">
+								{{subItem.weight}} {{subItem.weightKind}}
+							</small>
+							<input
+								:value="subItem.price"
+								type="text"
+								class="w-100 form-control text-right"
+							>
+							<div class="done">
+								<font-awesome-icon 
+									:icon="['fas', 'check']"
+									style="width:13px; height: 13px"
+									class="fa-icon"
+								/>
+							</div>
 						</div>
 					</td>
 					<td class="btns-holder">
@@ -57,7 +61,7 @@
 							:to="'/admin/menu/'+item.id"  
 							class="btn btn-outline-primary btn-sm"
 						>
-							Редактировать
+							Ред
 						</router-link>
 						
 						<div class="btn btn-outline-secondary btn-sm">Скрыть</div>
@@ -79,9 +83,38 @@ export default {
 	data(){
 		return{
 			menuItems: [
-				{id:1, item:11, title:'Meat pizza', weight:'270гр', price:270.99},
-				{id:2, item:27, title:'Coca cola', weight:'2л', price:70},
-				{id:4, item:34, title:'Cheese pizza Cheese pizza Cheese pizza pizza Cheese pizza Cheese pizza', weight:'470гр', price:150.99},
+				{
+					id:1,
+					title:'Маргарита',
+					items:[
+						{id:1, weight: 'L 17', weightKind:'см', price: 50.85},
+						{id:2, weight: 'XL 17', weightKind:'см', price: 85},
+						{id:3, weight: 'XXL 17', weightKind:'см', price: 150},
+					]
+				},
+				{
+					id:3,
+					title:'Яичница с беконом и зеленым салатом',
+					items:[
+						{id:7, weight: '200', weightKind:'г', price: 55},
+					],
+				},
+				{
+					id:2,
+					title:'Coca cola',
+					items:[
+						{id:4, weight: '0.5', weightKind:'л', price: 20},
+						{id:5, weight: '1.0', weightKind:'л', price: 45},
+						{id:6, weight: '2.0', weightKind:'л', price: 50},
+					]
+				},
+				{
+					id:4,
+					title:'Омлет с охотничьими колбасками, сыром Моцарелла и помидорами черри',
+					items:[
+						{id:8, weight: '200', weightKind:'г', price: 75},
+					], 
+				},
 			]
 		}
 	},
@@ -106,9 +139,16 @@ export default {
 	}
 	.price-holder{
 		position: relative;
-		width: 140px;
+		width: 170px;
 		display: flex;
    		align-items: center;
+		&+.price-holder{
+			margin-top: 10px;
+		}
+		input{
+			margin-left: 5px;
+			min-width: 60px;
+		}
 		.done{
 			display: flex;
 			align-items: center;
@@ -124,5 +164,8 @@ export default {
 				color:#fff;
 			}
 		}
+	}
+	.nowrap{
+		white-space: nowrap;
 	}
 </style>

@@ -6,24 +6,27 @@
 			:key="order.id"
 		>
 			<div class="review-header__status ">
-				<span 
-					v-if="order.status === 1" 
-					class="red-text"
+				<b>
+					<span 
+						v-if="order.status === 1" 
+						class="red-text"
+						>
+							Новый заказ
+					</span>
+					<span 
+						v-else-if="order.status === 2" 
+						class="blue-text"
 					>
-						Новый заказ
-				</span>
-				<span 
-					v-else-if="order.status === 2" 
-					class="blue-text"
-				>
-					Заказ выполняется
-				</span>
-				<span 
-					v-else-if="order.status === 3" 
-					class="green-text"
-				>
-					Заказ выполнен
-				</span>
+						Заказ выполняется
+					</span>
+					<span 
+						v-else-if="order.status === 3" 
+						class="green-text"
+					>
+						Заказ выполнен
+					</span>
+					{{order.date}}
+				</b>
 			</div>
 			<div class="review-header mb-2">
 				<div class="row">
@@ -73,6 +76,7 @@ export default {
 			orders: [
 				{
 					id: 1,
+					date: '22:20 20.02.22',
 					name: 'Семен',
 					phone: '0987654321',
 					address: 'ул.Уличная, дом 18, кв 24, пд 3',
@@ -86,6 +90,7 @@ export default {
 				},
 				{
 					id: 2,
+					date: '22:20 20.02.22',
 					name: 'Василиса',
 					phone: '0936844321',
 					address: 'ул.Уличная, дом 18',
@@ -98,6 +103,7 @@ export default {
 				},
 				{
 					id: 3,
+					date: '22:20 20.02.22',
 					name: 'Василиса',
 					phone: '0936848765',
 					address: 'ул.Уличная, дом 222',

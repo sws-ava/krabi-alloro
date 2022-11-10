@@ -3,32 +3,45 @@
 	
 		Меню
 		<nav class="nav flex-column">
-			<!-- <div>
-				<a class="nav-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-					Link with href
-				</a>
-				<div class="collapse" id="collapseExample">
-					<div class="mb-2 nav flex-column">
-						<router-link :to="{name: 'pages'} ">Главная</router-link>
-						<router-link :to="{name: 'delivery'} ">Доставка</router-link>
-						<router-link :to="{name: 'contact'} ">Контакты</router-link>
-					</div>
-				</div>
-			</div> -->
-			<router-link :to="{name: 'admin-orders'}" class="nav-link">
+			<router-link 
+				:to="{name: 'admin-orders'}" 
+				class="nav-link"
+			>
 				Заказы с сайта
 				<span>2</span>
+				<span class="order-in-progress">2</span>
 			</router-link>
-			<router-link :to="{name: 'admin-reviews'}" class="nav-link">
+			<router-link 
+				:to="{name: 'admin-reviews'}" 
+				class="nav-link"
+			>
 				Отзывы
 				<span>1</span>
 			</router-link>
-			<router-link :to="{name: 'admin-menu'}" class="nav-link">
+			<router-link 
+				:to="{name: 'admin-menu'}" 
+				class="nav-link"
+			>
 				Меню
 			</router-link>
-			<router-link :to="{name: 'admin-feedback'}" class="nav-link">Обратная связь</router-link>
-			<router-link :to="{name: 'admin-pages'}" class="nav-link">Страницы</router-link>
+			<router-link
+				:to="{name: 'admin-feedback'}" 
+				class="nav-link"
+			>
+				Обратная связь
+				<span>1</span>
+			</router-link>
+			<router-link 
+				:to="{name: 'admin-pages'}" 
+				class="nav-link"
+			>
+				Страницы
+			</router-link>
+
 			<a class="nav-link" href="#">!!! Интерьер (галерея)</a>
+			<a class="nav-link" href="#">Новости / Акции</a>
+			<a class="nav-link" href="#">Блок с уведомлением</a>
+			<a class="nav-link" href="#">Блоки на сайте</a>
 		</nav>
 </div>
 </template>
@@ -59,6 +72,9 @@ export default {
 			display: inline-block;
 			padding: 5px;
 			border-radius: 50%;
+		}
+		.order-in-progress{
+			background: blue;
 		}
 	}
 </style>

@@ -10,20 +10,23 @@
 					{{ review.name }} {{ review.phone }}
 				</span>
 				<div class="review-header__status ">
-					<span 
-						v-if="review.isRead" 
-						class="green-text"
+					<b>
+						<span 
+							v-if="review.isRead" 
+							class="green-text"
+							>
+							Прочитано
+						</span>
+						<span 
+							v-else 
+							class="red-text"
 						>
-						Прочитано
-					</span>
-					<span 
-						v-else 
-						class="red-text"
-					>
-						Новое сообщение
-					</span>
+							Новое сообщение
+						</span>
+					</b>
 				</div>
 			</div>
+			<b> {{review.date}} </b>
 			<div>
 				{{ review.text }}
 			</div>
@@ -49,10 +52,10 @@ export default {
 	data(){
 		return{
 			reviews: [
-				{id:1, isRead: false , name: 'Александр', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
-				{id:2, isRead: true , name: 'Маргарита', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
-				{id:3, isRead: true , name: 'Алексей', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
-				{id:4, isRead: true , name: 'Руслан', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
+				{id:1, date: '22:20 20.02.22', isRead: false , name: 'Александр', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
+				{id:2, date: '22:20 20.02.22', isRead: true , name: 'Маргарита', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
+				{id:3, date: '22:20 20.02.22', isRead: true , name: 'Алексей', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
+				{id:4, date: '22:20 20.02.22', isRead: true , name: 'Руслан', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
 			]
 		}
 	}

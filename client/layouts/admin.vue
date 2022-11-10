@@ -43,4 +43,7 @@ export default {
 		padding: 0;
 		margin-bottom: 20px;
 	}
+	b {
+		font-weight: bold;
+	}
 </style>

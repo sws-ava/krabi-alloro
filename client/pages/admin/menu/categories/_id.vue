@@ -25,11 +25,15 @@
 			<div class="row">
 				<div class="form-group col-lg-7">
 					<small id="emailHelp" class="form-text text-muted">Название категории ру</small>
-					<input :value="category.title" type="text" name="title-ua" class="form-control">
+					<input :value="category.title_ru" type="text" name="title-ua" class="form-control">
 				</div>
 				<div class="form-group col-lg-7">
 					<small id="emailHelp" class="form-text text-muted">Название категории укр</small>
-					<input  type="text" name="title-ua" class="form-control">
+					<input  :value="category.title_ua" type="text" name="title-ua" class="form-control">
+				</div>
+				<div class="form-group col-lg-7">
+					<small class="form-text text-muted">Ссылка категории</small>
+					<input :value="category.slug" type="text" name="slug" class="form-control">
 				</div>
 				<div class="form-group col-lg-7 mt-2">
 					<button type="submit" class="btn btn-primary">Сохранить</button>
@@ -53,8 +57,9 @@ export default {
 		return{
 			category:{
 				id:1, 
-				title:'Пицца', 
-				titleUa: 'Пiца',
+				title_ru:'Пицца', 
+				title_ua: 'Пiца',
+				slug: 'pizza',
 				order: 1
 			}
 		}
