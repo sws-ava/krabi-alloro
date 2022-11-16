@@ -1,6 +1,8 @@
 <template>
 	<div>
-	
+		<div class="logo-holder">
+			<img src="/logo.png" alt="">
+		</div>
 		Меню
 		<nav class="nav flex-column">
 			<router-link 
@@ -37,11 +39,16 @@
 			>
 				Страницы
 			</router-link>
+			<router-link
+				:to="{name: 'admin-gallery'}"
+				class="nav-link"
+			>
+				Галерея
+			</router-link>
 
-			<a class="nav-link" href="#">!!! Интерьер (галерея)</a>
-			<a class="nav-link" href="#">Новости / Акции</a>
-			<a class="nav-link" href="#">Блок с уведомлением</a>
-			<a class="nav-link" href="#">Блоки на сайте</a>
+			<a class="nav-link" href="#">!Новости / Акции</a>
+			<a class="nav-link" href="#">!Блок с уведомлением</a>
+			<a class="nav-link" href="#">!Блоки на сайте</a>
 		</nav>
 </div>
 </template>

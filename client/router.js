@@ -51,6 +51,9 @@ const routes = [
 
   {path: '/admin/menu/add', name: 'admin-menu-add', component: page('admin/menu/menu/add.vue')},
   {path: '/admin/menu/:id?', name: 'admin-menu-edit', component: page('admin/menu/menu/_id.vue')},
+
+  // admin interior/gallery
+  {path: '/admin/gallery', name: 'admin-gallery', component: page('admin/gallery.vue')},
 ]
 
 export function createRouter () {

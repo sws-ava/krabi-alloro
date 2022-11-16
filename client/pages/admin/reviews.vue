@@ -1,63 +1,122 @@
 <template>
 	<div>
 		<h5>Отзывы</h5>
-		<div 
-			v-for="review in reviews" 
-			:key="review.id"
-		>
-			<div class="review-header mb-2">
-				<span class="mr-2">
-					{{ review.name }}
-				</span>
-				<svg 
-					v-for="(star,idx) in review.stars" 
-					:key="idx" 
-					class="star" 
-					xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 29 29" xml:space="preserve"><path d="m15.397 4.687 2.579 5.225a1 1 0 0 0 .753.547l5.766.838a1 1 0 0 1 .554 1.706l-4.173 4.067c-.236.23-.343.561-.288.885l.985 5.743a1 1 0 0 1-1.451 1.054l-5.158-2.712a1.002 1.002 0 0 0-.931 0l-5.158 2.712a1 1 0 0 1-1.451-1.054l.985-5.743a.999.999 0 0 0-.288-.885l-4.173-4.067a1 1 0 0 1 .554-1.706l5.766-.838a1 1 0 0 0 .753-.547L13.6 4.687c.37-.743 1.43-.743 1.797 0z"/></svg>
-				<div class="review-header__status ">
-					<b>
-						<span 
-							v-if="review.show" 
-							class="green-text"
-							>
-							Опубликовано
-						</span>
-						<span 
-							v-else 
-							class="red-text"
-						>
-							Ожидает модерации
-						</span>
-					</b>
-				</div>
-			</div>
-			<b>{{review.date}}</b>
-			<div>
-				{{ review.text }}
-			</div>
+		<spinner v-if="showSpinner" />
+		<template v-if="reviews.length" >
 			<div 
-				v-if="review.answer" 
-				class="mt-2 mb-3 answer"
+				v-for="review in reviews" 
+				:key="review.id"
 			>
-				{{ review.answer }}
+				<review-item 
+					:review="review"	
+					@reviewRemove="reviewRemove"
+					@publishReview="publishReview"
+					@hideReview="hideReview"
+					@reviewToDelete="reviewToDelete"
+					@editReview="editReview"
+				/>
+
+				
 			</div>
-			<div class="buttons mt-2">
-				<div v-if="!review.show">
-					<div class="btn btn-outline-primary btn-sm">Ответить</div> 
-					<div class="btn btn-outline-success btn-sm">Опубликовать</div> 
-				</div>
-				<div v-else>
-					<div class="btn btn-outline-secondary btn-sm">Редактировать</div> 
-				</div>
-				<div class="btn btn-outline-danger btn-sm btn-delete">Удалить</div> 
-			</div>
-			<hr class="mb-4 mt-4">
+		</template>
+		<div v-else class="text-center mt-4">
+			<h5>Отзывов нет</h5>
 		</div>
+		<modal-delete-window
+			:showDeleteModal="showDeleteModal"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Удалить этот отзыв c сайта?</h5>
+			<p>
+				{{reviewItemToDelete.text}}
+			</p>
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="reviewRemove(reviewItemToDelete)"
+					class="btn btn-outline-success btn-sm"
+				>
+					Удалить
+				</div>
+				<div 
+					@click="showDeleteModal = false"
+					class="btn btn-outline-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
+		</modal-delete-window>
+		<modal-review-edit-window
+			:showEditReviewModal="showEditReviewModal"
+			@hideEditReviewModal="hideEditReviewModal"
+		>
+			<div>
+				<div class="review-header mb-2">
+					<span class="mr-2">
+						{{ reviewToEdit.name }}
+					</span>
+					<svg 
+						v-for="(star,idx) in reviewToEdit.stars" 
+						:key="idx" 
+						class="star" 
+						xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 29 29" xml:space="preserve"><path d="m15.397 4.687 2.579 5.225a1 1 0 0 0 .753.547l5.766.838a1 1 0 0 1 .554 1.706l-4.173 4.067c-.236.23-.343.561-.288.885l.985 5.743a1 1 0 0 1-1.451 1.054l-5.158-2.712a1.002 1.002 0 0 0-.931 0l-5.158 2.712a1 1 0 0 1-1.451-1.054l.985-5.743a.999.999 0 0 0-.288-.885l-4.173-4.067a1 1 0 0 1 .554-1.706l5.766-.838a1 1 0 0 0 .753-.547L13.6 4.687c.37-.743 1.43-.743 1.797 0z"/></svg>
+					
+					<div class="ml-2 d-block">
+						<b>{{reviewToEdit.date}}</b>
+					</div>
+				</div>
+				
+				<div>
+					<b>Отзыв:</b>
+					<textarea
+						v-model="reviewToEdit.text"
+						class="reviewTextarea"
+					></textarea>
+					
+				</div>
+				<div 
+					class="mt-2 mb-3 answer1"
+				>
+					<b>Наш ответ:</b>
+					<textarea
+						v-model="reviewToEdit.answer"
+						class="answerTextarea"
+					></textarea>
+				</div>
+				<div class="buttons mt-2 w-100 d-flex justify-content-between">
+					<div 
+						@click="saveReview(reviewToEdit)"
+						class="btn btn-outline-success btn-sm"
+					>
+						Сохранить
+					</div>
+					<div 
+						@click="hideEditReviewModal()"
+						class="btn btn-outline-secondary btn-sm"
+					>
+						Назад
+					</div>
+				</div>
+			</div>
+		</modal-review-edit-window>
 	</div>
 </template>
 
 <script>
+
+import ReviewItem from '@/components/admin/reviews/reviewItem.vue'
+import Spinner from '@/components/admin/spinner.vue';
+import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
+import ModalReviewEditWindow from '@/components/admin/modalReviewEditWindow.vue';
+
 export default {
+	components:{
+		ReviewItem,
+		Spinner,
+		ModalDeleteWindow,
+		ModalReviewEditWindow,
+	},
+
+
 	middleware: 'auth',
 	layout: 'admin',
 
@@ -65,10 +124,78 @@ export default {
 		return{
 			reviews: [
 				{id:1, date: '22:20 20.02.22', stars: 2, show: false, name: 'Александр', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit', answer: ''},
-				{id:2, date: '22:20 20.02.22', stars: 5, show: true, name: 'Маргарита', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: 'tate error laudantium soluta architecto mollitia quas! Totam qu'},
+				{id:2, date: '22:20 20.02.22', stars: 5, show: false, name: 'Маргарита', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: 'tate error laudantium soluta architecto mollitia quas! Totam qu'},
 				{id:3, date: '22:20 20.02.22', stars: 4, show: true, name: 'Алексей', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: ''},
 				{id:4, date: '22:20 20.02.22', stars: 2, show: true, name: 'Руслан', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit', answer: 'Lorem ipsum, dolor sit amet consectetur'},
-			]
+			],
+			showSpinner: false,
+			showDeleteModal: false,
+			reviewItemToDelete : {},
+			showEditReviewModal: false,
+			reviewToEdit: {},
+		}
+	},
+	
+	methods:{
+		publishReview(review){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.reviews.forEach(element => {
+					if(element.id == review.id){
+						element.show = true
+					}
+				})
+				this.showSpinner = false
+			}, 500)
+		},
+		hideReview(review){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.reviews.forEach(element => {
+					if(element.id == review.id){
+						element.show = false
+					}
+				})
+				this.showSpinner = false
+			}, 500)	
+		},
+		reviewRemove(review){
+			this.showDeleteModal = false
+			this.showSpinner = true
+			setTimeout(() => {
+				this.reviews = this.reviews.filter(r => r.id !== review.id)
+				this.showSpinner = false
+			}, 500)	
+			
+		},
+		hideDeleteModal(){
+			this.showDeleteModal = false
+		},
+		reviewToDelete(review){
+			this.reviewItemToDelete = review
+			this.showDeleteModal = true
+		},
+		hideEditReviewModal(){
+			this.showEditReviewModal = false
+		},
+		editReview(review){
+			this.showEditReviewModal = true
+			this.reviewToEdit = review
+		},
+		saveReview(reviewToEdit){
+			this.showEditReviewModal = false
+
+			this.showSpinner = true
+			setTimeout(() => {
+				this.reviews.forEach(element => {
+					if(element.id === reviewToEdit.id){
+						element.text = reviewToEdit.text
+						element.answer = reviewToEdit.answer
+					}
+				});
+				this.showSpinner = false
+			}, 500)	
+			
 		}
 	}
 }
@@ -76,37 +203,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.review-header{
-		display: flex;
-		align-items: center;
-		&__status{
-			margin-left: auto;
-			.green-text{
-				color: green;
-			}
-			.red-text{
-				color: red;
-			}
-		}
+	.reviewTextarea{
+		resize: none;
+   		min-height: 150px;
+		width: 100%;
 	}
-	.answer{
-		max-width: 80%;
-		margin-left: auto;
-		text-align: right;
-		border-radius: 20px;
-		background: #f3f0f0;
-		padding: 4px 10px;    
-		width: max-content;
-	}
-	.buttons{
-		display: flex;
-		gap: 10px;
-	}
-	.star{
-		width: 20px;
-		fill: #ebeb00;
-	}
-	.btn-delete{
-		margin-left: auto;
+	.answerTextarea{
+		resize: none;
+   		min-height: 100px;
+		width: 100%;
 	}
 </style>

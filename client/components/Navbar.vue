@@ -1,24 +1,25 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
-      <router-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
-        {{ appName }}
+      <router-link :to="{ name: user ? 'dashboard' : 'welcome' }" class="navbar-brand">
+        <!-- {{ appName }} -->
+        Alloro
       </router-link>
 
-      <button :aria-label="$t('toggle_navigation')" class="navbar-toggler" type="button"
+      <!-- <button :aria-label="$t('toggle_navigation')" class="navbar-toggler" type="button"
               data-toggle="collapse" data-target="#navbarToggler"
               aria-controls="navbarToggler" aria-expanded="false"
       >
         <span class="navbar-toggler-icon" />
-      </button>
+      </button> -->
 
       <div id="navbarToggler" class="collapse navbar-collapse">
-        <ul class="navbar-nav">
+        <!-- <ul class="navbar-nav">
           <locale-dropdown />
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
-          </li> -->
-        </ul>
+          </li>
+        </ul> -->
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link :to="{name: 'dashboard'}">
@@ -37,14 +38,12 @@
               {{ user.name }}
             </a>
             <div class="dropdown-menu">
-              <router-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
-                <!-- <fa icon="cog" fixed-width /> -->
+              <!-- <router-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
                 {{ $t('settings') }}
-              </router-link>
+              </router-link> -->
 
               <div class="dropdown-divider" />
               <a class="dropdown-item pl-3" href="#" @click.prevent="logout">
-                <!-- <fa icon="sign-out-alt" fixed-width /> -->
                 {{ $t('logout') }}
               </a>
             </div>

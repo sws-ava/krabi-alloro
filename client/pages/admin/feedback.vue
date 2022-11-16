@@ -1,62 +1,78 @@
 <template>
 	<div>
 		<h5>Обратная связь</h5>
-		<div 
-			v-for="review in reviews" 
-			:key="review.id"
+		<spinner v-if="showSpinner" />
+		<template v-if="feedbacks.length">
+			<feedback-item
+				v-for="feedback in feedbacks"
+				:key="feedback.id"
+				:feedback=feedback
+				@feedbackReaded="feedbackReaded"
+				@feedbackNotReaded="feedbackNotReaded"
+				@feedbackRemove="feedbackRemove"
+			/>
+		</template>
+		<div
+			v-else
+			class="text-center mt-4"
 		>
-			<div class="review-header mb-2">
-				<span class="mr-2">
-					{{ review.name }} {{ review.phone }}
-				</span>
-				<div class="review-header__status ">
-					<b>
-						<span 
-							v-if="review.isRead" 
-							class="green-text"
-							>
-							Прочитано
-						</span>
-						<span 
-							v-else 
-							class="red-text"
-						>
-							Новое сообщение
-						</span>
-					</b>
-				</div>
-			</div>
-			<b> {{review.date}} </b>
-			<div>
-				{{ review.text }}
-			</div>
-			<div class="buttons mt-2">
-				<div v-if="!review.isRead">
-					<div class="btn btn-outline-primary btn-sm">Ознакомились</div>
-				</div>
-				<div v-else>
-					<div class="btn btn-outline-secondary btn-sm">Ознакомлены</div> 
-				</div>
-				<div class="btn btn-outline-danger btn-sm btn-delete">Удалить</div> 
-			</div>
-			<hr class="mb-4 mt-4">
+			<h5>Новых записей нет</h5>
 		</div>
 	</div>
 </template>
 
 <script>
+import feedbackItem from '@/components/admin/feedback/feedbackItem.vue'
+import Spinner from '@/components/admin/spinner.vue';
+
+
+
 export default {
+	components: { feedbackItem, Spinner },
+
 	middleware: 'auth',
 	layout: 'admin',
 
 	data(){
 		return{
-			reviews: [
+			feedbacks: [
 				{id:1, date: '22:20 20.02.22', isRead: false , name: 'Александр', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
 				{id:2, date: '22:20 20.02.22', isRead: true , name: 'Маргарита', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
-				{id:3, date: '22:20 20.02.22', isRead: true , name: 'Алексей', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
+				{id:3, date: '22:20 20.02.22', isRead: false , name: 'Алексей', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
 				{id:4, date: '22:20 20.02.22', isRead: true , name: 'Руслан', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
-			]
+			],
+			showSpinner:false,
+		}
+	},
+	methods:{
+		feedbackReaded(feedbackId){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.feedbacks.forEach((element, index) => {
+					if(element.id === feedbackId) {
+						element.isRead = true
+					}
+				})
+				this.showSpinner = false
+			}, 500)
+		},
+		feedbackNotReaded(feedbackId){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.feedbacks.forEach((element, index) => {
+					if(element.id === feedbackId) {
+						element.isRead = false
+					}
+				})
+				this.showSpinner = false
+			}, 500)
+		},
+		feedbackRemove(feedback){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.feedbacks = this.feedbacks.filter(r => r.id !== feedback.id)
+				this.showSpinner = false
+			}, 500)
 		}
 	}
 }
@@ -64,37 +80,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.review-header{
-		display: flex;
-		align-items: center;
-		&__status{
-			margin-left: auto;
-			.green-text{
-				color: green;
-			}
-			.red-text{
-				color: red;
-			}
-		}
-	}
-	.answer{
-		max-width: 80%;
-		margin-left: auto;
-		text-align: right;
-		border-radius: 20px;
-		background: #f3f0f0;
-		padding: 4px 10px;    
-		width: max-content;
-	}
-	.buttons{
-		display: flex;
-		gap: 10px;
-	}
-	.star{
-		width: 20px;
-		fill: #ebeb00;
-	}
-	.btn-delete{
-		margin-left: auto;
-	}
+
 </style>

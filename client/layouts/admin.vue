@@ -1,6 +1,8 @@
 <template>
   <div class="layout">
 	<navbar />
+          <!-- {{user}} -->
+
 	<div class="container mt-4">
 		<card>
 			<div class="row">
@@ -11,13 +13,13 @@
 					<nuxt />
 				</div>
 			</div>
-		admin layout
 		</card>
     </div>
   </div>
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
 import Navbar from '~/components/Navbar'
 import AdminNavigation from '@/components/admin/adminNavigation.vue'
 
@@ -25,7 +27,12 @@ export default {
   components: {
     Navbar,
 	AdminNavigation
-  }
+  },
+
+//   computed: mapGetters({
+//     user: 'auth/user'
+//   }),
+
 }
 </script>
 
