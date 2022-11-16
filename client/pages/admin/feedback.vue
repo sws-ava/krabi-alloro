@@ -9,7 +9,7 @@
 				:feedback=feedback
 				@feedbackReaded="feedbackReaded"
 				@feedbackNotReaded="feedbackNotReaded"
-				@feedbackRemove="feedbackRemove"
+				@feedbackToDelete="feedbackToDelete"
 			/>
 		</template>
 		<div
@@ -18,17 +18,41 @@
 		>
 			<h5>Новых записей нет</h5>
 		</div>
+		<modal-delete-window
+			:showDeleteModal="showDeleteModal"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Удалить это обращение?</h5>
+			<p>
+				{{feedbackItemToDelete.text}}
+			</p>
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="feedbackRemove(feedbackItemToDelete)"
+					class="btn btn-outline-danger btn-sm"
+				>
+					Удалить
+				</div>
+				<div 
+					@click="showDeleteModal = false"
+					class="btn btn-outline-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
+		</modal-delete-window>
 	</div>
 </template>
 
 <script>
 import feedbackItem from '@/components/admin/feedback/feedbackItem.vue'
 import Spinner from '@/components/admin/spinner.vue';
+import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
 
 
 
 export default {
-	components: { feedbackItem, Spinner },
+	components: { feedbackItem, Spinner, ModalDeleteWindow },
 
 	middleware: 'auth',
 	layout: 'admin',
@@ -42,6 +66,8 @@ export default {
 				{id:4, date: '22:20 20.02.22', isRead: true , name: 'Руслан', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
 			],
 			showSpinner:false,
+			showDeleteModal: false,
+			feedbackItemToDelete : {},
 		}
 	},
 	methods:{
@@ -68,12 +94,20 @@ export default {
 			}, 500)
 		},
 		feedbackRemove(feedback){
+			this.showDeleteModal = false
 			this.showSpinner = true
 			setTimeout(() => {
 				this.feedbacks = this.feedbacks.filter(r => r.id !== feedback.id)
 				this.showSpinner = false
 			}, 500)
-		}
+		},
+		hideDeleteModal(){
+			this.showDeleteModal = false
+		},
+		feedbackToDelete(feedback){
+			this.feedbackItemToDelete = feedback
+			this.showDeleteModal = true
+		},
 	}
 }
 

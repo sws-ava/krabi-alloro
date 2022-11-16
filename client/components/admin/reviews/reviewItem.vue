@@ -37,28 +37,30 @@
 			{{ review.answer }}
 		</div>
 		<div class="buttons mt-2">
-			<div v-if="!review.show">
+			<div>
 				<div 
+					v-if="!review.answer"
 					@click="editReview(review)"
 					class="btn btn-outline-primary btn-sm"
 				>
 					Ответить
 				</div> 
 				<div 
-					@click="publishReview(review)"
-					class="btn btn-outline-success btn-sm"
-				>
-					Опубликовать
-				</div> 
-			</div>
-			<div v-else>
-				<div 
+					v-else
 					@click="editReview(review)"
 					class="btn btn-outline-secondary btn-sm"
 				>
 					Редактировать
 				</div> 
 				<div 
+					v-if="!review.show"
+					@click="publishReview(review)"
+					class="btn btn-outline-success btn-sm"
+				>
+					Опубликовать
+				</div> 
+				<div
+					v-else 
 					@click="hideReview(review)"
 					class="btn btn-outline-success btn-sm"
 				>

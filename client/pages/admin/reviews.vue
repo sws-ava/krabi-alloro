@@ -33,7 +33,7 @@
 			<div class="d-flex justify-content-around mt-4">
 				<div 
 					@click="reviewRemove(reviewItemToDelete)"
-					class="btn btn-outline-success btn-sm"
+					class="btn btn-outline-danger btn-sm"
 				>
 					Удалить
 				</div>
@@ -90,7 +90,7 @@
 						Сохранить
 					</div>
 					<div 
-						@click="hideEditReviewModal()"
+						@click="hideEditReviewModalNoChanges(reviewToEdit)"
 						class="btn btn-outline-secondary btn-sm"
 					>
 						Назад
@@ -178,9 +178,20 @@ export default {
 		hideEditReviewModal(){
 			this.showEditReviewModal = false
 		},
+		hideEditReviewModalNoChanges(reviewToEdit){
+			this.showEditReviewModal = false
+			this.reviews.forEach(element => {
+				if(element.id === reviewToEdit.id){
+					console.log(element)
+					this.reviewToEdit.text = element.text
+					this.reviewToEdit.answer = element.answer
+				}
+			});
+		},
 		editReview(review){
 			this.showEditReviewModal = true
-			this.reviewToEdit = review
+			// this.reviewToEdit = review
+			this.reviewToEdit = JSON.parse(JSON.stringify(review));
 		},
 		saveReview(reviewToEdit){
 			this.showEditReviewModal = false

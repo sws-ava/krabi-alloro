@@ -44,7 +44,7 @@
 				</div> 
 			</div>
 			<div 
-				@click="feedbackRemove(feedback)"
+				@click="feedbackToDelete(feedback)"
 				class="btn btn-outline-danger btn-sm btn-delete"
 			>
 				Удалить
@@ -79,8 +79,8 @@ export default {
 		feedbackNotReaded(feedbackId){
 			this.$emit('feedbackNotReaded', feedbackId)
 		},
-		feedbackRemove(feedback){
-			this.$emit("feedbackRemove", feedback)
+		feedbackToDelete(feedback){
+			this.$emit("feedbackToDelete", feedback)
 		}
 	}
 }
