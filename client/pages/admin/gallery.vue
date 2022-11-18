@@ -9,21 +9,39 @@
 			</div>
 		</form>
 		<div class="row">
-			<div  v-for="photo in photos" :key="photo.id" class="col-lg-4 mb-4">
+			<div  v-for="(photo, index) in photos" :key="photo.id" class="col-lg-4 mb-4">
 				<div  class="block-holder">
-					<div class="image-holder">
+					<div @click="showFullImg(photo.id)" class="image-holder">
 						<img :src="photo.path">
 					</div>
 				</div>
 				<div class="arrows">
-					<span class="fa-icon-holder">
+					<span 
+						@click="orderLeft(photo.order)"
+						v-if="index  !== 0" 
+						class="fa-icon-holder"
+					>
 						<font-awesome-icon 
 							:icon="['fas', 'arrow-left']"
 							style="width:16px; height: 16px"
 							class="fa-icon"
 						/>
 					</span>
-					<span class="fa-icon-holder">
+					<span 
+						@click="deletePhoto(photo)"
+						class="fa-icon-holder"
+					>
+						<font-awesome-icon 
+							:icon="['fas', 'trash']"
+							style="width:16px; height: 16px"
+							class="fa-icon"
+						/>
+					</span>
+					<span 
+						@click="orderRight(photo.order)"
+						v-if="index !== photos.length - 1" 
+						class="fa-icon-holder"
+					>
 						<font-awesome-icon 
 							:icon="['fas', 'arrow-right']"
 							style="width:16px; height: 16px"
@@ -33,11 +51,19 @@
 				</div>
 			</div>
 		</div>
+		<modal-show-full-img
+			:showModal="showModal"
+			@hideModal="hideModal"
+		>
+			<img :src="imageToShowPath" alt="">
+		</modal-show-full-img>
 	</div>
 </template>
 
 <script>
+import modalShowFullImg from '../../components/admin/modalShowFullImg.vue'
 export default {
+  components: { modalShowFullImg },
 	middleware: 'auth',
 	layout: 'admin',
 
@@ -50,8 +76,63 @@ export default {
 				{id:4, order:6, path:'https://via.placeholder.com/200x300',},
 				{id:5, order:5, path:'https://via.placeholder.com/500x100',},
 				{id:6, order:4, path:'https://via.placeholder.com/100x500',},
-			]
+			],
+			showModal: false,
+			imageToShowPath: '',
 		}
+	},
+	mounted(){
+		this.sortPhotos()
+	},
+	methods:{
+		hideModal(){
+			this.showModal = false
+			this.imageToShowPath = ''
+		},
+		orderLeft(order){
+			this.photos.forEach(el => {
+				if(el.order == order - 1){
+					el.order += 1
+				}
+				else if(el.order == order){
+					el.order -= 1
+				}
+			})
+			this.sortPhotos()
+		},
+		orderRight(order){
+			this.photos.forEach(el => {
+				if(el.order == order){
+					el.order += 1
+				}
+				else if(el.order == order + 1){
+					el.order -= 1
+				}
+			})
+			this.sortPhotos()
+		},
+		sortPhotos(){
+			this.photos.sort((a,b) => a.order - b.order)
+		},
+		showFullImg(photoId){
+			this.showModal = true
+			this.photos.forEach(element => {
+				if(element.id == photoId){
+					this.imageToShowPath = element.path
+				}
+			});
+		},
+		deletePhoto(photo){
+			setTimeout(() => {
+				this.photos = this.photos.filter(r => r.id !== photo.id)
+				let i = 1
+				this.photos.forEach(el => {
+					el.order = i
+					i++
+				})
+				this.sortPhotos()
+			}, 500)	
+		},
 	}
 }
 </script>

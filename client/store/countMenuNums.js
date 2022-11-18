@@ -1,8 +1,8 @@
 
 // state
 export const state = () => ({
-  countUnreadedReviews: 0,
-  countUnreadedFeedbacks: 0,
+  countUnreadedReviews: 1,
+  countUnreadedFeedbacks: 1,
 })
 
 // getters
