@@ -18,7 +18,9 @@
 				class="nav-link"
 			>
 				Отзывы
-				<span>1</span>
+				<span v-if="countUnreadedReviews">
+					{{countUnreadedReviews}}
+				</span>
 			</router-link>
 			<router-link 
 				:to="{name: 'admin-menu'}" 
@@ -31,7 +33,10 @@
 				class="nav-link"
 			>
 				Обратная связь
-				<span>1</span>
+				
+				<span v-if="countUnreadedFeedbacks">
+					{{countUnreadedFeedbacks}}
+				</span>
 			</router-link>
 			<router-link 
 				:to="{name: 'admin-pages'}" 
@@ -48,14 +53,25 @@
 
 			<a class="nav-link" href="#">!Новости / Акции</a>
 			<a class="nav-link" href="#">!Блок с уведомлением</a>
-			<a class="nav-link" href="#">!Блоки на сайте</a>
+			<span
+			 class="nav-link" href="#">!Блоки на сайте</span>
 		</nav>
 </div>
 </template>
 
 <script>
+	import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
 
+
+	methods:{
+	},
+
+  computed: mapGetters({
+    countUnreadedReviews: 'countMenuNums/countUnreadedReviews',
+    countUnreadedFeedbacks: 'countMenuNums/countUnreadedFeedbacks'
+  })
+	
 }
 </script>
 

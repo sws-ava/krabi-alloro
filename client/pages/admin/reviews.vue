@@ -109,6 +109,7 @@ import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
 import ModalReviewEditWindow from '@/components/admin/modalReviewEditWindow.vue';
 
 export default {
+	// name: 'qwe',
 	components:{
 		ReviewItem,
 		Spinner,
@@ -125,7 +126,7 @@ export default {
 			reviews: [
 				{id:1, date: '22:20 20.02.22', stars: 2, show: false, name: 'Александр', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit', answer: ''},
 				{id:2, date: '22:20 20.02.22', stars: 5, show: false, name: 'Маргарита', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: 'tate error laudantium soluta architecto mollitia quas! Totam qu'},
-				{id:3, date: '22:20 20.02.22', stars: 4, show: true, name: 'Алексей', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: ''},
+				{id:3, date: '22:20 20.02.22', stars: 4, show: false, name: 'Алексей', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: ''},
 				{id:4, date: '22:20 20.02.22', stars: 2, show: true, name: 'Руслан', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit', answer: 'Lorem ipsum, dolor sit amet consectetur'},
 			],
 			showSpinner: false,
@@ -135,7 +136,17 @@ export default {
 			reviewToEdit: {},
 		}
 	},
-	
+	computed:{
+		// setUnrededReviews(){
+		// 	let num = 0
+		// 	this.reviews.forEach(element => {
+		// 		if(element.show === false){
+		// 			num++
+		// 		}
+		// 	});
+		// 	this.$store.commit('countMenuNums/SET_UNREADEDREVIEWS', num);
+		// }
+	},	
 	methods:{
 		publishReview(review){
 			this.showSpinner = true
@@ -146,6 +157,7 @@ export default {
 					}
 				})
 				this.showSpinner = false
+				this.setUnrededReviews()
 			}, 500)
 		},
 		hideReview(review){
@@ -157,6 +169,7 @@ export default {
 					}
 				})
 				this.showSpinner = false
+				this.setUnrededReviews()
 			}, 500)	
 		},
 		reviewRemove(review){
@@ -165,6 +178,7 @@ export default {
 			setTimeout(() => {
 				this.reviews = this.reviews.filter(r => r.id !== review.id)
 				this.showSpinner = false
+				this.setUnrededReviews()
 			}, 500)	
 			
 		},
@@ -182,11 +196,11 @@ export default {
 			this.showEditReviewModal = false
 			this.reviews.forEach(element => {
 				if(element.id === reviewToEdit.id){
-					console.log(element)
 					this.reviewToEdit.text = element.text
 					this.reviewToEdit.answer = element.answer
 				}
 			});
+			
 		},
 		editReview(review){
 			this.showEditReviewModal = true
@@ -205,9 +219,20 @@ export default {
 					}
 				});
 				this.showSpinner = false
+				
 			}, 500)	
-			
+		},
+		setUnrededReviews(){
+			let num = 0
+			this.reviews.forEach(element => {
+				if(element.show === false){
+					num++
+				}
+			});
+			this.$store.commit('countMenuNums/SET_UNREADEDREVIEWS', num);
 		}
+		
+
 	}
 }
 

@@ -70,6 +70,18 @@ export default {
 			feedbackItemToDelete : {},
 		}
 	},
+	computed:{
+		// setUnrededFeedbacks()
+		// {
+		// 	let num = 0
+		// 	this.feedbacks.forEach(element => {
+		// 		if(element.isRead === false){
+		// 			num++
+		// 		}
+		// 	});
+		// 	this.$store.commit('countMenuNums/SET_UNREADEDFEEDBACKS', num);
+		// }
+	},	
 	methods:{
 		feedbackReaded(feedbackId){
 			this.showSpinner = true
@@ -80,7 +92,9 @@ export default {
 					}
 				})
 				this.showSpinner = false
+				this.setUnrededFeedbacks()
 			}, 500)
+			// const asd = docu,eny
 		},
 		feedbackNotReaded(feedbackId){
 			this.showSpinner = true
@@ -91,6 +105,7 @@ export default {
 					}
 				})
 				this.showSpinner = false
+				this.setUnrededFeedbacks()
 			}, 500)
 		},
 		feedbackRemove(feedback){
@@ -99,6 +114,7 @@ export default {
 			setTimeout(() => {
 				this.feedbacks = this.feedbacks.filter(r => r.id !== feedback.id)
 				this.showSpinner = false
+				this.setUnrededFeedbacks()
 			}, 500)
 		},
 		hideDeleteModal(){
@@ -108,6 +124,15 @@ export default {
 			this.feedbackItemToDelete = feedback
 			this.showDeleteModal = true
 		},
+		setUnrededFeedbacks(){
+			let num = 0
+			this.feedbacks.forEach(element => {
+				if(element.isRead === false){
+					num++
+				}
+			});
+			this.$store.commit('countMenuNums/SET_UNREADEDFEEDBACKS', num);
+		}
 	}
 }
 

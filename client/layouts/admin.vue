@@ -2,15 +2,16 @@
   <div class="layout">
 	<navbar />
           <!-- {{user}} -->
-
 	<div class="container mt-4">
 		<card>
 			<div class="row">
 				<div class="col-3">
-					<admin-navigation />
+					<admin-navigation
+					/>
 				</div>
 				<div class="col-9">
-					<nuxt />
+					<nuxt 
+					/>
 				</div>
 			</div>
 		</card>
@@ -19,9 +20,12 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import Navbar from '~/components/Navbar'
 import AdminNavigation from '@/components/admin/adminNavigation.vue'
+
+
+
 
 export default {
   components: {
@@ -29,11 +33,27 @@ export default {
 	AdminNavigation
   },
 
-//   computed: mapGetters({
-//     user: 'auth/user'
-//   }),
+  
+  data(){
+    return{
+		
+    }
+  },
+  methods:{
+    // countReviews(countReviews){
+		// mapMutations({
+		// 	store.commit('increment', 10),
+		// })
+		// this.countReviews = countReviews
+	// }
+	
+  },
 
+//   computed: mapGetters({
+//     countUnreadedReviews: 'countMenuNums/countUnreadedReviews'
+//   }),
 }
+
 </script>
 
 
