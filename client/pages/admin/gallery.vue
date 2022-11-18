@@ -29,7 +29,7 @@
 						/>
 					</span>
 					<span 
-						@click="deletePhoto(photo)"
+						@click="showDelModal(photo)"
 						class="fa-icon-holder"
 					>
 						<font-awesome-icon 
@@ -58,14 +58,35 @@
 		>
 			<img :src="imageToShowPath" alt="">
 		</modal-show-full-img>
+		<modal-delete-window
+			:showDeleteModal="showDeleteModal"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Удалить фото c сайта?</h5>
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="deletePhoto(photoToDelete)"
+					class="btn btn-outline-danger btn-sm"
+				>
+					Удалить
+				</div>
+				<div 
+					@click="showDeleteModal = false"
+					class="btn btn-outline-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
+		</modal-delete-window>
 	</div>
 </template>
 
 <script>
 import modalShowFullImg from '@/components/admin/modalShowFullImg.vue'
 import Spinner from '@/components/admin/spinner.vue'
+import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
 export default {
-	components: { modalShowFullImg, Spinner },
+	components: { modalShowFullImg, Spinner, ModalDeleteWindow },
 	middleware: 'auth',
 	layout: 'admin',
 
@@ -82,6 +103,8 @@ export default {
 			showModal: false,
 			imageToShowPath: '',
 			showSpinner: false,
+			showDeleteModal: false,
+			photoToDelete : {},
 		}
 	},
 	mounted(){
@@ -134,6 +157,7 @@ export default {
 			});
 		},
 		deletePhoto(photo){
+			this.showDeleteModal = false
 			this.showSpinner = true
 			setTimeout(() => {
 				this.photos = this.photos.filter(r => r.id !== photo.id)
@@ -145,6 +169,13 @@ export default {
 				this.sortPhotos()
 				this.showSpinner = false
 			}, 500)	
+		},
+		showDelModal(photo){
+			this.showDeleteModal = true
+			this.photoToDelete = photo
+		},
+		hideDeleteModal(){
+			this.showDeleteModal = false
 		},
 	}
 }
