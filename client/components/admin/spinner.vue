@@ -22,5 +22,6 @@ export default {
 		opacity: 0.8;
 		justify-content: center;
 		padding-top: 100px;
+		z-index: 2;
 	}
 </style>

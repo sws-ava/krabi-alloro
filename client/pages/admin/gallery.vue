@@ -2,6 +2,7 @@
   
 	<div>
 		<h5 class="mb-3">Галерея</h5>
+		<spinner v-if="showSpinner" />
 		<form>
 			<div class="form-group">
 				<label for="exampleFormControlFile1">Добавить фото</label>
@@ -61,9 +62,10 @@
 </template>
 
 <script>
-import modalShowFullImg from '../../components/admin/modalShowFullImg.vue'
+import modalShowFullImg from '@/components/admin/modalShowFullImg.vue'
+import Spinner from '@/components/admin/spinner.vue'
 export default {
-  components: { modalShowFullImg },
+	components: { modalShowFullImg, Spinner },
 	middleware: 'auth',
 	layout: 'admin',
 
@@ -79,6 +81,7 @@ export default {
 			],
 			showModal: false,
 			imageToShowPath: '',
+			showSpinner: false,
 		}
 	},
 	mounted(){
@@ -90,26 +93,34 @@ export default {
 			this.imageToShowPath = ''
 		},
 		orderLeft(order){
-			this.photos.forEach(el => {
-				if(el.order == order - 1){
-					el.order += 1
-				}
-				else if(el.order == order){
-					el.order -= 1
-				}
-			})
-			this.sortPhotos()
+			this.showSpinner = true
+			setTimeout(() => {
+				this.photos.forEach(el => {
+					if(el.order == order - 1){
+						el.order += 1
+					}
+					else if(el.order == order){
+						el.order -= 1
+					}
+				})
+				this.sortPhotos()
+				this.showSpinner = false
+			}, 500)
 		},
 		orderRight(order){
-			this.photos.forEach(el => {
-				if(el.order == order){
-					el.order += 1
-				}
-				else if(el.order == order + 1){
-					el.order -= 1
-				}
-			})
-			this.sortPhotos()
+			this.showSpinner = true
+			setTimeout(() => {
+				this.photos.forEach(el => {
+					if(el.order == order){
+						el.order += 1
+					}
+					else if(el.order == order + 1){
+						el.order -= 1
+					}
+				})
+				this.sortPhotos()
+				this.showSpinner = false
+			}, 500)
 		},
 		sortPhotos(){
 			this.photos.sort((a,b) => a.order - b.order)
@@ -123,6 +134,7 @@ export default {
 			});
 		},
 		deletePhoto(photo){
+			this.showSpinner = true
 			setTimeout(() => {
 				this.photos = this.photos.filter(r => r.id !== photo.id)
 				let i = 1
@@ -131,6 +143,7 @@ export default {
 					i++
 				})
 				this.sortPhotos()
+				this.showSpinner = false
 			}, 500)	
 		},
 	}
