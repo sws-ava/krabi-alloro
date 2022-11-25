@@ -198,45 +198,38 @@ export default {
 
 	computed: mapGetters({
 		user: 'auth/user',
-		searchQuery: 'menuItems/searchQuery',
-		choosedCategory: 'menuItems/choosedCategory',
-		menuItems: 'menuItems/menuItems',
+		// searchQuery: 'menuItems/searchQuery',
+		// choosedCategory: 'menuItems/choosedCategory',
+		// menuItems: 'menuItems/menuItems',
 	}),
 	
 	data(){
 		return{
 			showSpinner: false,
-			// menuItems: [],
+			menuItems: [],
 			categories:[
 				{id:1, title_ru:'Пицца', order: 1},
 				{id:2, title_ru:'Напитки', order: 3},
 				{id:3, title_ru:'WOK', order: 2},
 			],
-			// searchQuery: '',
+			searchQuery: '',
 			changePrice: '',
 			showSaveOrderButton: false
 		}
 	},
 	mounted(){
-		// let menuItems = [{id:1, some:'asd'}]
-		// this.menuItems = 
-		// this.$store.commit('menuItems/SET_MENUITEMS', menuItems);
-			// this.showSpinner = true	
-		// this.fetchItems()
-		// let menuItems = [{id:2}]
-		// console.log(this.$store.state.menuItems.menuItems)
+		this.fetchItems()
 	},
 	methods:{
 		
 		sortItems(){
-			this.$store.state.menuItems.menuItems.sort((a,b) => a.order - b.order)
+			this.menuItems.sort((a,b) => a.order - b.order)
 		},
 		fetchItems(){
 			
 			this.showSpinner = true	
 			setTimeout(() => {
-				// fetch
-				const menuItems = [
+				this.menuItems = [
 					{
 						id:1,
 						show: true,
@@ -255,7 +248,7 @@ export default {
 						items:[
 							{id:7, mainItem: 3, order: 1, show: 0, weight: '200', weightKind:'г', price: 55},
 						],
-						order: 2,
+						order: 3,
 					},
 					{
 						id:2,
@@ -266,7 +259,7 @@ export default {
 							{id:5,  mainItem: 2, order: 1, show: 1, weight: '1.0', weightKind:'л', price: 45},
 							{id:6,  mainItem: 2, order: 3, show: 1, weight: '2.0', weightKind:'л', price: 50},
 						],
-						order: 3,
+						order: 2,
 					},
 					{
 						id:4,
@@ -278,7 +271,6 @@ export default {
 						order: 4,
 					},
 				]
-				this.$store.commit('menuItems/SET_MENUITEMS', menuItems);
 				this.sortItems()
 				this.showSpinner = false	
 			}, 500)
@@ -288,7 +280,7 @@ export default {
 			this.showSpinner = true	
 			setTimeout(() => {
 				// fetch here
-				const menuItems = [
+				this.menuItems = [
 				{
 					id:1,
 					show: true,
@@ -305,19 +297,18 @@ export default {
 					show: false,
 					title:'Diabola',
 					items:[
-						{id:1, show: 1, weight: 'З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ', weightKind:'см', price: 50.85},
+						{id:5, show: 1, weight: 'З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ', weightKind:'см', price: 50.85},
 					],
 					order: 1,
 				},
 				]
-				this.$store.commit('menuItems/UPDATE_MENUITEMS', menuItems);
 				this.sortItems()
 				this.showSpinner = false
 			},500)
 		},
 		getItemsBySearchQuery(event){
 			this.searchQuery = event.target.value
-			// this.$store.commit('menuItems/SET_SEARCHQUERY', this.searchQuery);
+			console.log(event.target.value)
 		},
 		showSubItem(subItem){
 			this.showSpinner = true
@@ -329,7 +320,6 @@ export default {
 						}
 					});
 				});
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.showSpinner = false
 			}, 500)
 		},
@@ -343,7 +333,6 @@ export default {
 						}
 					});
 				});
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.showSpinner = false
 			}, 500)
 		},
@@ -355,7 +344,6 @@ export default {
 						el.show = true
 					}
 				});
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.showSpinner = false
 			}, 500)
 		},
@@ -367,7 +355,6 @@ export default {
 						el.show = false
 					}
 				});
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.showSpinner = false
 			}, 500)
 		},
@@ -407,7 +394,6 @@ export default {
 				document.querySelector('.priceInputFocus').classList.remove('priceInputFocus')
 				let targetParent = document.querySelector('.priceRowFocus')
 				targetParent.classList.remove('priceRowFocus')
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.showSpinner = false
 			}, 500)
 		},
@@ -423,7 +409,6 @@ export default {
 						el.order -= 1
 					}
 				})
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.sortItems()
 				this.showSpinner = false
 			}, 500)
@@ -439,7 +424,6 @@ export default {
 						el.order -= 1
 					}
 				this.showSpinner = false
-				// this.$store.commit('menuItems/UPDATE_MENUITEMS', this.menuItems);
 				this.sortItems()
 				})
 			}, 500)
