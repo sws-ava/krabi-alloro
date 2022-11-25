@@ -20,26 +20,36 @@
 		
     <form>
       <div class="row">
-		<div class="form-group col-lg-7">
-			<small class="form-text text-muted">Выбрать категорию</small>
-			<select class="form-control" >
-				<option selected disabled>Выбрать категорию</option>
-				<option
-					v-for="cat in categories" :key="cat.id"
-				>
-					{{ cat.title }}
-				</option>
-			</select>
-		</div>
-        <div class="form-group col-lg-7">
-          <small class="form-text text-muted">Название блюда ру</small>
-          <input type="text" name="title" class="form-control">
-        </div>
-        <div class="form-group col-lg-7">
-          <small class="form-text text-muted">Название блюда укр</small>
-          <input type="text" name="title-ua" class="form-control">
+		<div class="col-lg-7">
+			<div class="form-group">
+				<small class="form-text text-muted">Выбрать категорию</small>
+				<select class="form-control" >
+					<option selected disabled>Выбрать категорию</option>
+					<option
+						v-for="cat in categories" :key="cat.id"
+					>
+						{{ cat.title }}
+					</option>
+				</select>
+			</div>
+			<div class="form-group">
+			<small class="form-text text-muted">Название блюда ру</small>
+			<input type="text" name="title" class="form-control">
+			</div>
+			<div class="form-group">
+			<small class="form-text text-muted">Название блюда укр</small>
+			<input type="text" name="title-ua" class="form-control">
+			</div>
         </div>
 		
+		<div class="col-lg-5">
+			<form>
+				<div class="form-group">
+					<label for="exampleFormControlFile1">Добавить фото</label>
+					<input type="file" class="form-control-file">
+				</div>
+			</form>
+		</div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Описание блюда ру (description)</small>
           <input type="text" name="description" class="form-control">

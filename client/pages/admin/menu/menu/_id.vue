@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<h5 class="mb-3">Редактировать блюдо</h5>
+    	<spinner v-if="showSpinner" />
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb-my">
 				<li class="breadcrumb-item">
@@ -18,28 +19,53 @@
 		</nav>
 		    <form>
       <div class="row">
-		<div class="form-group col-lg-7">
-			<small class="form-text text-muted">Выбрать категорию</small>
-			<select
-				class="form-control"
-			>
-				<option :value="cat.id"
-					:selected="cat.id === item.cat"
-					v-for="cat in categories" :key="cat.id"
+		<div class="col-lg-7">
+			<div class="form-group">
+				<small class="form-text text-muted">Выбрать категорию</small>
+				<select
+					class="form-control"
 				>
-					{{ cat.title }}
-				</option>
-			</select>
+					<option :value="cat.id"
+						:selected="cat.id === item.cat"
+						v-for="cat in categories" :key="cat.id"
+					>
+						{{ cat.title }}
+					</option>
+				</select>
+			</div>
+			<div class="form-group">
+			<small class="form-text text-muted">Название блюда ру</small>
+			<input :value="item.title_ru" type="text" name="title" class="form-control">
+			</div>
+			<div class="form-group">
+			<small class="form-text text-muted">Название блюда укр</small>
+			<input :value="item.title_ua" type="text" name="title-ua" class="form-control">
+			</div>
+        </div>
+		<div class="col-lg-5">
+			<form v-if="!item.photo">
+				<div class="form-group">
+					<label for="exampleFormControlFile1">Добавить фото</label>
+					<input type="file" class="form-control-file">
+				</div>
+			</form>
+			<div class="imageHolder">
+				<img :src="item.photo" alt="">
+			</div>
+				
+				<div  v-if="item.photo" class="arrows">
+					<span 
+						@click="showDelModal(photo)"
+						class="fa-icon-holder"
+					>
+						<font-awesome-icon 
+							:icon="['fas', 'trash']"
+							style="width:16px; height: 16px"
+							class="fa-icon"
+						/>
+					</span>
+				</div>
 		</div>
-        <div class="form-group col-lg-7">
-          <small class="form-text text-muted">Название блюда ру</small>
-          <input :value="item.title_ru" type="text" name="title" class="form-control">
-        </div>
-        <div class="form-group col-lg-7">
-          <small class="form-text text-muted">Название блюда укр</small>
-          <input :value="item.title_ua" type="text" name="title-ua" class="form-control">
-        </div>
-		
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Описание блюда ру (description)</small>
           <input :value="item.description_ru" type="text" name="description" class="form-control">
@@ -147,17 +173,40 @@
 </template>
 
 <script>
+
+import spinner from '@/components/admin/spinner.vue'
+
 export default {
 	middleware: 'auth',
 	layout: 'admin',
+
+	
+	components: { spinner },
 
 
 
 	data(){
 		return{
-			item:{
+			item:{},
+			categories:[
+				{id:1, title:'Пицца', order: 1},
+				{id:2, title:'Напитки', order: 3},
+				{id:3, title:'WOK', order: 2},
+			],
+			showSpinner: true
+		}
+	},
+	mounted(){
+		this.fetchItem()
+	},
+	methods:{
+		fetchItem(){
+			this.showSpinner = true	
+			setTimeout(() => {
+				// fetch here
+				this.item = {
 					id:1,
-					cat: 1,
+					cat: 2,
 					title_ru:'Маргарита',
 					title_ua:'Маргарiта',
 					description_ru: 'Описание блюда на русском в html',
@@ -169,13 +218,11 @@ export default {
 						{id:1, weight: 'L 17', weightKind:'см', price: 50},
 						{id:2, weight: 'XL 17', weightKind:'см', price: 85},
 						{id:3, weight: 'XXL 17', weightKind:'см', price: 150},
-					]
-				},
-			categories:[
-				{id:1, title:'Пицца', order: 1},
-				{id:2, title:'Напитки', order: 3},
-				{id:3, title:'WOK', order: 2},
-			],
+					],
+					photo: 'https://via.placeholder.com/300x500'
+				}
+				this.showSpinner = false
+			},500)
 		}
 	}
 }
@@ -222,6 +269,31 @@ export default {
 		cursor: pointer;
 		svg{
 			color:#fff;
+		}
+	}
+	.imageHolder{
+		width: 200px;
+		height: 200px;
+		cursor: pointer;
+		img{
+			width: 100%;
+			object-fit: cover;
+			height: inherit;
+		}
+	}
+	.arrows{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 10px;
+		width: 200px;
+		span{
+			cursor: pointer;
+		}
+	}
+	.fa-icon-holder {
+		& + .fa-icon-holder{
+			margin-left: 50px;
 		}
 	}
 </style>

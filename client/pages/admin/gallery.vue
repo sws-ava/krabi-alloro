@@ -16,6 +16,7 @@
 						<img :src="photo.path">
 					</div>
 				</div>
+				
 				<div class="arrows">
 					<span 
 						@click="orderLeft(photo.order)"
