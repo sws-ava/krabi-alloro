@@ -198,7 +198,7 @@ export const actions = {
 	},
 
 	orderTop({commit}, order){
-		commit('SET_SHOWSPINNER', false)
+		commit('SET_SHOWSPINNER', true)
 		commit('SET_ORDERTOP', order)
 		setTimeout(() => {
 			commit('SET_SHOWSPINNER', false)

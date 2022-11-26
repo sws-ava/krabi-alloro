@@ -17,42 +17,22 @@
 				<li class="breadcrumb-item active" aria-current="page">Редактирование блюда</li>
 			</ol>
 		</nav>
-		    <form>
-      <div class="row">
-		<div class="col-lg-7">
-			<div class="form-group">
-				<small class="form-text text-muted">Выбрать категорию</small>
-				<select
-					class="form-control"
-				>
-					<option :value="cat.id"
-						:selected="cat.id === item.cat"
-						v-for="cat in categories" :key="cat.id"
+		<div class="row">
+			<div class="col-lg-4 offset-lg-8">
+				<form v-if="!item.photo">
+					<div class="form-group">
+						<label for="exampleFormControlFile1">Добавить фото</label>
+						<input type="file" class="form-control-file">
+					</div>
+				</form>
+				<div v-if="item.photo" class="imageHolder">
+					<img 
+						@click="showItemPhoto = true"
+						:src="item.photo" 
+						alt=""
 					>
-						{{ cat.title }}
-					</option>
-				</select>
-			</div>
-			<div class="form-group">
-			<small class="form-text text-muted">Название блюда ру</small>
-			<input :value="item.title_ru" type="text" name="title" class="form-control">
-			</div>
-			<div class="form-group">
-			<small class="form-text text-muted">Название блюда укр</small>
-			<input :value="item.title_ua" type="text" name="title-ua" class="form-control">
-			</div>
-        </div>
-		<div class="col-lg-5">
-			<form v-if="!item.photo">
-				<div class="form-group">
-					<label for="exampleFormControlFile1">Добавить фото</label>
-					<input type="file" class="form-control-file">
 				</div>
-			</form>
-			<div class="imageHolder">
-				<img :src="item.photo" alt="">
-			</div>
-				
+					
 				<div  v-if="item.photo" class="arrows">
 					<span 
 						@click="showDelModal(photo)"
@@ -65,108 +45,228 @@
 						/>
 					</span>
 				</div>
+			</div>
 		</div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда ру (description)</small>
-          <input :value="item.description_ru" type="text" name="description" class="form-control">
-        </div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда укр (description)</small>
-          <input :value="item.description_ua" type="text" name="description-ua" class="form-control">
-        </div>
-		
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда на сайт ру</small>
-          <input :value="item.desc_ru" type="text" name="description" class="form-control">
-        </div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда на сайт укр</small>
-          <input :value="item.desc_ua" type="text" name="description-ua" class="form-control">
-        </div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Ссылка на блюдо</small>
-          <input :value="item.slug" type="text" name="slug" class="form-control">
-        </div>
-
-		<div class="col-12">
-			Цена:
-			<div v-for="price in item.prices" :key="price.id" class="row">
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">вес/шт/л/размер</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-						:value="price.weight"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">ед. измерения</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-						:value="price.weightKind"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">цена</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-						:value="price.price"
-					>
-				</div>
-			</div>
-			<div class="row d-flex align-items-center">
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">вес/шт/л/размер</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">ед. измерения</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">цена</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-				<div class="minus-btn">
-					<font-awesome-icon 
-						:icon="['fas', 'minus']"
-						style="width:13px; height: 13px"
-						class="fa-icon"
-					/>
-				</div>
-			</div>
-			
+		<form>
 			<div class="row">
-				<div class="col-12">
-					<div class="plus-btn">
-						<font-awesome-icon 
-							:icon="['fas', 'plus']"
-							style="width:13px; height: 13px"
-							class="fa-icon"
-						/>
+				<div class="col-lg-7" style="    margin-top: -170px;">
+					<div class="form-group">
+						<small class="form-text text-muted">Выбрать категорию</small>
+						<select
+							class="form-control"
+						>
+							<option :value="cat.id"
+								:selected="cat.id === item.cat"
+								v-for="cat in categories" :key="cat.id"
+							>
+								{{ cat.title }}
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+					<small class="form-text text-muted">Название блюда ру</small>
+					<input :value="item.title_ru" type="text" name="title" class="form-control">
+					</div>
+					<div class="form-group">
+					<small class="form-text text-muted">Название блюда укр</small>
+					<input :value="item.title_ua" type="text" name="title-ua" class="form-control">
 					</div>
 				</div>
+				<div class="form-group col-lg-12">
+				<small class="form-text text-muted">Описание блюда ру (description)</small>
+				<input :value="item.description_ru" type="text" name="description" class="form-control">
+				</div>
+				<div class="form-group col-lg-12">
+				<small class="form-text text-muted">Описание блюда укр (description)</small>
+				<input :value="item.description_ua" type="text" name="description-ua" class="form-control">
+				</div>
+				
+				<div class="form-group col-lg-12">
+				<small class="form-text text-muted">Описание блюда на сайт ру</small>
+				<input :value="item.desc_ru" type="text" name="description" class="form-control">
+				</div>
+				<div class="form-group col-lg-12">
+				<small class="form-text text-muted">Описание блюда на сайт укр</small>
+				<input :value="item.desc_ua" type="text" name="description-ua" class="form-control">
+				</div>
+				<div class="form-group col-lg-12">
+				<small class="form-text text-muted">Ссылка на блюдо</small>
+				<input :value="item.slug" type="text" name="slug" class="form-control">
+				</div>
+
+				<div class="col-12">
+					Цена:
+					<div v-for="price in item.prices" :key="price.id" class="row align-items-center">
+						<div class="form-group col-lg-5">
+							<small class="form-text text-muted">название</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+								:value="price.title"
+							>
+						</div>
+						<div class="form-group col-lg">
+							<small class="form-text text-muted">вес/шт/л...</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+								:value="price.weight"
+							>
+						</div>
+						<div class="form-group col-lg">
+							<small class="form-text text-muted no-wrap">ед. изм</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+								:value="price.weightKind"
+							>
+						</div>
+						<div class="form-group col-lg">
+							<small class="form-text text-muted">цена</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+								:value="price.price"
+							>
+						</div>
+						<div class="col-lg-3 d-flex">
+							<div class="upDownHolder">
+								<span
+									@click="orderBottom(item.order)" 
+									class="fa-icon-holder mr-2 ml-2"
+								>
+									<font-awesome-icon 
+										:icon="['fas', 'arrow-down']"
+										style="width:16px; height: 16px"
+										class="fa-icon"
+									/>
+								</span>
+								<span
+									@click="orderTop(item.order)" 
+									class="fa-icon-holder ml-2 mr-2"
+								>
+									<font-awesome-icon 
+										:icon="['fas', 'arrow-up']"
+										style="width:16px; height: 16px"
+										class="fa-icon"
+									/>
+								</span>
+							</div>
+							<div class="minus-btn">
+								<font-awesome-icon 
+									@click="removeSubItemRow(price)"
+									:icon="['fas', 'minus']"
+									style="width:13px; height: 13px"
+									class="fa-icon"
+								/>
+							</div>
+						</div>
+					</div>
+
+					
+					<!-- <div class="row align-items-center">
+						<div class="form-group col-lg-5">
+							<small class="form-text text-muted">название</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+							>
+						</div>
+						<div class="form-group col-lg">
+							<small class="form-text text-muted">вес/шт/л...</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+							>
+						</div>
+						<div class="form-group col-lg">
+							<small class="form-text text-muted no-wrap">ед. изм</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+							>
+						</div>
+						<div class="form-group col-lg">
+							<small class="form-text text-muted">цена</small>
+							<input
+								type="text"
+								class="w-100 form-control"
+							>
+						</div>
+						<div class="col-lg-3 d-flex">
+							<div class="upDownHolder">
+								<span
+									@click="orderBottom(item.order)" 
+									class="fa-icon-holder mr-2 ml-2"
+								>
+									<font-awesome-icon 
+										:icon="['fas', 'arrow-down']"
+										style="width:16px; height: 16px"
+										class="fa-icon"
+									/>
+								</span>
+								<span
+									@click="orderTop(item.order)" 
+									class="fa-icon-holder ml-2 mr-2"
+								>
+									<font-awesome-icon 
+										:icon="['fas', 'arrow-up']"
+										style="width:16px; height: 16px"
+										class="fa-icon"
+									/>
+								</span>
+							</div>
+							<div class="minus-btn">
+								<font-awesome-icon 
+									:icon="['fas', 'minus']"
+									style="width:13px; height: 13px"
+									class="fa-icon"
+								/>
+							</div>
+						</div>
+					</div> -->
+
+
+
+
+					
+					<div class="row">
+						<div class="col-12">
+							<div class="plus-btn">
+								<font-awesome-icon 
+									@click="addSubItemRow()"
+									:icon="['fas', 'plus']"
+									style="width:13px; height: 13px"
+									class="fa-icon"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-lg-12 mt-4 text-right">
+					<button class="btn btn-primary">Сохранить</button>
+				</div>
 			</div>
-		</div>
-		<div class="form-group col-lg-12 mt-4 text-right">
-			<button type="submit" class="btn btn-primary">Сохранить</button>
-		</div>
-
-      </div>
-    </form>
+		</form>
 		
+		<!-- delete item modal -->
+		<modal-delete-window>
 
+		</modal-delete-window>
+
+
+		<!-- delete subItem modal -->
+		<modal-delete-window>
+
+		</modal-delete-window>
+
+		
+		<modal-show-full-img
+			:showModal="showModal"
+			@hideModal="hideModal"
+		>
+			<img :src="item.photo" alt="">
+		</modal-show-full-img>
 		
 
 	</div>
@@ -174,32 +274,40 @@
 
 <script>
 
-import spinner from '@/components/admin/spinner.vue'
 
+import modalShowFullImg from '@/components/admin/modalShowFullImg.vue'
+import Spinner from '@/components/admin/spinner.vue'
+import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
 export default {
 	middleware: 'auth',
 	layout: 'admin',
 
+	components: { modalShowFullImg, Spinner, ModalDeleteWindow, modalShowFullImg },
 	
-	components: { spinner },
-
-
-
 	data(){
 		return{
+			showRemoveItemWindow: false,
+			showRemoveSubItemWindow: false,
+			showAddSubItemWindow: false,
+			showPhotoWindow: false,
+			
 			item:{},
 			categories:[
 				{id:1, title:'Пицца', order: 1},
 				{id:2, title:'Напитки', order: 3},
 				{id:3, title:'WOK', order: 2},
 			],
-			showSpinner: true
+			showSpinner: true,
+			
 		}
 	},
 	mounted(){
 		this.fetchItem()
 	},
 	methods:{
+		orderSubItem(){
+			this.item.prices.filter((a,b) => a.order - b.order)
+		},
 		fetchItem(){
 			this.showSpinner = true	
 			setTimeout(() => {
@@ -215,14 +323,32 @@ export default {
 					desc_ua: 'Описание блюда на украинском на сайте',
 					slug: 'margarita',
 					prices:[
-						{id:1, weight: 'L 17', weightKind:'см', price: 50},
-						{id:2, weight: 'XL 17', weightKind:'см', price: 85},
-						{id:3, weight: 'XXL 17', weightKind:'см', price: 150},
+						{id:1, order:1, title: 'L 17 1', weight: '200', weightKind:'г', price: 50},
+						{id:2, order:4, title: 'XL 17 4', weight: '200', weightKind:'г', price: 85},
+						{id:3, order:3, title: 'XXL 17 3', weight: '200', weightKind:'г', price: 150},
+						{id:4, order:2, title: 'XXL 21 2', weight: '400', weightKind:'мл', price: 129},
 					],
 					photo: 'https://via.placeholder.com/300x500'
 				}
+				
+				this.item.prices.filter((a,b) => a.order - b.order)
+
 				this.showSpinner = false
 			},500)
+		},
+		addSubItemRow(){
+			this.item.prices.push({
+				id: Date.now(),
+				title: '',
+				weight: '',
+				weightKind: '',
+				price: '',
+			})
+		},
+		removeSubItemRow(price){
+			if(this.item.prices.length > 1){
+				this.item.prices = this.item.prices.filter((a,b) => a.id !== price.id)
+			}
 		}
 	}
 }
@@ -294,6 +420,14 @@ export default {
 	.fa-icon-holder {
 		& + .fa-icon-holder{
 			margin-left: 50px;
+		}
+	}
+	.upDownHolder{
+		display: flex;
+		justify-content: center;
+		span {
+			cursor: pointer;
+			padding: 0 10px;
 		}
 	}
 </style>
