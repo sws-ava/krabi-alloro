@@ -91,15 +91,26 @@ export default {
 
 	data(){
 		return{
-			categories:[
-				{id:1, title_ru:'Пицца', order: 1},
-				{id:2, title_ru:'Напитки', order: 3},
-				{id:3, title_ru:'WOK', order: 2},
-			],
+			categories:[],
 			showSpinner: false
 		}
 	},
+	mounted(){
+		this.fetchCategories()
+	},
 	methods:{
+		fetchCategories(){
+			this.showSpinner = true
+			setTimeout(()=>{
+				this.categories = [
+					{id:1, title_ru:'Пицца', order: 1},
+					{id:2, title_ru:'Напитки', order: 3},
+					{id:3, title_ru:'WOK', order: 2},
+				]
+				this.sortCategories()
+				this.showSpinner = false
+			}, 500)
+		},
 		orderTop(order){
 			this.showSpinner = true
 			setTimeout(() => {
@@ -133,9 +144,6 @@ export default {
 		sortCategories(){
 			this.categories.sort((a,b) => a.order - b.order)
 		},
-	},
-	mounted(){
-		this.sortCategories()
 	},
 
 }

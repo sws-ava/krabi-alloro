@@ -18,14 +18,18 @@
 			</ol>
 		</nav>
 		<div class="row">
-			<div class="col-lg-4 offset-lg-8">
+			<div class="col-lg-4 offset-lg-8" style="min-height: 240px;">
 				<form v-if="!item.photo">
 					<div class="form-group">
 						<label for="exampleFormControlFile1">Добавить фото</label>
 						<input type="file" class="form-control-file">
 					</div>
 				</form>
-				<div v-if="item.photo" class="imageHolder">
+				<div 
+					@click="showPhotoWindow = true"
+					v-if="item.photo" 
+					class="imageHolder"
+				>
 					<img 
 						@click="showItemPhoto = true"
 						:src="item.photo" 
@@ -34,11 +38,9 @@
 				</div>
 					
 				<div  v-if="item.photo" class="arrows">
-					<span 
-						@click="showDelModal(photo)"
-						class="fa-icon-holder"
-					>
+					<span class="fa-icon-holder" >
 						<font-awesome-icon 
+							@click="showDeletePhotoModal = true"
 							:icon="['fas', 'trash']"
 							style="width:16px; height: 16px"
 							class="fa-icon"
@@ -94,16 +96,34 @@
 				<input :value="item.slug" type="text" name="slug" class="form-control">
 				</div>
 
-				<div class="col-12">
+				<div class="col-12 mb-4">
 					Цена:
-					<div v-for="price in item.prices" :key="price.id" class="row align-items-center">
-						<div class="form-group col-lg-5">
-							<small class="form-text text-muted">название</small>
-							<input
-								type="text"
-								class="w-100 form-control"
-								:value="price.title"
-							>
+					<div 
+						v-for="(price, idx) in item.prices" 
+						:key="price.id" 
+						class="row align-items-center"
+					>
+						<div class="col-lg-5 mb-4">
+							<div class="row">
+								<div class=" col-lg-12">
+									<small class="form-text text-muted">название ru</small>
+									<input
+										type="text"
+										class="w-100 form-control"
+										:value="price.title_ru"
+										disabled
+									>
+								</div>
+								<div class=" col-lg-12">
+									<small class="form-text text-muted">название ua</small>
+									<input
+										type="text"
+										class="w-100 form-control"
+										:value="price.title_ua"
+										disabled
+									>
+								</div>
+							</div>
 						</div>
 						<div class="form-group col-lg">
 							<small class="form-text text-muted">вес/шт/л...</small>
@@ -111,6 +131,7 @@
 								type="text"
 								class="w-100 form-control"
 								:value="price.weight"
+								disabled
 							>
 						</div>
 						<div class="form-group col-lg">
@@ -119,6 +140,7 @@
 								type="text"
 								class="w-100 form-control"
 								:value="price.weightKind"
+								disabled
 							>
 						</div>
 						<div class="form-group col-lg">
@@ -127,12 +149,14 @@
 								type="text"
 								class="w-100 form-control"
 								:value="price.price"
+								disabled
 							>
 						</div>
 						<div class="col-lg-3 d-flex">
-							<div class="upDownHolder">
+							<div  v-if="item.prices.length > 1" class="upDownHolder">
 								<span
-									@click="orderBottom(item.order)" 
+									v-if="idx != item.prices.length -1"
+									@click="orderBottom(price.order)" 
 									class="fa-icon-holder mr-2 ml-2"
 								>
 									<font-awesome-icon 
@@ -142,7 +166,8 @@
 									/>
 								</span>
 								<span
-									@click="orderTop(item.order)" 
+									v-if="idx != 0"
+									@click="orderTop(price.order)" 
 									class="fa-icon-holder ml-2 mr-2"
 								>
 									<font-awesome-icon 
@@ -152,13 +177,25 @@
 									/>
 								</span>
 							</div>
-							<div class="minus-btn">
-								<font-awesome-icon 
-									@click="removeSubItemRow(price)"
-									:icon="['fas', 'minus']"
-									style="width:13px; height: 13px"
-									class="fa-icon"
-								/>
+							<div class="right-btns-holder">
+								<span
+									@click="editSubItem(price)" 
+									class="fa-icon-holder mr-2 ml-2 edit-btn"
+								>
+									<font-awesome-icon 
+										:icon="['fas', 'edit']"
+										style="width:16px; height: 16px"
+										class="fa-icon"
+									/>
+								</span>
+								<div v-if="item.prices.length > 1" class="minus-btn">
+									<font-awesome-icon 
+										@click="showDeleteModalHandler(price)"
+										:icon="['fas', 'minus']"
+										style="width:13px; height: 13px"
+										class="fa-icon"
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -234,7 +271,7 @@
 						<div class="col-12">
 							<div class="plus-btn">
 								<font-awesome-icon 
-									@click="addSubItemRow()"
+									@click="showAddSubItemWindow = true"
 									:icon="['fas', 'plus']"
 									style="width:13px; height: 13px"
 									class="fa-icon"
@@ -243,31 +280,274 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group col-lg-12 mt-4 text-right">
-					<button class="btn btn-primary">Сохранить</button>
+				
+				<div class="d-flex justify-content-between col-12 mt-4 mb-4">
+					<div class="form-group mt-2">
+						<button 
+							@click.prevent="saveItem()"
+							type="submit" 
+							class="btn btn-success"
+						>
+							Сохранить
+
+						</button>
+					</div>
+					<div class="form-group mt-2">
+						<button 
+							@click.prevent="saveItemAndExit()"
+							type="submit" 
+							class="btn btn-primary"
+						>
+							Сохранить и выйти
+
+						</button>
+					</div>
+					<div class="form-group mt-2">
+						<button 
+							@click.prevent="backToItems()"
+							type="submit" 
+							class="btn btn-secondary"
+						>
+							Назад
+
+						</button>
+					</div>
+				</div>
+				<div class="form-group col-lg-12 mt-4 text-left">
+					<span 
+						@click="showDeleteItemModal = true"
+						class="btn btn-danger"
+					>
+						Удалить блюдо
+					</span>
 				</div>
 			</div>
 		</form>
 		
-		<!-- delete item modal -->
-		<modal-delete-window>
-
+		<!-- delete Item modal -->
+		<modal-delete-window
+			:showDeleteModal="showDeleteItemModal"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Удалить блюдо полностью?</h5>
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="removeItem(item)"
+					class="btn btn-outline-danger btn-sm"
+				>
+					Удалить
+				</div>
+				<div 
+					@click="showDeleteItemModal = false"
+					class="btn btn-outline-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
 		</modal-delete-window>
-
 
 		<!-- delete subItem modal -->
-		<modal-delete-window>
-
+		<modal-delete-window
+			:showDeleteModal="showDeleteModal"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Удалить это блюдо?</h5>
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="removeSubItemRow(subItemToDelete)"
+					class="btn btn-outline-danger btn-sm"
+				>
+					Удалить
+				</div>
+				<div 
+					@click="showDeleteModal = false"
+					class="btn btn-outline-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
 		</modal-delete-window>
 
-		
+		<!-- delete item photo modal -->
+		<modal-delete-window
+			:showDeleteModal="showDeletePhotoModal"
+		>
+			<h5 class="text-center mb-4">Удалить фото?</h5>
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="removeItemPhoto(item)"
+					class="btn btn-outline-danger btn-sm"
+				>
+					Удалить фото
+				</div>
+				<div 
+					@click="showDeletePhotoModal = false"
+					class="btn btn-outline-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
+		</modal-delete-window>
+
 		<modal-show-full-img
-			:showModal="showModal"
-			@hideModal="hideModal"
+			:showModal="showPhotoWindow"
+			@hideModal="hidePhotoWindow"
 		>
 			<img :src="item.photo" alt="">
 		</modal-show-full-img>
-		
+
+		<!-- add sub Item row modal -->
+		<modal-delete-window
+			:showDeleteModal="showAddSubItemWindow"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Добавление разновидности блюда</h5>
+			<form @submit.prevent>
+				<div class="row">
+					<div class="form-group col-lg-12">
+						<small class="form-text text-muted">название на русском</small>
+						<input
+							v-model="newSubItem.title_ru"
+							type="text"
+							class="w-100 form-control"
+							name="subTitle"
+						>
+					</div>
+					<div class="form-group col-lg-12">
+						<small class="form-text text-muted">название на украинском</small>
+						<input
+							v-model="newSubItem.title_ua"
+							type="text"
+							class="w-100 form-control"
+							name="subTitle"
+						>
+					</div>
+				</div>
+				<div class="row align-items-center">
+					<div class="form-group col-lg">
+						<small class="form-text text-muted">вес/шт/л</small>
+						<input
+							v-model="newSubItem.weight"
+							type="text"
+							class="w-100 form-control"
+							name="subWeight"
+						>
+					</div>
+					<div class="form-group col-lg">
+						<small class="form-text text-muted no-wrap">ед. изм</small>
+						<input
+							v-model="newSubItem.weightKind"
+							type="text"
+							class="w-100 form-control"
+							name="subWeightKind"
+						>
+					</div>
+					<div class="form-group col-lg">
+						<small class="form-text text-muted">цена</small>
+						<input
+							v-model="newSubItem.price"
+							type="text"
+							class="w-100 form-control"
+							name="subPrice"
+						>
+					</div>
+				</div>
+			</form>
+
+
+
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="addSubItemRow()"
+					class="btn btn-success btn-sm"
+				>
+					Сохранить
+				</div>
+				<div 
+					@click="showAddSubItemWindow = false"
+					class="btn btn-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
+		</modal-delete-window>
+
+		<!-- edit sub Item row modal -->
+		<modal-delete-window
+			:showDeleteModal="showEditRowModal"
+			@hideDeleteModal="hideDeleteModal"
+		>
+			<h5 class="text-center mb-4">Редактирование разновидности блюда</h5>
+			<form @submit.prevent>
+				<div class="row">
+					<div class="form-group col-lg-12">
+						<small class="form-text text-muted">название на русском</small>
+						<input
+							v-model="editedSubItem.title_ru"
+							type="text"
+							class="w-100 form-control"
+							name="subTitle"
+						>
+					</div>
+					<div class="form-group col-lg-12">
+						<small class="form-text text-muted">название на украинском</small>
+						<input
+							v-model="editedSubItem.title_ua"
+							type="text"
+							class="w-100 form-control"
+							name="subTitle"
+						>
+					</div>
+				</div>
+				<div class="row align-items-center">
+					<div class="form-group col-lg">
+						<small class="form-text text-muted">вес/шт/л</small>
+						<input
+							v-model="editedSubItem.weight"
+							type="text"
+							class="w-100 form-control"
+							name="subWeight"
+						>
+					</div>
+					<div class="form-group col-lg">
+						<small class="form-text text-muted no-wrap">ед. изм</small>
+						<input
+							v-model="editedSubItem.weightKind"
+							type="text"
+							class="w-100 form-control"
+							name="subWeightKind"
+						>
+					</div>
+					<div class="form-group col-lg">
+						<small class="form-text text-muted">цена</small>
+						<input
+							v-model="editedSubItem.price"
+							type="text"
+							class="w-100 form-control"
+							name="subPrice"
+						>
+					</div>
+				</div>
+			</form>
+
+
+
+			<div class="d-flex justify-content-around mt-4">
+				<div 
+					@click="editSubItemHandler()"
+					class="btn btn-success btn-sm"
+				>
+					Сохранить
+				</div>
+				<div 
+					@click="hideEditRowModal()"
+					class="btn btn-secondary btn-sm"
+				>
+					Отменить
+				</div> 
+			</div>
+		</modal-delete-window>		
+
 
 	</div>
 </template>
@@ -286,11 +566,15 @@ export default {
 	
 	data(){
 		return{
-			showRemoveItemWindow: false,
-			showRemoveSubItemWindow: false,
-			showAddSubItemWindow: false,
+			showDeleteModal: false,
+			subItemToDelete: {},
+			showDeleteItemModal: false,
 			showPhotoWindow: false,
-			
+			showDeletePhotoModal: false,
+			showAddSubItemWindow: false,
+			newSubItem: {},
+			editedSubItem: {},
+			showEditRowModal: false,
 			item:{},
 			categories:[
 				{id:1, title:'Пицца', order: 1},
@@ -305,8 +589,65 @@ export default {
 		this.fetchItem()
 	},
 	methods:{
-		orderSubItem(){
-			this.item.prices.filter((a,b) => a.order - b.order)
+		orderTop(order){
+			this.showSpinner = true	
+			setTimeout(() => {
+				this.item.prices.forEach(el => {
+					if(el.order == order - 1){
+						el.order += 1
+					}
+					else if(el.order == order){
+						el.order -= 1
+					}
+				})
+				this.orderSubItems()
+				this.showSpinner = false
+			}, 500)
+		},
+		orderBottom(order){
+			this.showSpinner = true	
+			setTimeout(() => { 
+				this.item.prices.forEach(el => {
+					if(el.order == order){ 
+						el.order += 1			
+					}
+					else if(el.order == order + 1){
+						el.order -= 1
+					}
+				})
+				this.orderSubItems()
+				this.showSpinner = false
+			}, 500)
+		},
+		showDeleteModalHandler(price){
+			this.showDeleteModal = true
+			this.subItemToDelete = price
+		},
+		removeSubItemRow(item){
+			this.showDeleteModal = false
+			this.showSpinner = true	
+			setTimeout(() => {
+				if(this.item.prices.length > 1){
+					this.item.prices = this.item.prices.filter(a => a.id !== item.id)
+				}
+				this.subItemToDelete = {}
+				this.reOrderSubItems()
+				this.showSpinner = false	
+			}, 500)
+		},
+		reOrderSubItems(){
+			let i = 1
+			this.item.prices.forEach(el => {
+				el.order = i
+				i++
+			})
+		},
+		hideDeleteModal(){
+			this.showDeleteModal = false
+			this.subItemToDelete = {}
+		},
+		orderSubItems(){
+			this.item.prices.sort((a,b) => a.order - b.order)
 		},
 		fetchItem(){
 			this.showSpinner = true	
@@ -323,32 +664,83 @@ export default {
 					desc_ua: 'Описание блюда на украинском на сайте',
 					slug: 'margarita',
 					prices:[
-						{id:1, order:1, title: 'L 17 1', weight: '200', weightKind:'г', price: 50},
-						{id:2, order:4, title: 'XL 17 4', weight: '200', weightKind:'г', price: 85},
-						{id:3, order:3, title: 'XXL 17 3', weight: '200', weightKind:'г', price: 150},
-						{id:4, order:2, title: 'XXL 21 2', weight: '400', weightKind:'мл', price: 129},
+						{id:1, order:1, title_ua: 'L 17 1', title_ru: 'L 17 1', weight: '200', weightKind:'г', price: 50},
+						{id:2, order:4, title_ua: 'XL 17 4', title_ru: 'XL 17 4', weight: '200', weightKind:'г', price: 85},
+						{id:3, order:3, title_ua: 'XXL 17 3', title_ru: 'XXL 17 3', weight: '200', weightKind:'г', price: 150},
+						{id:4, order:2, title_ua: 'XXL 21 2', title_ru: 'XXL 21 2', weight: '400', weightKind:'мл', price: 129},
 					],
 					photo: 'https://via.placeholder.com/300x500'
 				}
 				
-				this.item.prices.filter((a,b) => a.order - b.order)
-
+				this.orderSubItems()
 				this.showSpinner = false
 			},500)
 		},
+		removeItem(item){
+			console.log('del')
+			console.log(item)
+			this.showDeleteItemModal = false
+		},
+		backToItems(){
+			this.$router.push('/admin/menu')
+		},
+		saveItem(){
+			this.showSpinner = true
+			setTimeout(()=> {
+				console.log('save')
+				console.log(this.item)
+				this.showSpinner = false
+			}, 500)
+		},
+		saveItemAndExit(){
+			this.saveItem()
+			console.log('save and exit')
+			this.backToItems()
+		},
+		hidePhotoWindow(){
+			this.showPhotoWindow = false
+		},
+		removeItemPhoto(item){
+			this.showSpinner = true
+			this.showDeletePhotoModal = false
+			setTimeout(()=>{
+				this.item.photo = ''
+				this.showSpinner = false	
+			}, 500)		
+		},
 		addSubItemRow(){
-			this.item.prices.push({
-				id: Date.now(),
-				title: '',
-				weight: '',
-				weightKind: '',
-				price: '',
+			if(this.newSubItem.price &&  this.newSubItem.title_ru  &&  this.newSubItem.title_ua){
+				this.newSubItem.order = this.item.prices.length + 1
+				this.newSubItem.id = Date.now()
+				this.newSubItem.price = Number(this.newSubItem.price.replace(',', '.'))
+				this.item.prices.push(this.newSubItem)
+				this.newSubItem = {}
+				this.showAddSubItemWindow = false
+				console.log(this.item.prices)
+			}
+		},
+		editSubItem(item){
+			this.showEditRowModal = true
+			this.item.prices.forEach(el => {
+				if(el.id == item.id){
+					this.editedSubItem = el
+				}
 			})
 		},
-		removeSubItemRow(price){
-			if(this.item.prices.length > 1){
-				this.item.prices = this.item.prices.filter((a,b) => a.id !== price.id)
-			}
+		editSubItemHandler(){
+			console.log(this.editedSubItem)
+			this.item.prices.forEach(el => {
+				if(el.id == this.editedSubItem.id){
+					el = this.editedSubItem
+					
+					el.price = Number(el.price.replace(',', '.'))
+				}
+			})
+			this.showEditRowModal = false
+		},
+		hideEditRowModal(){
+			this.showEditRowModal = false
+			this.editedSubItem = {}
 		}
 	}
 }
@@ -391,7 +783,8 @@ export default {
 		background: red;
 		border-radius: 50%;
 		padding: 13px;
-		margin-left: 5px;
+		margin-left: 5px;    
+		margin-left: auto;
 		cursor: pointer;
 		svg{
 			color:#fff;
@@ -428,6 +821,21 @@ export default {
 		span {
 			cursor: pointer;
 			padding: 0 10px;
+		}
+	}
+	.edit-btn{
+		cursor: pointer;
+	}
+	.right-btns-holder{
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		gap: 20px;
+	}
+	.subItemRow{
+		cursor: pointer;
+		input{
+			cursor: pointer;
 		}
 	}
 </style>
