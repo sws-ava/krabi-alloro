@@ -40,19 +40,29 @@
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на русском </small>
-          <textarea
-            v-model="page.content_ru"
-            class="form-control"
-            rows="3"
-          ></textarea>
+          <client-only>
+            <quill-editor
+              ref="editor"
+              v-model="page.content_ru"
+              :options="editorOption"
+              @blur="onEditorBlur($event)"
+              @focus="onEditorFocus($event)"
+              @ready="onEditorReady($event)"
+            />
+          </client-only>
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на украинском </small>
-          <textarea
-            v-model="page.content_ua"
-            class="form-control"
-            rows="3"
-          ></textarea>
+          <client-only>
+            <quill-editor
+              ref="editor"
+              v-model="page.content_ua"
+              :options="editorOption"
+              @blur="onEditorBlur($event)"
+              @focus="onEditorFocus($event)"
+              @ready="onEditorReady($event)"
+            />
+          </client-only>
         </div>
         <div class="d-flex justify-content-between col-12">
           <div class="form-group mt-2">
@@ -97,14 +107,42 @@
 </template>
 
 <script>
+
+
+
 import spinner from '@/components/admin/spinner.vue'
+
+
+
+
+
 export default {
-  components: { spinner },
+  components: {
+    spinner,
+  },
   layout: 'admin',
   data(){
     return{
       page: {},
 			showSpinner: false,
+      // content: '<p>I am Example</p>',
+      editorOption: {
+        // Some Quill options...
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            ['link', 'image'],
+            ["showHtml"]
+          ],
+          // htmlEditButton: { debug: true, syntax: true },
+        }
+      }
+    }
+  },
+  computed:{
+    editor() {
+      return this.$refs.myQuillEditor.quill
     }
   },
   mounted(){
@@ -145,6 +183,15 @@ export default {
     savePageAndExit(){
       this.savePage()
       this.backToPages()
+    },
+    onEditorBlur(editor) {
+      console.log('editor blur!', editor)
+    },
+    onEditorFocus(editor) {
+      console.log('editor focus!', editor)
+    },
+    onEditorReady(editor) {
+      console.log('editor ready!', editor)
     },
   },
 }

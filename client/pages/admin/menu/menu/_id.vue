@@ -712,7 +712,7 @@ export default {
 			if(this.newSubItem.price &&  this.newSubItem.title_ru  &&  this.newSubItem.title_ua){
 				this.newSubItem.order = this.item.prices.length + 1
 				this.newSubItem.id = Date.now()
-				this.newSubItem.price = Number(this.newSubItem.price.replace(',', '.'))
+				this.newSubItem.price = Number(this.newSubItem.price.toString().replace(',', '.'))
 				this.item.prices.push(this.newSubItem)
 				this.newSubItem = {}
 				this.showAddSubItemWindow = false
@@ -733,7 +733,7 @@ export default {
 				if(el.id == this.editedSubItem.id){
 					el = this.editedSubItem
 					
-					el.price = Number(el.price.replace(',', '.'))
+					el.price = Number(el.price.toString().replace(',', '.'))
 				}
 			})
 			this.showEditRowModal = false

@@ -13,7 +13,7 @@
 			<tbody>
 				<tr v-for="page in pages" :key="page.id">
 					<th scope="row">{{ page.id }}</th>
-					<td>{{page.title}}</td>
+					<td>{{page.title_ru}}</td>
 					<td>
 						<router-link 
 							:to="'/admin/page-edit/'+page.id"  
@@ -32,7 +32,6 @@
 
 <script>
 
-
 export default {
 
 	middleware: 'auth',
@@ -41,9 +40,10 @@ export default {
 	data() {
 		return {
 			pages:[
-				{id: 1, title: 'Главная'},
-				{id: 2, title: 'Контакты'},
-				{id: 3, title: 'Доставка'},
+				{id: 1, title_ru: 'Главная', title_ua: 'Головна'},
+				{id: 4, title_ru: 'Концепция', title_ua: 'Концепцiя'},
+				{id: 2, title_ru: 'Контакты', title_ua: 'Контакти'},
+				{id: 3, title_ru: 'Доставка', title_ua: 'Доставка'},
 			]
 		}
 	}
