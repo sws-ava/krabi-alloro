@@ -2,7 +2,7 @@
 // state
 export const state = () => ({
   countUnreadedReviews: 1,
-  countUnreadedFeedbacks: 1,
+  countUnreadedFeedbacks: 4,
 })
 
 // getters
@@ -33,5 +33,13 @@ export const mutations = {
 export const actions = {
   updateCountUnreadedReviews ({ countUnreadedReviews }, payload) {
     commit('UPDATE_UNREADEDFEEDBACKS', payload)
+  },
+  async countUnreadedFeedbacks(){
+    try {
+      let response = await axios.get('/admin/getUnreadedFeedbacksAndReviews')
+      commit('UPDATE_UNREADEDFEEDBACKS', response.data)
+    } catch (e) {
+      console.log('some updateCountUnreadedReviews error')
+    } 
   },
 }

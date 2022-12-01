@@ -67,7 +67,12 @@ export default {
 	methods:{
 	},
 
+	mounted(){
+		
+	},
+
   computed: mapGetters({
+	
     countUnreadedReviews: 'countMenuNums/countUnreadedReviews',
     countUnreadedFeedbacks: 'countMenuNums/countUnreadedFeedbacks'
   })

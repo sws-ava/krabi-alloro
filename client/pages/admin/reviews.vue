@@ -107,6 +107,7 @@ import ReviewItem from '@/components/admin/reviews/reviewItem.vue'
 import Spinner from '@/components/admin/spinner.vue';
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
 import ModalReviewEditWindow from '@/components/admin/modalReviewEditWindow.vue';
+import axios from 'axios';
 
 export default {
 	// name: 'qwe',
@@ -123,12 +124,7 @@ export default {
 
 	data(){
 		return{
-			reviews: [
-				{id:1, date: '22:20 20.02.22', stars: 2, show: false, name: 'Александр', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit', answer: ''},
-				{id:2, date: '22:20 20.02.22', stars: 5, show: false, name: 'Маргарита', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: 'tate error laudantium soluta architecto mollitia quas! Totam qu'},
-				{id:3, date: '22:20 20.02.22', stars: 4, show: false, name: 'Алексей', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!', answer: ''},
-				{id:4, date: '22:20 20.02.22', stars: 2, show: true, name: 'Руслан', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit', answer: 'Lorem ipsum, dolor sit amet consectetur'},
-			],
+			reviews: [],
 			showSpinner: false,
 			showDeleteModal: false,
 			reviewItemToDelete : {},
@@ -136,50 +132,58 @@ export default {
 			reviewToEdit: {},
 		}
 	},
-	computed:{
-		// setUnrededReviews(){
-		// 	let num = 0
-		// 	this.reviews.forEach(element => {
-		// 		if(element.show === false){
-		// 			num++
-		// 		}
-		// 	});
-		// 	this.$store.commit('countMenuNums/SET_UNREADEDREVIEWS', num);
-		// }
+	mounted(){
+		this.fetchReviews()
 	},	
 	methods:{
-		publishReview(review){
+		async fetchReviews(){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.reviews.forEach(element => {
-					if(element.id == review.id){
-						element.show = true
-					}
-				})
+			try {
+				const response = await axios.get('/admin/getReviews')
+				this.reviews = response.data
+			} catch (e) {
+				console.log('some fetchReviews error')
+				console.log(e.response.data)
+			} finally {
 				this.showSpinner = false
-				this.setUnrededReviews()
-			}, 500)
+			}
 		},
-		hideReview(review){
+		async publishReview(review){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.reviews.forEach(element => {
-					if(element.id == review.id){
-						element.show = false
-					}
-				})
-				this.showSpinner = false
+			try {
+				const response = await axios.post('/admin/reviewShow', {reviewId: review.id})
+				this.fetchReviews()
+			} catch (e) {
+				console.log('some publishReview error')
+				console.log(e.response.data)
+			} finally {
 				this.setUnrededReviews()
-			}, 500)	
+			}
 		},
-		reviewRemove(review){
-			this.showDeleteModal = false
+		async hideReview(review){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.reviews = this.reviews.filter(r => r.id !== review.id)
-				this.showSpinner = false
+			try {
+				const response = await axios.post('/admin/reviewHide', {reviewId: review.id})
+				this.fetchReviews()
+			} catch (e) {
+				console.log('some hideReview error')
+				console.log(e.response.data)
+			} finally {
 				this.setUnrededReviews()
-			}, 500)	
+			}
+		},
+		async reviewRemove(review){
+			this.showSpinner = true
+			try {
+				this.showDeleteModal = false
+				const response = await axios.post('/admin/reviewRemove', {reviewId: review.id})
+				this.fetchReviews()
+			} catch (e) {
+				console.log('some reviewRemove error')
+				console.log(e.response.data)
+			} finally {
+				this.setUnrededReviews()
+			}
 			
 		},
 		hideDeleteModal(){
@@ -207,10 +211,23 @@ export default {
 			// this.reviewToEdit = review
 			this.reviewToEdit = JSON.parse(JSON.stringify(review));
 		},
-		saveReview(reviewToEdit){
+		async saveReview(reviewToEdit){
 			this.showEditReviewModal = false
 
 			this.showSpinner = true
+			try {
+				this.showDeleteModal = false
+				const response = await axios.post('/admin/saveReview', {reviewToEdit: reviewToEdit})
+				this.fetchReviews()
+			} catch (e) {
+				console.log('some saveReview error')
+				console.log(e.response.data)
+			} finally {
+				this.setUnrededReviews()
+			}
+
+
+
 			setTimeout(() => {
 				this.reviews.forEach(element => {
 					if(element.id === reviewToEdit.id){
@@ -219,7 +236,6 @@ export default {
 					}
 				});
 				this.showSpinner = false
-				
 			}, 500)	
 		},
 		setUnrededReviews(){
@@ -230,7 +246,7 @@ export default {
 				}
 			});
 			this.$store.commit('countMenuNums/SET_UNREADEDREVIEWS', num);
-		}
+		},
 		
 
 	}

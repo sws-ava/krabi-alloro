@@ -1,7 +1,8 @@
 <template>
 <div>
-	<h5>Pages</h5>
-		<div class="mt-4">
+	<h5>Страницы сайта</h5>
+	<spinner v-if="showSpinner" />
+	<div class="mt-4">
 		<table class="table">
 			<thead>
 				<tr>
@@ -32,21 +33,42 @@
 
 <script>
 
+import spinner from "@/components/admin/spinner.vue"
+import axios from 'axios'
+
 export default {
+
+	components:{
+		spinner
+	},
 
 	middleware: 'auth',
 	layout: 'admin',
 
 	data() {
 		return {
-			pages:[
-				{id: 1, title_ru: 'Главная', title_ua: 'Головна'},
-				{id: 4, title_ru: 'Концепция', title_ua: 'Концепцiя'},
-				{id: 2, title_ru: 'Контакты', title_ua: 'Контакти'},
-				{id: 3, title_ru: 'Доставка', title_ua: 'Доставка'},
-			]
+			pages:[],
+			showSpinner: false,
+		}
+	},
+	mounted(){
+		this.fetchPages()
+	},
+	methods:{
+		async fetchPages(){
+			this.showSpinner = true
+			try {
+				const pages = await axios.get('/admin/getPages')
+				this.pages = pages.data
+			} catch (e) {
+				console.log('some fetchPages error')
+				console.log(e.response.data)
+			} finally{
+				this.showSpinner = false
+			}
 		}
 	}
+	
 
 }
 </script>

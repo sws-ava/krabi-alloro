@@ -9,6 +9,9 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +32,31 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
+
+
+    Route::get('admin/getUnreadedFeedbacksAndReviews', [FeedbackController::class, 'getUnreadedFeedbacksAndReviews']);
+
+    // Feedbacks
+    Route::get('admin/getFeedbacks', [FeedbackController::class, 'getFeedbacks']);
+    Route::post('admin/feedbackReaded', [FeedbackController::class, 'feedbackReaded']);
+    Route::post('admin/feedbackNotReaded', [FeedbackController::class, 'feedbackNotReaded']);
+    Route::post('admin/feedbackRemove', [FeedbackController::class, 'feedbackRemove']);
+
+    // Reviews
+    Route::get('admin/getReviews', [ReviewController::class, 'getReviews']);
+    Route::post('admin/reviewShow', [ReviewController::class, 'reviewShow']);
+    Route::post('admin/reviewHide', [ReviewController::class, 'reviewHide']);
+    Route::post('admin/reviewRemove', [ReviewController::class, 'reviewRemove']);
+    Route::post('admin/saveReview', [ReviewController::class, 'saveReview']);
+
+    // Pages
+    Route::get('admin/getPages', [PageController::class, 'getPages']);
+    Route::get('admin/fetchPage', [PageController::class, 'getPage']);
+    Route::post('admin/savePage', [PageController::class, 'savePage']);
+
+    
+
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

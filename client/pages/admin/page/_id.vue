@@ -2,7 +2,7 @@
   <div>
     <spinner v-if="showSpinner" />
     <div class="row mb-4">
-      <div class="col-12">edit page {{$route.params.id}}</div>
+      <div class="col-12">Редактирование страницы</div>
     </div>
     <form @submit.prevent>
       <div class="row">
@@ -69,7 +69,7 @@
             <button 
               @click="savePage()"
               type="submit" 
-              class="btn btn-success"
+              class="btn btn-sm btn-success"
             >
               Сохранить
 
@@ -79,7 +79,7 @@
             <button 
               @click="savePageAndExit()"
               type="submit" 
-              class="btn btn-primary"
+              class="btn btn-sm btn-primary"
             >
               Сохранить и выйти
 
@@ -88,7 +88,7 @@
           <div class="form-group mt-2">
              <button 
               @click="backToPages()"
-              class="btn btn-secondary"
+              class="btn btn-sm btn-secondary"
              >
               Назад
 
@@ -111,7 +111,7 @@
 
 
 import spinner from '@/components/admin/spinner.vue'
-
+import axios from 'axios'
 
 
 
@@ -125,9 +125,7 @@ export default {
     return{
       page: {},
 			showSpinner: false,
-      // content: '<p>I am Example</p>',
       editorOption: {
-        // Some Quill options...
         theme: 'snow',
         modules: {
           toolbar: [
@@ -135,7 +133,6 @@ export default {
             ['link', 'image'],
             ["showHtml"]
           ],
-          // htmlEditButton: { debug: true, syntax: true },
         }
       }
     }
@@ -146,52 +143,54 @@ export default {
     }
   },
   mounted(){
+      this.showSpinner = true
     this.fetchPage()
   },
   methods:{
-    backToPages(){
-      this.clearInputs()
-      this.$router.push('/admin/pages')
+    async fetchPage(){
+      try{
+        const page = await axios.get('/admin/fetchPage', {
+          params:{
+            pageId: this.$route.params.id
+          }
+        })
+        this.page = page.data
+			} catch (e) {
+        console.log('some fetchPage error ')
+				console.log(e.response.data)
+      }finally{
+        this.showSpinner = false
+      }
     },
-    clearInputs(){
-      this.page = {}
-    },
-    fetchPage(){
-      setTimeout(() => {
-        // fetch here
-        this.page = {
-          id: 1,
-          title_ru: 'Название страницы на русском', 
-          title_ua: 'Название страницы на украинском',
-          description_ru: 'Описание страницы на русском',
-          description_ua: 'Описание страницы на украинском',
-          content_ru: '<b>Какой-то контент страницы на русском</b>',
-          content_ua: '<b>Какой-то контент страницы на украинском</b>',
-        }
-			  this.showSpinner = false
-      },500)
-    },
-    savePage(){
-      console.log(this.page)
+    async savePage(){
 		  this.showSpinner = true
-      setTimeout(()=> {
-
-      // this.backToPages()
-		  this.showSpinner = false
-      }, 500)
+      try{
+        const response = await axios.post('/admin/savePage/', {
+          page: this.page
+        })  
+        console.log(response.data)      
+      } catch (e){
+        console.log('some savePage error')
+        console.log(e.response.data)
+      } finally{
+		    this.showSpinner = false
+      }
     },
     savePageAndExit(){
       this.savePage()
       this.backToPages()
     },
+    backToPages(){
+      this.$router.push('/admin/pages')
+    },
     onEditorBlur(editor) {
-      console.log('editor blur!', editor)
+      // console.log('editor blur!', editor)
     },
     onEditorFocus(editor) {
-      console.log('editor focus!', editor)
+      // console.log('editor focus!', editor)
     },
     onEditorReady(editor) {
-      console.log('editor ready!', editor)
+      // console.log('editor ready!', editor)
     },
   },
 }

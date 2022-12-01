@@ -48,7 +48,7 @@
 import feedbackItem from '@/components/admin/feedback/feedbackItem.vue'
 import Spinner from '@/components/admin/spinner.vue';
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
-
+import axios from 'axios'
 
 
 export default {
@@ -59,63 +59,63 @@ export default {
 
 	data(){
 		return{
-			feedbacks: [
-				{id:1, date: '22:20 20.02.22', isRead: false , name: 'Александр', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
-				{id:2, date: '22:20 20.02.22', isRead: true , name: 'Маргарита', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consecteturLorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
-				{id:3, date: '22:20 20.02.22', isRead: false , name: 'Алексей', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam praesentium esse voluptate error laudantium soluta architecto mollitia quas! Totam quasi neque nam a!'},
-				{id:4, date: '22:20 20.02.22', isRead: true , name: 'Руслан', phone: '0946543201', text: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit'},
-			],
+			feedbacks: [],
 			showSpinner:false,
 			showDeleteModal: false,
 			feedbackItemToDelete : {},
 		}
 	},
-	computed:{
-		// setUnrededFeedbacks()
-		// {
-		// 	let num = 0
-		// 	this.feedbacks.forEach(element => {
-		// 		if(element.isRead === false){
-		// 			num++
-		// 		}
-		// 	});
-		// 	this.$store.commit('countMenuNums/SET_UNREADEDFEEDBACKS', num);
-		// }
+	mounted(){
+		this.fetchFeedbacks()
+		
 	},	
 	methods:{
-		feedbackReaded(feedbackId){
+		async fetchFeedbacks(){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.feedbacks.forEach((element, index) => {
-					if(element.id === feedbackId) {
-						element.isRead = true
-					}
-				})
+			try {
+				const feed = await axios.get('/admin/getFeedbacks')
+				this.feedbacks = feed.data
+			} catch (e) {
+				console.log('some fetchFeedbacks error')
+			} finally {
 				this.showSpinner = false
-				this.setUnrededFeedbacks()
-			}, 500)
-			// const asd = docu,eny
+			}
 		},
-		feedbackNotReaded(feedbackId){
+		async feedbackReaded(feedbackId){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.feedbacks.forEach((element, index) => {
-					if(element.id === feedbackId) {
-						element.isRead = false
-					}
-				})
-				this.showSpinner = false
+			try {
+				const response = await axios.post('/admin/feedbackReaded', {feedbackId: feedbackId})
+				this.fetchFeedbacks()
 				this.setUnrededFeedbacks()
-			}, 500)
+			} catch (e) {
+				console.log('some feedbackReaded error')
+			} finally {
+			}
 		},
-		feedbackRemove(feedback){
+		async feedbackNotReaded(feedbackId){
+			this.showSpinner = true
+			try {
+				const response = await axios.post('/admin/feedbackNotReaded', {feedbackId: feedbackId})
+				this.fetchFeedbacks()
+				this.setUnrededFeedbacks()
+			} catch (e) {
+				console.log('some feedbackNotReaded error')
+			} finally {
+			}
+		},
+		async feedbackRemove(feedback){
 			this.showDeleteModal = false
 			this.showSpinner = true
-			setTimeout(() => {
+			try {
 				this.feedbacks = this.feedbacks.filter(r => r.id !== feedback.id)
+				this.setUnrededFeedbacks()
+				const response = await axios.post('/admin/feedbackRemove', {feedbackId: feedback.id})
+			} catch (e) {
+				console.log('some feedbackRemove error')
+			} finally {
 				this.showSpinner = false
 				this.setUnrededFeedbacks()
-			}, 500)
+			}
 		},
 		hideDeleteModal(){
 			this.showDeleteModal = false
@@ -127,12 +127,17 @@ export default {
 		setUnrededFeedbacks(){
 			let num = 0
 			this.feedbacks.forEach(element => {
-				if(element.isRead === false){
+				if(element.isRead == false){
 					num++
 				}
 			});
 			this.$store.commit('countMenuNums/SET_UNREADEDFEEDBACKS', num);
-		}
+		},
+		sortFeedbacksByReaded(){
+			this.feedbacks = this.feedbacks.sort((a,b) => a.id + b.id)
+			this.feedbacks = this.feedbacks.sort((a,b) => a.isRead - b.isRead)
+
+		},
 	}
 }
 
