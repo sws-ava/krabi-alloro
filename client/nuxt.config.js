@@ -11,7 +11,8 @@ module.exports = {
     apiUrl: process.env.API_URL || process.env.APP_URL + '/api',
     appName: process.env.APP_NAME || '!Krabi',
     appLocale: process.env.APP_LOCALE || 'en',
-    githubAuth: !!process.env.GITHUB_CLIENT_ID
+    githubAuth: !!process.env.GITHUB_CLIENT_ID,
+    imagesBaseUrl: process.env.BASE_URL,
   },
  
   head: {

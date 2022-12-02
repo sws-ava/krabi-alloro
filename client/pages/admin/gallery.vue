@@ -3,17 +3,22 @@
 	<div>
 		<h5 class="mb-3">Галерея</h5>
 		<spinner v-if="showSpinner" />
-		<form>
+		<form enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="exampleFormControlFile1">Добавить фото</label>
-				<input type="file" class="form-control-file">
+				<label>Добавить фото</label>
+				<input 
+					accept="image/*"
+					type="file" 
+					class="form-control-file"
+					@change="uploadPhoto($event)"
+				>
 			</div>
 		</form>
 		<div class="row">
 			<div  v-for="(photo, index) in photos" :key="photo.id" class="col-lg-4 mb-4">
 				<div  class="block-holder">
 					<div @click="showFullImg(photo.id)" class="image-holder">
-						<img :src="photo.path">
+						<img :src="imagesBaseUrl + photo.path">
 					</div>
 				</div>
 				
@@ -86,6 +91,8 @@
 import modalShowFullImg from '@/components/admin/modalShowFullImg.vue'
 import Spinner from '@/components/admin/spinner.vue'
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
+import axios from 'axios'
+
 export default {
 	components: { modalShowFullImg, Spinner, ModalDeleteWindow },
 	middleware: 'auth',
@@ -93,14 +100,8 @@ export default {
 
 	data(){
 		return{
-			photos:[
-				{id:1, order:1, path:'https://via.placeholder.com/150x150',},
-				{id:2, order:3, path:'https://via.placeholder.com/300x150',},
-				{id:3, order:2, path:'https://via.placeholder.com/150x300',},
-				{id:4, order:6, path:'https://via.placeholder.com/200x300',},
-				{id:5, order:5, path:'https://via.placeholder.com/500x100',},
-				{id:6, order:4, path:'https://via.placeholder.com/100x500',},
-			],
+			imagesBaseUrl: '',
+			photos:[],
 			showModal: false,
 			imageToShowPath: '',
 			showSpinner: false,
@@ -109,16 +110,33 @@ export default {
 		}
 	},
 	mounted(){
+		this.imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
+		this.getPhotos()
 		this.sortPhotos()
 	},
 	methods:{
+		async getPhotos(){
+			this.showSpinner = true
+			try {
+				const response = await axios.get('/admin/getPhotos')
+				this.photos = response.data
+
+			} catch (e) {
+				console.log('some getPhotos error')
+				console.log(e.response.data)
+			}
+
+			this.showSpinner = false
+		},
 		hideModal(){
 			this.showModal = false
 			this.imageToShowPath = ''
 		},
-		orderLeft(order){
+		async orderLeft(order){
 			this.showSpinner = true
-			setTimeout(() => {
+			try {
+				const response = await axios.post('/admin/photoOrderLeft', {order})
+				
 				this.photos.forEach(el => {
 					if(el.order == order - 1){
 						el.order += 1
@@ -129,11 +147,15 @@ export default {
 				})
 				this.sortPhotos()
 				this.showSpinner = false
-			}, 500)
+			} catch (e) {
+				console.log(e.response.data)
+			}
 		},
-		orderRight(order){
+		async orderRight(order){
 			this.showSpinner = true
-			setTimeout(() => {
+			try {
+				const response = await axios.post('/admin/photoOrderRight', {order})
+				console.log(response.data)
 				this.photos.forEach(el => {
 					if(el.order == order){
 						el.order += 1
@@ -144,7 +166,9 @@ export default {
 				})
 				this.sortPhotos()
 				this.showSpinner = false
-			}, 500)
+			} catch (e) {
+				console.log(e.response.data)
+			}
 		},
 		sortPhotos(){
 			this.photos.sort((a,b) => a.order - b.order)
@@ -153,14 +177,22 @@ export default {
 			this.showModal = true
 			this.photos.forEach(element => {
 				if(element.id == photoId){
-					this.imageToShowPath = element.path
+					this.imageToShowPath =  this.imagesBaseUrl + element.path
 				}
 			});
 		},
-		deletePhoto(photo){
+		async deletePhoto(photo){
 			this.showDeleteModal = false
 			this.showSpinner = true
-			setTimeout(() => {
+
+			try {
+				const response = await axios.post('/admin/deletePhoto', {photo})
+				console.log(response)
+			} catch (e) {
+				console.log(e.response.data)
+			}
+
+
 				this.photos = this.photos.filter(r => r.id !== photo.id)
 				let i = 1
 				this.photos.forEach(el => {
@@ -169,7 +201,6 @@ export default {
 				})
 				this.sortPhotos()
 				this.showSpinner = false
-			}, 500)	
 		},
 		showDelModal(photo){
 			this.showDeleteModal = true
@@ -177,6 +208,24 @@ export default {
 		},
 		hideDeleteModal(){
 			this.showDeleteModal = false
+		},
+		async uploadPhoto(e){
+			
+			let formData = new FormData()
+			formData.append('file', e.target.files[0])
+			const response = await axios.post( '/admin/uploadPhoto', formData,
+                {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              }
+            ).then(function(){
+				// 			
+        	})
+       		.catch(function(e){
+				console.log('FAILURE!!');
+			});
+			this.getPhotos()	
 		},
 	}
 }
@@ -199,7 +248,8 @@ export default {
 		img{
 			width: 100%;
 			height: auto;
-			object-fit: cover;
+			// object-fit: cover;
+			object-fit: contain;
 			cursor: pointer;
 		}
 	}

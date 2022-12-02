@@ -12,6 +12,7 @@ use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,8 +55,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('admin/fetchPage', [PageController::class, 'getPage']);
     Route::post('admin/savePage', [PageController::class, 'savePage']);
 
-    
-
+    // Gallery
+    Route::get('admin/getPhotos', [GalleryController::class, 'getPhotos']);
+    Route::post('admin/photoOrderLeft', [GalleryController::class, 'orderLeft']);
+    Route::post('admin/photoOrderRight', [GalleryController::class, 'orderRight']);
+    Route::post('admin/deletePhoto', [GalleryController::class, 'deletePhoto']);
+    Route::post('admin/uploadPhoto', [GalleryController::class, 'uploadPhoto']);
 
 });
 
