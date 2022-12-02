@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\InteriorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +62,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/photoOrderRight', [GalleryController::class, 'orderRight']);
     Route::post('admin/deletePhoto', [GalleryController::class, 'deletePhoto']);
     Route::post('admin/uploadPhoto', [GalleryController::class, 'uploadPhoto']);
+
+    // Interior
+    Route::get('admin/getPhotosInterior', [InteriorController::class, 'getPhotosInterior']);
+    Route::post('admin/photoOrderLeftInterior', [InteriorController::class, 'orderLeftInterior']);
+    Route::post('admin/photoOrderRightInterior', [InteriorController::class, 'orderRightInterior']);
+    Route::post('admin/deletePhotoInterior', [InteriorController::class, 'deletePhotoInterior']);
+    Route::post('admin/uploadPhotoInterior', [InteriorController::class, 'uploadPhotoInterior']);
 
 });
 

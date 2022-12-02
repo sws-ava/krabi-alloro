@@ -50,6 +50,12 @@
 			>
 				Галерея
 			</router-link>
+			<router-link
+				:to="{name: 'admin-interior'}"
+				class="nav-link"
+			>
+				Интерьер
+			</router-link>
 
 			<a class="nav-link" href="#">!Новости / Акции</a>
 			<a class="nav-link" href="#">!Блок с уведомлением</a>
