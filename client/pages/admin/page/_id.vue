@@ -143,7 +143,7 @@ export default {
     }
   },
   mounted(){
-      this.showSpinner = true
+    this.showSpinner = true
     this.fetchPage()
   },
   methods:{

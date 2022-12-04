@@ -45,6 +45,24 @@
 					>
 				</div>
 				<div class="form-group col-lg-7">
+					<small class="form-text text-muted">Описание категории ру</small>
+					<input 
+						required
+						v-model="category.description_ru" 
+						type="text" 
+						class="form-control"
+					>
+				</div>
+				<div class="form-group col-lg-7">
+					<small  class="form-text text-muted">Описание категории укр</small>
+					<input  
+						required
+						v-model="category.description_ua" 
+						type="text" 
+						class="form-control"
+					>
+				</div>
+				<div class="form-group col-lg-7">
 					<small class="form-text text-muted">Ссылка категории</small>
 					<input 
 						required
@@ -62,16 +80,6 @@
 							class="btn btn-success"
 						>
 							Сохранить
-
-						</button>
-					</div>
-					<div class="form-group mt-2">
-						<button 
-							@click="saveCategoryAndExit()"
-							type="submit" 
-							class="btn btn-primary"
-						>
-							Сохранить и выйти
 
 						</button>
 					</div>
@@ -96,6 +104,10 @@
 </template>
 
 <script>
+import spinner from '@/components/admin/spinner.vue'
+import axios from 'axios'
+
+
 export default {
 	middleware: 'auth',
 	layout: 'admin',
@@ -115,18 +127,19 @@ export default {
 		clearInputs(){
 			this.category = {}
 		},
-		saveCategory(){
-			if(this.category.title_ru && this.category.title_ua && this.category.slug){
+		async saveCategory(){
+			if(this.category.title_ru && this.category.title_ua && this.category.description_ru && this.category.description_ua && this.category.slug){
 				this.showSpinner = true
-				setTimeout(()=> {
-					this.showSpinner = false
-				}, 500)
-				// fetch here
+				try {
+					const response = await axios.post('/admin/addCategory', {category: this.category})
+					this.clearInputs()
+					this.$router.push('/admin/menu-category/'+response.data)
+				} catch (e) {
+					console.log('some saveCategory error')
+					console.log(e.response.data)
+				}
+				this.showSpinner = false
 			}
-		},
-		saveCategoryAndExit(){
-			this.saveCategory()
-			this.backToCategories()
 		},
 	},
 }

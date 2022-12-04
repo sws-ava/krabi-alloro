@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\InteriorController;
+use App\Http\Controllers\Admin\GoodsCatsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,6 +70,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/photoOrderRightInterior', [InteriorController::class, 'orderRightInterior']);
     Route::post('admin/deletePhotoInterior', [InteriorController::class, 'deletePhotoInterior']);
     Route::post('admin/uploadPhotoInterior', [InteriorController::class, 'uploadPhotoInterior']);
+
+    // Goods categories
+    Route::get('admin/getGoodsCats', [GoodsCatsController::class, 'getGoodsCats']);
+    Route::get('admin/getCategory', [GoodsCatsController::class, 'getCategory']);
+    Route::post('admin/saveCategory', [GoodsCatsController::class, 'saveCategory']);
+    Route::post('admin/addCategory', [GoodsCatsController::class, 'addCategory']);
+    Route::post('admin/deleteCategory', [GoodsCatsController::class, 'deleteCategory']);
+    Route::post('admin/categoryOrderTop', [GoodsCatsController::class, 'orderTop']);
+    Route::post('admin/categoryOrderBottom', [GoodsCatsController::class, 'orderBottom']);
+    Route::post('admin/showCategory', [GoodsCatsController::class, 'showCategory']);
 
 });
 

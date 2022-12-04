@@ -38,11 +38,11 @@
 				class="list-group-item text-center"
 			>	
 				<span
-					v-if="index !== categories.length - 1"
-					@click="orderBottom(cat.order)" 
 					class="fa-icon-holder mr-4"
 				>
 					<font-awesome-icon 
+						v-if="index !== categories.length - 1"
+						@click="orderBottom(cat.order)" 
 						:icon="['fas', 'arrow-down']"
 						style="width:16px; height: 16px"
 						class="fa-icon"
@@ -50,6 +50,7 @@
 				</span>
 				<router-link
 					:to="`/admin/menu-category/${cat.id}`"
+					:style="cat.show === 0 ? 'color:red!important; font-weight: bold' : ''"
 				>
 					{{ cat.title_ru }}
 					<span class="edit-item ml-4">
@@ -62,11 +63,11 @@
 					</span>
 				</router-link>
 				<span
-					v-if="index !== 0"
-					@click="orderTop(cat.order)" 
 					class="fa-icon-holder ml-4"
 				>
 					<font-awesome-icon 
+						v-if="index !== 0"
+						@click="orderTop(cat.order)" 
 						:icon="['fas', 'arrow-up']"
 						style="width:16px; height: 16px"
 						class="fa-icon"
@@ -82,6 +83,8 @@
 
 <script>
 import spinner from '@/components/admin/spinner.vue'
+import axios from 'axios'
+
 export default {
 	components:{
 		spinner
@@ -96,24 +99,28 @@ export default {
 		}
 	},
 	mounted(){
-		this.fetchCategories()
+		this.getGoodsCats()
 	},
 	methods:{
-		fetchCategories(){
+		async getGoodsCats(){
 			this.showSpinner = true
-			setTimeout(()=>{
-				this.categories = [
-					{id:1, title_ru:'Пицца', order: 1},
-					{id:2, title_ru:'Напитки', order: 3},
-					{id:3, title_ru:'WOK', order: 2},
-				]
+			try {
+				const response = await axios.get('/admin/getGoodsCats')
+				this.categories = response.data
 				this.sortCategories()
-				this.showSpinner = false
-			}, 500)
+
+			} catch (e) {
+				console.log('some getGoodsCats error')
+				console.log(e.response.data)
+			}
+
+			this.showSpinner = false
 		},
-		orderTop(order){
+		async orderTop(order){
 			this.showSpinner = true
-			setTimeout(() => {
+			try {
+				const response = await axios.post('/admin/categoryOrderTop', {order})
+
 				this.categories.forEach(el => {
 					if(el.order == order - 1){
 						el.order += 1
@@ -124,11 +131,15 @@ export default {
 				})
 				this.sortCategories()
 				this.showSpinner = false
-			}, 500)
+			} catch (e) {
+				console.log(e.response.data)
+			}
 		},
-		orderBottom(order){
+		async orderBottom(order){
 			this.showSpinner = true
-			setTimeout(() => { 
+			try {
+				const response = await axios.post('/admin/categoryOrderBottom', {order})
+
 				this.categories.forEach(el => {
 					if(el.order == order){ 
 						el.order += 1			
@@ -136,10 +147,12 @@ export default {
 					else if(el.order == order + 1){
 						el.order -= 1
 					}
-				this.showSpinner = false
-				this.sortCategories()
 				})
-			}, 500)
+				this.sortCategories()
+				this.showSpinner = false
+			} catch (e) {
+				console.log(e.response.data)
+			}
 		},
 		sortCategories(){
 			this.categories.sort((a,b) => a.order - b.order)
@@ -170,5 +183,12 @@ export default {
 				scale: 1.1;
 			}
 		}
+	}
+	.list-group-item{
+		max-width: 400px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
 	}
 </style>

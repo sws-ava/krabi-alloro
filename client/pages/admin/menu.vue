@@ -2,6 +2,7 @@
 	<div>
 		<h5 class="mb-3">Меню</h5>
 		<spinner v-if="$store.state.adminMenuItems.showSpinner"></spinner>
+		<spinner v-if="showSpinner"></spinner>
 		<div class="menu-top-row">
 			<div class="menu-top-row__left">
 				<router-link
@@ -41,7 +42,11 @@
 					v-for="cat in categories" :key="cat.id"
 					:style="$store.state.adminMenuItems.choosedCategory === cat.title_ru ? 'font-weight: bold' : ''"
 					class="categoryBtn">
-						{{ cat.title_ru }}
+						<span
+							:style="!cat.show ? 'color: red' : ''"
+						>
+							{{ cat.title_ru }}
+						</span>
 				</span>
 			</div>
 		</div>
@@ -176,8 +181,10 @@
 </template>
 
 <script>
-import spinner from '../../components/admin/spinner.vue'
+import spinner from '@/components/admin/spinner.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import axios from 'axios'
+
 export default {
   components: { spinner },
 	middleware: 'auth',
@@ -189,16 +196,27 @@ export default {
 	
 	data(){
 		return{
-			categories:[
-				{id:1, title_ru:'Пицца', order: 1},
-				{id:2, title_ru:'Напитки', order: 3},
-				{id:3, title_ru:'WOK', order: 2},
-			],
+			showSpinner: true,
+			categories:[],
 		}
 	},
 	mounted(){
+		this.getGoodsCats()
 	},
 	methods:{
+		async getGoodsCats(){
+			this.showSpinner = true
+			try {
+				const response = await axios.get('/admin/getGoodsCats')
+				this.categories = response.data
+
+			} catch (e) {
+				console.log('some getGoodsCats error')
+				console.log(e.response.data)
+			}
+
+			this.showSpinner = false
+		},
 		...mapActions({
 			fetchItems: 'adminMenuItems/fetchItems',
 			getItemsByCategory: 'adminMenuItems/getItemsByCategory',
@@ -244,10 +262,13 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		&__left{
-			a + a{
-				margin-left: 20px;
+			a{
+				margin-right: 20px;
 			}
 		}
+	}
+	.categoryBtn{
+		margin-right: 20px;
 	}
 	.btns-holder{
 		white-space: nowrap;
@@ -280,7 +301,7 @@ export default {
 		}
 	}
 	.categoryBtn + .categoryBtn {
-		margin-left: 10px;
+		// margin-left: 10px;
 		margin-bottom: 10px;
 	}
 	.subItemsHolder{
