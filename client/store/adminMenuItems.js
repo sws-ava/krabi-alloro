@@ -158,6 +158,7 @@ export const actions = {
 			responce.data.sort((a,b) => a.order - b.order)
 			commit('SET_MENUITEMS', responce.data)
 			// commit('SET_CHOOSEDCATEGORY', cat.title_ru)
+			commit('SET_CHOOSEDCATEGORY', catId)
 		} catch (e) {
 			console.log('some getItemsByCategory error')
 		}

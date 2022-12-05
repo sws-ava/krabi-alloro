@@ -22,7 +22,7 @@
 				<form v-if="!item.photo">
 					<div class="form-group">
 						<label for="exampleFormControlFile1">Добавить фото</label>
-						<input type="file" class="form-control-file">
+						<input type="file" class="form-control-file" >
 					</div>
 				</form>
 				<div 
@@ -58,10 +58,10 @@
 							class="form-control"
 						>
 							<option :value="cat.id"
-								:selected="cat.id === item.cat"
+								:selected="cat.id === item.category"
 								v-for="cat in categories" :key="cat.id"
 							>
-								{{ cat.title }}
+								{{ cat.title_ru }}
 							</option>
 						</select>
 					</div>
@@ -578,19 +578,43 @@ export default {
 			editedSubItem: {},
 			showEditRowModal: false,
 			item:{},
-			categories:[
-				{id:1, title:'Пицца', order: 1},
-				{id:2, title:'Напитки', order: 3},
-				{id:3, title:'WOK', order: 2},
-			],
+			categories:[],
 			showSpinner: true,
 			
 		}
 	},
 	mounted(){
+		this.fetchCategories()
 		this.fetchItem()
 	},
 	methods:{
+		async fetchItem(){
+			this.showSpinner = true	
+			try {
+				const response = await axios.post('/admin/getGoodsItem', {itemId: this.$route.params.id })
+				this.item = response.data
+			} catch (e) {
+				console.log('some fetchItem error')
+				console.log(e.response.data)
+			}
+			
+			// this.orderSubItems()
+			// this.showSpinner = false
+		},
+		async fetchCategories(){
+			// this.showSpinner = true	
+			try {
+				const response = await axios.get('/admin/getGoodsCats')
+				this.categories = response.data
+			} catch (e) {
+				console.log('some fetchCategories error')
+				console.log(e.response.data)
+			}
+			
+			// this.orderSubItems()
+			this.showSpinner = false
+		},
+
 		orderTop(order){
 			this.showSpinner = true	
 			setTimeout(() => {
@@ -650,20 +674,6 @@ export default {
 		},
 		orderSubItems(){
 			this.item.prices.sort((a,b) => a.order - b.order)
-		},
-		async fetchItem(){
-			this.showSpinner = true	
-			try {
-				const response = await axios.post('/admin/getGoodsItem', {itemId: this.$route.params.id })
-				// console.log(response.data)
-				this.item = response.data
-			} catch (e) {
-				console.log('some fetchItem error')
-				console.log(e.response.data)
-			}
-			
-			// this.orderSubItems()
-			this.showSpinner = false
 		},
 		removeItem(item){
 			console.log('del')

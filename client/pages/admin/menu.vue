@@ -40,7 +40,7 @@
 				<span 
 					@click="getItemsByCategory(cat.id)"
 					v-for="cat in categories" :key="cat.id"
-					:style="$store.state.adminMenuItems.choosedCategory === cat.title_ru ? 'font-weight: bold' : ''"
+					:style="$store.state.adminMenuItems.choosedCategory === cat.id ? 'font-weight: bold' : ''"
 					class="categoryBtn">
 						<span
 							:style="!cat.show ? 'color: red' : ''"

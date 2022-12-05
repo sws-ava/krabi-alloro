@@ -1,9 +1,28 @@
 <template>
 	<div>
 		<h5 class="mb-3">Заказы с сайта</h5>
+    	<spinner v-if="showSpinner" />
+
+		<div class="mt-3 mb-3 review-header__status ">
+			<b 
+				@click="getNewOrders()"
+				class="red-text mr-4 pointer"
+			>
+				Новые заказы
+			</b>
+			<b 
+				@click="getDoneOrders()"
+				class="green-text pointer"
+			>
+				Выполненые заказы
+			</b>
+		</div>
+
+
 		<div 
 			v-for="order in orders" 
 			:key="order.id"
+			class="mt-4"
 		>
 			<div class="review-header__status ">
 				<b>
@@ -15,12 +34,6 @@
 					</span>
 					<span 
 						v-else-if="order.status === 2" 
-						class="blue-text"
-					>
-						Заказ выполняется
-					</span>
-					<span 
-						v-else-if="order.status === 3" 
 						class="green-text"
 					>
 						Заказ выполнен
@@ -67,55 +80,93 @@
 </template>
 
 <script>
+
+
+import spinner from '@/components/admin/spinner.vue'
+import axios from 'axios'
+
 export default {
 	middleware: 'auth',
 	layout: 'admin',
 
+
+	components: { spinner },
+
+
 	data(){
 		return{
-			orders: [
-				{
-					id: 1,
-					date: '22:20 20.02.22',
-					name: 'Семен',
-					phone: '0987654321',
-					address: 'ул.Уличная, дом 18, кв 24, пд 3',
-					comment: 'домофон не работает',
-					orderItems:[
-						{id:1, item:11, title:'meat pizza', weight:'270гр', price:270.99},
-						{id:2, item:27, title:'coca cola', weight:'2л', price:70},
-					],
-					status: 1, // new, inProgress, done
-					total: 159.98,
-				},
-				{
-					id: 2,
-					date: '22:20 20.02.22',
-					name: 'Василиса',
-					phone: '0936844321',
-					address: 'ул.Уличная, дом 18',
-					comment: '',
-					orderItems:[
-						{id:1, item:11, title:'meat pizza', weight:'270гр', price:270.99}
-					],
-					status: 2, // new, inProgress, done
-					total: 245,
-				},
-				{
-					id: 3,
-					date: '22:20 20.02.22',
-					name: 'Василиса',
-					phone: '0936848765',
-					address: 'ул.Уличная, дом 222',
-					comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero omnis doloremque facere pariatur suscipit sequi neque fugit hic, quisquam animi libero officiis. Consectetur consequatur eveniet, repellendus blanditiis quidem non repudiandae nisi magnam provident fugit dolore possimus neque quibusdam nobis quasi et facere consequuntur vero similique iusto reprehenderit laudantium accusantium inventore.',
-					orderItems:[
-						{id:4, item:34, title:'cheese pizza', weight:'270гр', price:150.99},
-					],
-					status: 3, // new, inProgress, done
-					total: 299.99,
-				},
-			]
+			showSpinner: false,
+			orders: [],
 		}
+	},
+	mounted(){
+		this.getNewOrders()
+	},
+	methods: {
+		getNewOrders(){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.orders = [
+					{
+						id: 1,
+						date: '22:20 20.02.22',
+						name: 'Семен',
+						phone: '0987654321',
+						address: 'ул.Уличная, дом 18, кв 24, пд 3',
+						comment: 'домофон не работает',
+						orderItems:[
+							{id:1, item:11, title:'meat pizza', weight:'270гр', price:270.99},
+							{id:2, item:27, title:'coca cola', weight:'2л', price:70},
+						],
+						status: 1,
+						total: 159.98,
+					},
+					{
+						id: 3,
+						date: '22:20 20.02.22',
+						name: 'Василиса',
+						phone: '0936848765',
+						address: 'ул.Уличная, дом 222',
+						comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero omnis doloremque facere pariatur suscipit sequi neque fugit hic, quisquam animi libero officiis. Consectetur consequatur eveniet, repellendus blanditiis quidem non repudiandae nisi magnam provident fugit dolore possimus neque quibusdam nobis quasi et facere consequuntur vero similique iusto reprehenderit laudantium accusantium inventore.',
+						orderItems:[
+							{id:4, item:34, title:'cheese pizza', weight:'270гр', price:150.99},
+						],
+						status: 1,
+						total: 299.99,
+					},
+				]
+				this.showSpinner = false
+			}, 500);
+			// try {
+			// } catch (e) {
+			// 	console.log('some getNewOrders error')
+			// }
+		},
+		getDoneOrders(){
+			this.showSpinner = true
+			setTimeout(() => {
+				this.orders = [
+					{
+						id: 2,
+						date: '22:20 20.02.22',
+						name: 'Василиса',
+						phone: '0936844321',
+						address: 'ул.Уличная, дом 18',
+						comment: '',
+						orderItems:[
+							{id:1, item:11, title:'meat pizza', weight:'270гр', price:270.99}
+						],
+						status: 2,
+						total: 245,
+					},
+				]
+				this.showSpinner = false
+			}, 500);
+			// try {
+			// } catch (e) {
+			// 	console.log('some getDoneOrders error')
+			// }
+		},
 	}
 }
 
@@ -168,5 +219,11 @@ export default {
 	.order-list{
 		// display: flex;
 		
+	}
+	.pointer{
+		cursor: pointer;
+		&:hover{
+			text-decoration: underline;
+		}
 	}
 </style>
