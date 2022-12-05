@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 
 // state
 export const state = () => ({
@@ -79,7 +81,7 @@ export const mutations = {
   },
 
   SET_CHANGEPRICEFETCH(state, subItem){
-	console.log(state.changePrice)
+	// console.log(state.changePrice)
 	if(state.changePrice){
 		state.menuItems.forEach(el => {
 			el.items.forEach(element => {
@@ -149,67 +151,60 @@ export const actions = {
 		commit('SET_SHOWSPINNER', false)
 	}, 500)
 	},
-	getItemsByCategory( {state, commit}, cat){
-	commit('SET_SHOWSPINNER', true)
-	setTimeout(() => {
-		// fetch here
-		const menuItems = [
-		{
-		id:1,
-		show: true,
-		title:'Маргарита',
-		items:[
-			{id:1, show: true, weight: 'З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ', weightKind:'см', price: 50.85},
-			{id:2, show: false, weight: 'З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ', weightKind:'см', price: 85},
-			{id:3, show: false, weight: 'З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ', weightKind:'см', price: 150},
-		],
-		order: 2,
-		},
-		{ 
-		id:2,
-		show: false,
-		title:'Diabola',
-		items:[
-			{id:5, show: true, weight: 'З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ З ТИГРОВИМИ КРЕВЕТКАМИ ТА КЕШЮ', weightKind:'см', price: 50.85},
-		],
-		order: 1, 
-		},
-		]
-		menuItems.sort((a,b) => a.order - b.order)
-		commit('SET_MENUITEMS', menuItems)
-		commit('SET_CHOOSEDCATEGORY', cat.title_ru)
+	async getItemsByCategory( {state, commit}, catId){
+		commit('SET_SHOWSPINNER', true)
+		try {
+			const responce = await axios.get('/admin/getItemsByCategory', { params:{ catId: catId }})
+			responce.data.sort((a,b) => a.order - b.order)
+			commit('SET_MENUITEMS', responce.data)
+			// commit('SET_CHOOSEDCATEGORY', cat.title_ru)
+		} catch (e) {
+			console.log('some getItemsByCategory error')
+		}
 		commit('SET_SHOWSPINNER', false)
-	},500)
 	},
 
-	showSubItem( {commit}, subItem ){
+	async showSubItem( {commit}, subItem ){
 		commit('SET_SHOWSPINNER', true)
-		commit('SET_SHOWSUBITEM', subItem)
-		setTimeout(() =>{
-			commit('SET_SHOWSPINNER', false)
-    	}, 500)
+		try {
+			const responce = await axios.post('/admin/showSubItem',  {subItem: subItem })
+			commit('SET_SHOWSUBITEM', subItem)
+		} catch (e) {
+			console.log('some showSubItem error')
+		}
+		commit('SET_SHOWSPINNER', false)
 	},
-	showItem( {commit}, item){
+	async showItem( {commit}, item){
 		commit('SET_SHOWSPINNER', true)
-		commit('SET_SHOWITEM', item)
-		setTimeout(() =>{
-			commit('SET_SHOWSPINNER', false)
-		}, 500)
+		try {
+			const responce = await axios.post('/admin/showItem',  {item: item })
+			commit('SET_SHOWITEM', item)
+		} catch (e) {
+			console.log('some showItem error')
+		}
+		commit('SET_SHOWSPINNER', false)
 	},
 
-	orderTop({commit}, order){
+	async orderTop({commit}, item){
 		commit('SET_SHOWSPINNER', true)
-		commit('SET_ORDERTOP', order)
-		setTimeout(() => {
-			commit('SET_SHOWSPINNER', false)
-		}, 500)
+		try {
+			const responce = await axios.post('/admin/itemOrderTop',  {item: item })
+			console.log(responce.data)
+			commit('SET_ORDERTOP', item.order)
+		} catch (e) {
+			console.log('some orderTop error')
+		}
+		commit('SET_SHOWSPINNER', false)
 	},
-	orderBottom({commit}, order){
+	async orderBottom({commit}, item){
 		commit('SET_SHOWSPINNER', true)
-		commit('SET_ORDERBOTTOM', order)
-		setTimeout(() => { 
-			commit('SET_SHOWSPINNER', false)
-		}, 500)
+		try {
+			const responce = await axios.post('/admin/itemOrderBottom',  {item: item })
+			commit('SET_ORDERBOTTOM', item.order)
+		} catch (e) {
+			console.log('some orderBottom error')
+		}
+		commit('SET_SHOWSPINNER', false)
 	},
 
 
@@ -218,22 +213,25 @@ export const actions = {
 	changePriceHandler({commit},event){
 		commit('SET_CHANGEPRICE', event.target.value.replace(',', '.'))
 	},
-	changePriceFetch({commit}, subItem){
+	async changePriceFetch({state, commit}, subItem){
 		commit('SET_SHOWSPINNER', true)
-		commit('SET_CHANGEPRICEFETCH', subItem)
+		try {
+			commit('SET_CHANGEPRICEFETCH', subItem)
+			const responce = await axios.post('/admin/changePriceFetch',  {subItem: subItem, price: state.changePrice })
+		} catch (e) {
+			console.log('some changePriceHandler error')
+		}
 
-		setTimeout(() =>{
-			document.querySelectorAll('.priceInput').forEach(element => {
-				element.setAttribute('disabled', 'disabled')
-			});
-			
-			document.querySelectorAll('.editPrice.d-none').forEach(el => {
-				el.classList.remove('d-none')
-			})
-			document.querySelector('.priceInputFocus').classList.remove('priceInputFocus')
-			let targetParent = document.querySelector('.priceRowFocus')
-			targetParent.classList.remove('priceRowFocus')
-			commit('SET_SHOWSPINNER', false)
-		}, 500)
+		document.querySelectorAll('.priceInput').forEach(element => {
+			element.setAttribute('disabled', 'disabled')
+		});
+		
+		document.querySelectorAll('.editPrice.d-none').forEach(el => {
+			el.classList.remove('d-none')
+		})
+		document.querySelector('.priceInputFocus').classList.remove('priceInputFocus')
+		let targetParent = document.querySelector('.priceRowFocus')
+		targetParent.classList.remove('priceRowFocus')
+		commit('SET_SHOWSPINNER', false)
 	},
 }

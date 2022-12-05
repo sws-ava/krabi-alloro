@@ -19,7 +19,7 @@
 				</router-link>
 			</div>
 		</div>
-		<div class="row seacrh-block mt-4">
+		<!-- <div class="row seacrh-block mt-4">
 			<div class="form-group col-md-12">
 				<input 
 					type="text" 
@@ -27,18 +27,18 @@
 					placeholder="Поиск"
 				>
 			</div>
-		</div>
-		<div class="row seacrh-block mt-2">
-			<div class="form-group col-md-12">
-				<span 
+		</div> -->
+		<div class="row seacrh-block mt-4">
+			<div class="form-group col-md-12 mt-4">
+				<!-- <span 
 					:style="$store.state.adminMenuItems.choosedCategory === 'All' ? 'font-weight: bold' : ''"
 					@click="fetchItems()"
 					class="categoryBtn"
 				>
 					Всё	
-				</span>
+				</span> -->
 				<span 
-					@click="getItemsByCategory(cat)"
+					@click="getItemsByCategory(cat.id)"
 					v-for="cat in categories" :key="cat.id"
 					:style="$store.state.adminMenuItems.choosedCategory === cat.title_ru ? 'font-weight: bold' : ''"
 					class="categoryBtn">
@@ -57,12 +57,12 @@
 				<tr v-for="(item, index) in $store.state.adminMenuItems.menuItems" :key="item.id">
 					<th scope="row">{{ item.id }}</th>
 					<td class="w-100">
-						{{item.title}}
+						{{item.title_ru}}
 						<div class="subItemsHolder mt-2">
 							<div  v-for="subItem in item.items" :key="subItem.id" class="subItemsHolderFlex">
 								<div class="price-holder mb-1">
 									<small class="form-text text-muted w-100show: 1, ">
-										{{subItem.weight}} {{subItem.weightKind}}
+										{{subItem.title_ru}} {{subItem.weight}} {{subItem.weightKind}}
 									</small>
 									<div class="subItemHandler">
 										<input
@@ -150,7 +150,7 @@
 						<div class="upDownHolder">
 							<span
 								v-if="index !== $store.state.adminMenuItems.menuItems.length - 1"
-								@click="orderBottom(item.order)" 
+								@click="orderBottom(item)" 
 								class="fa-icon-holder mr-2 ml-2"
 							>
 								<font-awesome-icon 
@@ -161,7 +161,7 @@
 							</span>
 							<span
 								v-if="index !== 0"
-								@click="orderTop(item.order)" 
+								@click="orderTop(item)" 
 								class="fa-icon-holder ml-2 mr-2"
 							>
 								<font-awesome-icon 
@@ -212,7 +212,7 @@ export default {
 
 			} catch (e) {
 				console.log('some getGoodsCats error')
-				console.log(e.response.data)
+				// console.log(e.response.data)
 			}
 
 			this.showSpinner = false

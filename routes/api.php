@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\InteriorController;
 use App\Http\Controllers\Admin\GoodsCatsController;
+use App\Http\Controllers\Admin\GoodsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,6 +81,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/categoryOrderTop', [GoodsCatsController::class, 'orderTop']);
     Route::post('admin/categoryOrderBottom', [GoodsCatsController::class, 'orderBottom']);
     Route::post('admin/showCategory', [GoodsCatsController::class, 'showCategory']);
+
+    // Goods Items
+    Route::get('admin/getItemsByCategory', [GoodsController::class, 'getItemsByCategory']);
+    Route::post('admin/showSubItem', [GoodsController::class, 'showSubItem']);
+    Route::post('admin/showItem', [GoodsController::class, 'showItem']);
+    Route::post('admin/changePriceFetch', [GoodsController::class, 'changePriceFetch']);
+    Route::post('admin/itemOrderTop', [GoodsController::class, 'orderTop']);
+    Route::post('admin/itemOrderBottom', [GoodsController::class, 'orderBottom']);
+    Route::post('admin/getGoodsItem', [GoodsController::class, 'getGoodsItem']);
 
 });
 

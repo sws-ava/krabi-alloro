@@ -558,6 +558,8 @@
 import modalShowFullImg from '@/components/admin/modalShowFullImg.vue'
 import Spinner from '@/components/admin/spinner.vue'
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
+import axios from 'axios'
+
 export default {
 	middleware: 'auth',
 	layout: 'admin',
@@ -649,32 +651,19 @@ export default {
 		orderSubItems(){
 			this.item.prices.sort((a,b) => a.order - b.order)
 		},
-		fetchItem(){
+		async fetchItem(){
 			this.showSpinner = true	
-			setTimeout(() => {
-				// fetch here
-				this.item = {
-					id:1,
-					cat: 2,
-					title_ru:'Маргарита',
-					title_ua:'Маргарiта',
-					description_ru: 'Описание блюда на русском в html',
-					description_ua: 'Описание блюда на украинском в html',
-					desc_ru: 'Описание блюда на украинском на сайте',
-					desc_ua: 'Описание блюда на украинском на сайте',
-					slug: 'margarita',
-					prices:[
-						{id:1, order:1, title_ua: 'L 17 1', title_ru: 'L 17 1', weight: '200', weightKind:'г', price: 50},
-						{id:2, order:4, title_ua: 'XL 17 4', title_ru: 'XL 17 4', weight: '200', weightKind:'г', price: 85},
-						{id:3, order:3, title_ua: 'XXL 17 3', title_ru: 'XXL 17 3', weight: '200', weightKind:'г', price: 150},
-						{id:4, order:2, title_ua: 'XXL 21 2', title_ru: 'XXL 21 2', weight: '400', weightKind:'мл', price: 129},
-					],
-					photo: 'https://via.placeholder.com/300x500'
-				}
-				
-				this.orderSubItems()
-				this.showSpinner = false
-			},500)
+			try {
+				const response = await axios.post('/admin/getGoodsItem', {itemId: this.$route.params.id })
+				// console.log(response.data)
+				this.item = response.data
+			} catch (e) {
+				console.log('some fetchItem error')
+				console.log(e.response.data)
+			}
+			
+			// this.orderSubItems()
+			this.showSpinner = false
 		},
 		removeItem(item){
 			console.log('del')
