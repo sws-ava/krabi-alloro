@@ -81,7 +81,6 @@ export const mutations = {
   },
 
   SET_CHANGEPRICEFETCH(state, subItem){
-	// console.log(state.changePrice)
 	if(state.changePrice){
 		state.menuItems.forEach(el => {
 			el.items.forEach(element => {
@@ -93,11 +92,20 @@ export const mutations = {
 	}
   },
 
+  SET_REMOVEITEM(state, item){
+	console.log(item)
+	state.menuItems = state.menuItems.filter(a => a.id !== item.id)
+  }
+
 
 }
 
 // actions
 export const actions = {
+
+	removeItem({commit}, item){
+		commit('SET_REMOVEITEM', item)
+	},
 
 	fetchItems({ state, commit }, cat){
 	commit('SET_SHOWSPINNER', true)
@@ -157,7 +165,6 @@ export const actions = {
 			const responce = await axios.get('/admin/getItemsByCategory', { params:{ catId: catId }})
 			responce.data.sort((a,b) => a.order - b.order)
 			commit('SET_MENUITEMS', responce.data)
-			// commit('SET_CHOOSEDCATEGORY', cat.title_ru)
 			commit('SET_CHOOSEDCATEGORY', catId)
 		} catch (e) {
 			console.log('some getItemsByCategory error')
@@ -207,9 +214,6 @@ export const actions = {
 		}
 		commit('SET_SHOWSPINNER', false)
 	},
-
-
-
 
 	changePriceHandler({commit},event){
 		commit('SET_CHANGEPRICE', event.target.value.replace(',', '.'))

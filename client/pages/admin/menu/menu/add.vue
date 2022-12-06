@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<h5 class="mb-3">Добавить блюдо</h5>
+		<h5 class="mb-3">Добавить новое блюдо</h5>
+    	<spinner v-if="showSpinner" />
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb-my">
 				<li class="breadcrumb-item">
@@ -13,163 +14,130 @@
 						Меню
 					</router-link>
 				</li>
-				<li class="breadcrumb-item active" aria-current="page">Добавить блюдо</li>
+				<li class="breadcrumb-item active" aria-current="page">Редактирование блюда</li>
 			</ol>
 		</nav>
-
-		
-    <form>
-      <div class="row">
-		<div class="col-lg-7">
-			<div class="form-group">
-				<small class="form-text text-muted">Выбрать категорию</small>
-				<select class="form-control" >
-					<option selected disabled>Выбрать категорию</option>
-					<option
-						v-for="cat in categories" :key="cat.id"
-					>
-						{{ cat.title }}
-					</option>
-				</select>
-			</div>
-			<div class="form-group">
-			<small class="form-text text-muted">Название блюда ру</small>
-			<input type="text" name="title" class="form-control">
-			</div>
-			<div class="form-group">
-			<small class="form-text text-muted">Название блюда укр</small>
-			<input type="text" name="title-ua" class="form-control">
-			</div>
-        </div>
-		
-		<div class="col-lg-5">
-			<form>
-				<div class="form-group">
-					<label for="exampleFormControlFile1">Добавить фото</label>
-					<input type="file" class="form-control-file">
-				</div>
-			</form>
-		</div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда ру (description)</small>
-          <input type="text" name="description" class="form-control">
-        </div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда укр (description)</small>
-          <input type="text" name="description-ua" class="form-control">
-        </div>
-		
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда на сайт ру</small>
-          <input type="text" name="description" class="form-control">
-        </div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Описание блюда на сайт укр</small>
-          <input type="text" name="description-ua" class="form-control">
-        </div>
-        <div class="form-group col-lg-12">
-          <small class="form-text text-muted">Ссылка на блюдо</small>
-          <input type="text" name="slug" class="form-control">
-        </div>
-
-		<div class="col-12">
-			Цена:
+		<form @submit.prevent>
 			<div class="row">
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">вес/шт/л/размер</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">ед. измерения</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">цена</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-			</div>
-			<div class="row d-flex align-items-center">
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">вес/шт/л/размер</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">ед. измерения</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-        		<div class="form-group col-lg-2">
-          			<small class="form-text text-muted">цена</small>
-					<input
-						type="text"
-						class="w-100 form-control"
-					>
-				</div>
-				<div class="minus-btn">
-					<font-awesome-icon 
-						:icon="['fas', 'minus']"
-						style="width:13px; height: 13px"
-						class="fa-icon"
-					/>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-12">
-					<div class="plus-btn">
-						<font-awesome-icon 
-							:icon="['fas', 'plus']"
-							style="width:13px; height: 13px"
-							class="fa-icon"
-						/>
+				<div class="col-lg-7" >
+					<div class="form-group">
+						<small class="form-text text-muted">Выбрать категорию</small>
+						<select
+							required
+							v-model="item.category"
+							class="form-control"
+						>	
+							<option
+								v-for="cat in categories" 
+								:key="cat.id"
+								:value="cat.id"
+							>
+								{{ cat.title_ru }}
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<small class="form-text text-muted">Название блюда ру</small>
+						<input 
+							v-model="item.title_ru" 
+							type="text" 
+							required 
+							class="form-control"
+						>
+					</div>
+					<div class="form-group">
+						<small class="form-text text-muted">Название блюда укр</small>
+						<input 
+							v-model="item.title_ua" 
+							type="text" 
+							required 
+							class="form-control"
+						>
+					</div>
+
+
+				
+					<div class="d-flex justify-content-between col-12 mt-4 mb-4">
+						<div class="form-group mt-2">
+							<button 
+								@click="saveItem()"
+								type="submit" 
+								class="btn btn-success btn-sm"
+							>
+								Сохранить
+
+							</button>
+						</div>
+						<div class="form-group mt-2">
+							<button 
+								@click.prevent="backToItems()"
+								type="button" 
+								class="btn btn-secondary btn-sm"
+							>
+								Назад
+
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="form-group col-lg-12 mt-4 text-right">
-			<button type="submit" class="btn btn-primary">Сохранить</button>
-		</div>
-
-      </div>
-    </form>
-	
-	
-
-		
-		
-
-		
+		</form>
 
 	</div>
 </template>
 
 <script>
+
+import spinner from '@/components/admin/spinner.vue'
+import axios from 'axios'
+
 export default {
 	middleware: 'auth',
 	layout: 'admin',
 
+	
+	components: {spinner },
+
 	data(){
 		return{
-			categories:[
-				{id:1, title:'Пицца', order: 1},
-				{id:2, title:'Напитки', order: 3},
-				{id:3, title:'WOK', order: 2},
-			],
+			categories:[],
+			item: {},
+			showSpinner: false,
 		}
+	},
+	mounted(){
+		this.fetchCategories()
+	},
+	methods:{
+		
+		async fetchCategories(){
+			this.showSpinner = true	
+			try {
+				const response = await axios.get('/admin/getGoodsCats')
+				this.categories = response.data
+			} catch (e) {
+				console.log('some fetchCategories error')
+				console.log(e.response.data)
+			}
+			this.showSpinner = false
+		},
+		async saveItem(){
+			if(this.item.title_ru && this.item.title_ua && this.item.category){
+				this.showSpinner = true	
+				try {
+					const response = await axios.post('/admin/addItem', {item: this.item})
+					console.log(response.data)
+					this.$router.push('/admin/menu/'+response.data)
+				} catch (e) {
+					console.log('some saveItem error')
+					// console.log(e.response.data)
+				}
+			}
+		},
+		
+		backToItems(){
+			this.$router.push('/admin/menu')
+		},
 	}
 	
 
