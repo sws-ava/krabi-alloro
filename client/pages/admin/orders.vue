@@ -103,69 +103,28 @@ export default {
 		this.getNewOrders()
 	},
 	methods: {
-		getNewOrders(){
+		async getNewOrders(){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.orders = [
-					{
-						id: 1,
-						date: '22:20 20.02.22',
-						name: 'Семен',
-						phone: '0987654321',
-						address: 'ул.Уличная, дом 18, кв 24, пд 3',
-						comment: 'домофон не работает',
-						orderItems:[
-							{id:1, item:11, title:'meat pizza', weight:'270гр', price:270.99},
-							{id:2, item:27, title:'coca cola', weight:'2л', price:70},
-						],
-						status: 1,
-						total: 159.98,
-					},
-					{
-						id: 3,
-						date: '22:20 20.02.22',
-						name: 'Василиса',
-						phone: '0936848765',
-						address: 'ул.Уличная, дом 222',
-						comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero omnis doloremque facere pariatur suscipit sequi neque fugit hic, quisquam animi libero officiis. Consectetur consequatur eveniet, repellendus blanditiis quidem non repudiandae nisi magnam provident fugit dolore possimus neque quibusdam nobis quasi et facere consequuntur vero similique iusto reprehenderit laudantium accusantium inventore.',
-						orderItems:[
-							{id:4, item:34, title:'cheese pizza', weight:'270гр', price:150.99},
-						],
-						status: 1,
-						total: 299.99,
-					},
-				]
-				this.showSpinner = false
-			}, 500);
-			// try {
-			// } catch (e) {
-			// 	console.log('some getNewOrders error')
-			// }
+			
+			try {
+				const response = await axios.get('/admin/getNewOrders')
+				this.orders = response.data	
+			} catch (e) {
+				console.log('some getNewOrders error')
+			}
+			this.showSpinner = false
 		},
-		getDoneOrders(){
+		async getDoneOrders(){
 			this.showSpinner = true
-			setTimeout(() => {
-				this.orders = [
-					{
-						id: 2,
-						date: '22:20 20.02.22',
-						name: 'Василиса',
-						phone: '0936844321',
-						address: 'ул.Уличная, дом 18',
-						comment: '',
-						orderItems:[
-							{id:1, item:11, title:'meat pizza', weight:'270гр', price:270.99}
-						],
-						status: 2,
-						total: 245,
-					},
-				]
-				this.showSpinner = false
-			}, 500);
-			// try {
-			// } catch (e) {
-			// 	console.log('some getDoneOrders error')
-			// }
+			
+			try {
+				const response = await axios.get('/admin/getDoneOrders')
+				this.orders = response.data	
+			} catch (e) {
+				console.log('some getDoneOrders error')
+			}
+			this.showSpinner = false
+			
 		},
 	}
 }

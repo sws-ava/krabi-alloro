@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\InteriorController;
 use App\Http\Controllers\Admin\GoodsCatsController;
 use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\GoodsItemController;
+use App\Http\Controllers\Admin\OrdersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -106,6 +107,20 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/editItem', [GoodsItemController::class, 'editItem']);
     Route::post('admin/addItem', [GoodsItemController::class, 'addItem']);
 
+    // Orders
+    Route::get('admin/getNewOrders', [OrdersController::class, 'getNewOrders']);
+    Route::get('admin/getDoneOrders', [OrdersController::class, 'getDoneOrders']);
+    Route::post('admin/getOrder', [OrdersController::class, 'getOrder']);
+    Route::post('admin/incrementOrderItem', [OrdersController::class, 'incrementOrderItem']);
+    Route::post('admin/decrementOrderItem', [OrdersController::class, 'decrementOrderItem']);
+    Route::post('admin/countOrderTotalSum', [OrdersController::class, 'countTotalSum']);
+    Route::post('admin/removeOrderItem', [OrdersController::class, 'removeOrderItem']);
+    Route::post('admin/removeOrder', [OrdersController::class, 'removeOrder']);
+    Route::post('admin/showSameOrderItemsByCat', [OrdersController::class, 'showSameOrderItemsByCat']);
+    Route::post('admin/changeOrderStatus', [OrdersController::class, 'changeOrderStatus']);
+    Route::post('admin/fetchDishesByQuery', [OrdersController::class, 'fetchDishesByQuery']);
+    
+    
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

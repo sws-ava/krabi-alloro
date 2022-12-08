@@ -50,6 +50,14 @@
               type="text" 
             />
           </div>
+          <div v-if="order.address" class="mb-2 col-lg-3 form-group ">
+            <span class="option-title">Персон:</span>
+            <input 
+              v-model="order.persons" 
+              class="form-text w-100 form-control" 
+              type="text" 
+            />
+          </div>
           <div v-if="order.comment" class="form-group mb-2 col-12">
             <span class="option-title">Комментарий к заказу:</span>
             <input
@@ -79,8 +87,13 @@
            d-flex align-items-center"
         >
           <div class="col-lg-6">
-            {{ idx + 1 }}. {{ item.title }} {{ item.weight }}
+            {{ idx + 1 }}. 
+            <span v-if="item.catName != item.title">
+              {{item.catName}}
+            </span>
+            {{ item.title }} {{ item.weight }} {{ item.weightKind }}
             <span 
+              v-if="item.isMoreDishes"
               @click="showEditOrderItemsModalHandler(item)"
               class="edit-item"
             >
@@ -177,14 +190,6 @@
              </button>
           </div>
         </div>
-      <!-- <div class="buttons mt-4 mb-4">
-        <div class="d-flex justify-content-center w-100">
-          <div class="btn btn-outline-success btn-sm">Сохранить</div>
-        </div>
-        <div class="d-flex justify-content-center w-100">
-          <div class="btn btn-outline-primary btn-sm">Сохранить и вернуться</div>
-        </div>
-      </div> -->
       <div class="buttons mt-4">
         <div>
           <div
@@ -197,9 +202,9 @@
           <div
             @click="changeOrderStatus()"
             v-else-if="order.status === 2" 
-            class="btn btn-outline-primary btn-sm"
+            class="btn btn-outline-secondary btn-sm"
           >
-            Заказ еще выполняется
+            Заказ не выполнен
           </div>
         </div>
         <div 
@@ -260,7 +265,7 @@
           <h5 class="text-center mb-4">Добавить блюдо к заказу</h5>
           <div class="row">
             <div class="mb-2 col-12 form-group ">
-              <span class="option-title">Поиск блюда, мин 2 символа</span>
+              <span class="option-title">Поиск блюда, мин 2 символа (ру)</span>
               <input 
                 v-model="searchDish" 
                 @input="fetchDishesByQuery()"
@@ -268,13 +273,16 @@
                 type="text" 
               />
             </div>
+              <div class="col-12 mt-2 mb-2">
+                <b>Итого блюд: {{ totalDishesByQuery }}</b>
+              </div>
             <div v-for="dish in menuItems" :key="dish.item"
               class="col-12 mb-2"
             >
               <div class="d-flex justify-content-between">
-                {{ dish.title }}
+                {{ dish.title_ru }}
                 <br>
-                {{ dish.weight }}{{ dish.weightKind }} {{ dish.price }}грн
+                {{ dish.weight }} {{ dish.weightKind }} {{ dish.price }}грн
                 <span 
                   @click="addDishToOrderMenuItems(dish)"
                   class="addDish"
@@ -286,7 +294,7 @@
           </div>
           <div class="d-flex justify-content-around mt-4">
             <div 
-              @click="showAddOrderItemsModal = false"
+              @click="showAddOrderItemsModal = false, menuItems = [], searchDish = '', totalDishesByQuery = 0"
               class="btn btn-outline-secondary btn-sm"
             >
               Отменить
@@ -307,11 +315,11 @@
             >
               Нет похожих блюд
             </div>
-            <div v-for="sameItem in sameOrderItems" :key="sameItem.item"
+            <div v-for="sameItem in sameOrderItems" :key="sameItem.id"
               class="col-12 mb-2"
             >
               <div class="d-flex justify-content-between">
-                {{ sameItem.title }}
+                {{ sameItem.title_ru }}
                 <br>
                 {{ sameItem.weight }}{{ sameItem.weightKind }} {{ sameItem.price }}грн
                 <span 
@@ -325,7 +333,7 @@
           </div>
           <div class="d-flex justify-content-around mt-4">
             <div 
-              @click="showEditOrderItemsModal = false"
+              @click="showEditOrderItemsModal = false, sameOrderItems = []"
               class="btn btn-outline-secondary btn-sm"
             >
               Отменить
@@ -341,6 +349,7 @@
 <script>
 import Spinner from '@/components/admin/spinner.vue';
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
+import axios from 'axios';
 
 export default {
   components:{
@@ -364,77 +373,56 @@ export default {
       searchDish: '',
       showEditOrderItemsModal: false,
       orderItemToReplace: {},
+      totalDishesByQuery: 0,
     };
   },
   mounted(){
     this.fetchOrder()
   },
   methods:{
-    fetchOrder(){
+    async fetchOrder(){
       this.showSpinner = true
-      setTimeout(() => {
-        this.order = {
-          id: 1,
-          date: '20:20 20.02.22',
-          name: "Семен",
-          phone: "0987654321",
-          address: "ул.Уличная, дом 18, кв 24, пд 3",
-          comment: "домофон не работает",
-          orderItems: [
-            {
-              id: 1,
-              item: 11,
-              cat: 5,
-              amount: 1,
-              title:
-                "Мясная пицца ясная пицца ясная пицца ясная пицца ясная пицца",
-              weight: "270гр",
-              price: 270.99
-            },
-            {
-              id: 2,
-              item: 37,
-              cat: 1,
-              amount: 2,
-              title: "Coca cola",
-              weight: "2л",
-              price: 70
-            },
-            
-            { id: 3, item: 28, cat: 3, amount: 2, title: "Рисовая лапша Wok с манго С ОВОЩАМИ", weight: "250", weightKind: 'г', price: 169 },
-          ],
-          status: 1, // new, inProgress, done
-          total: 159.98
+      try {
+        const response = await axios.post('/admin/getOrder', {orderId: this.$route.params.id})
+        this.order = response.data
+      } catch (e) {
+        console.log('some fetchOrder error')
+      }
+      this.countTotalSum()
+      this.showSpinner = false
+    },
+    async incrementOrderItem(orderItem){
+      this.showSpinner = true
+      this.order.orderItems.forEach(el => {
+        if(el.item == orderItem.item){
+          el.amount += 1
         }
-        this.countTotalSum()
-        this.showSpinner = false
-      }, 500)
+      })
+      this.countTotalSum(orderItem)
+      try {
+        const response = await axios.post('/admin/incrementOrderItem', {item:orderItem})
+      } catch (e) {
+        console.log('some incrementOrderItem error')
+      }
+      this.showSpinner = false
     },
-    incrementOrderItem(orderItem){
-      this.showSpinner = true
-      setTimeout(()=>{
-        this.order.orderItems.forEach(el => {
-          if(el.item == orderItem.item){
-            el.amount += 1
-          }
-        })
-        this.countTotalSum()
-        this.showSpinner = false
-      }, 500)
-    },
-    decrementOrderItem(orderItem){
+    async decrementOrderItem(orderItem){
         this.order.orderItems.forEach(el => {
           if(el.item == orderItem.item){
             if(el.amount > 1){
               this.showSpinner = true
-              setTimeout(()=>{
-                el.amount -= 1
-                this.countTotalSum()
-                this.showSpinner = false
-              }, 500)
+              el.amount -= 1
             }
           }
+          
         })
+        this.countTotalSum(orderItem)
+        try {
+          const response = await axios.post('/admin/decrementOrderItem', {item:orderItem})
+        } catch (e) {
+          console.log('some incrementOrderItem error')
+        }
+        this.showSpinner = false
     },
     showRemoveOrderItemModal(orderItem){
       this.showDeleteModal = true
@@ -444,46 +432,68 @@ export default {
       this.showDeleteModal = false
       this.menuItemToRemove = {}
     },
-    removeOrderItem(){
+    async removeOrderItem(){
       this.showSpinner = true
       this.showDeleteModal = false
-      setTimeout(() => {
-        this.order.orderItems = this.order.orderItems.filter(a => a.item !== this.menuItemToRemove.item)
-        this.countTotalSum()
-        this.showSpinner = false
-      }, 500)
+      this.order.orderItems = this.order.orderItems.filter(a => a.item !== this.menuItemToRemove.item)
+      this.countTotalSum(this.menuItemToRemove)
+      try {
+        const response = await axios.post('/admin/removeOrderItem', this.menuItemToRemove)
+        console.log(response.data)
+      } catch (e) {
+        console.log('some removeOrderItem error')
+      }
+      this.showSpinner = false
     },
-    removeOrder(){
-      // fetch
-      console.log('remove order id='+this.order.id)
+    async removeOrder(){
+      try {
+        const response = await axios.post('/admin/removeOrder', {order: this.order.id})
+      } catch (e) {
+        console.log('some removeOrder error')
+      }
       this.backToOrders()
     },
-    countTotalSum(){
+    async countTotalSum(orderItem){
       let totalSum = 0
       this.order.orderItems.forEach(el => {
         totalSum += el.amount * el.price
       })
       this.order.total = totalSum.toFixed(2)
+      try {
+        const response = await axios.post('/admin/countOrderTotalSum', {sum:totalSum, order:orderItem.order})
+      } catch (e) {
+        console.log('some order countTotalSum error')
+      }
     },
+
+    // !!!
     fetchMenuItems(query){
       setTimeout(()=>{
         this.menuItems = [
-          { id: 2, item: 25, cat: 1, title: "Coca cola", weight: "0.5", weightKind: 'л', price: 40 },
-          { id: 2, item: 26, cat: 1, title: "Coca cola", weight: "1.0", weightKind: 'л', price: 55 },
-          { id: 2, item: 27, cat: 1, title: "Coca cola", weight: "2.0", weightKind: 'л', price: 70 },
-          { id: 6, item: 21, cat: 5, title: "Суши", weight: "6", weightKind: 'шт', price: 170 },
-          { id: 9, item: 22, cat: 4, title: "Том ям коконат", weight: "250", weightKind: 'г', price: 99.95 },
-          { id: 11, item: 23, cat: 3, title: "Фанта", weight: "2.0", weightKind: 'л', price: 70 },
+          // { id: 2, item: 25, cat: 1, title: "Coca cola", weight: "0.5", weightKind: 'л', price: 40 },
+          // { id: 2, item: 26, cat: 1, title: "Coca cola", weight: "1.0", weightKind: 'л', price: 55 },
+          // { id: 2, item: 27, cat: 1, title: "Coca cola", weight: "2.0", weightKind: 'л', price: 70 },
+          // { id: 6, item: 21, cat: 5, title: "Суши", weight: "6", weightKind: 'шт', price: 170 },
+          // { id: 9, item: 22, cat: 4, title: "Том ям коконат", weight: "250", weightKind: 'г', price: 99.95 },
+          // { id: 11, item: 23, cat: 3, title: "Фанта", weight: "2.0", weightKind: 'л', price: 70 },
         ]
       }, 500)
     },
-    changeOrderStatus(){
+
+
+
+    async changeOrderStatus(){
       this.showSpinner = true
-      setTimeout(() => {
-        this.order.status == 1 ? this.order.status = 2 : this.order.status = 1
-        this.showSpinner = false
-      }, 500);
+      this.order.status == 1 ? this.order.status = 2 : this.order.status = 1
+      try {
+        const response = await axios.post('/admin/changeOrderStatus', {order: this.order})
+      } catch (e) {
+        console.log('some changeOrderStatus error')
+      }
+      this.showSpinner = false
     },
+
+
     backToOrders(){
 			this.$router.push('/admin/orders')
     },
@@ -499,22 +509,26 @@ export default {
       this.saveOrder()
       this.backToOrders()
     },
-    fetchDishesByQuery(){
-      // fetch
+
+
+
+    async fetchDishesByQuery(){
       if(this.searchDish.length > 1 ){
-        this.menuItems = [
-          { id: 3, item: 25, cat: 3, title: "Рисовая лапша Wok с манго С МОРЕПРОДУКТАМИ", weight: "250", weightKind: 'г', price: 249 },
-          { id: 3, item: 26, cat: 3, title: "Рисовая лапша Wok с манго С ТЕЛЯТИНОЙ", weight: "250", weightKind: 'г', price: 229 },
-          { id: 3, item: 27, cat: 3, title: "Рисовая лапша Wok с манго С КУРИНЫМ ФИЛЕ", weight: "250", weightKind: 'г', price: 199 },
-          { id: 6, item: 21, cat: 5, title: "Суши", weight: "6", weightKind: 'шт', price: 170 },
-          { id: 9, item: 22, cat: 4, title: "Том ям коконат", weight: "250", weightKind: 'г', price: 99.95 },
-          { id: 11, item: 23, cat: 3, title: "Фанта", weight: "2.0", weightKind: 'л', price: 70 },
-        ].filter(item => item.title.toLowerCase().includes(this.searchDish.toLowerCase()))
+        try {
+          const response = await axios.post('/admin/fetchDishesByQuery', {query: this.searchDish})
+          this.menuItems = response.data.items
+          this.totalDishesByQuery = response.data.query
+        } catch (e) {
+          console.log(e.response.data)
+          console.log('fetchDishesByQuery error')
+        }
       }else if(this.searchDish.length == 0 ){
         this.menuItems = []
+          this.totalDishesByQuery = 0
       }
     },
     addDishToOrderMenuItems(dish){
+      console.log(dish)
       this.showAddOrderItemsModal = false
       this.showSpinner = true
       setTimeout(()=> {
@@ -526,7 +540,7 @@ export default {
         this.menuItems = []
         this.showSpinner = false
       }, 500)
-      console.log(this.order.orderItems)
+      // console.log(this.order.orderItems)
     },
     // fetchSameOrderItems(){
     //   setTimeout(()=>{
@@ -537,19 +551,23 @@ export default {
     //     ]
     //   }, 500)
     // },
-    showEditOrderItemsModalHandler(item){
+    
+    
+    
+    async showEditOrderItemsModalHandler(item){
       this.showEditOrderItemsModal = true
       this.orderItemToReplace = item
-      // fetch
-      this.sameOrderItems = [
-        { id: 3, item: 25, cat: 3, title: "Рисовая лапша Wok с манго С МОРЕПРОДУКТАМИ", weight: "250", weightKind: 'г', price: 249 },
-        { id: 4, item: 26, cat: 3, title: "Рисовая лапша Wok с манго С ТЕЛЯТИНОЙ", weight: "250", weightKind: 'г', price: 229 },
-        { id: 5, item: 27, cat: 3, title: "Рисовая лапша Wok с манго С КУРИНЫМ ФИЛЕ", weight: "250", weightKind: 'г', price: 199 },
-        { id: 6, item: 21, cat: 5, title: "Суши", weight: "6", weightKind: 'шт', price: 170 },
-        { id: 9, item: 22, cat: 6, title: "Том ям коконат", weight: "250", weightKind: 'г', price: 99.95 },
-        { id: 11, item: 23, cat: 7, title: "Фанта", weight: "2.0", weightKind: 'л', price: 70 },
-      ].filter(i => i.cat == item.cat)
+      try {
+        const response = await axios.post('/admin/showSameOrderItemsByCat', {item:item})
+        console.log(response.data);
+        this.sameOrderItems = response.data
+      } catch (e) {
+        console.log('some showEditOrderItemsModalHandler error')
+      }
     },
+    
+    
+    
     editDishInOrderMenuItems(newOrderItemToReplace){
       this.showEditOrderItemsModal = false
       this.showSpinner = true
