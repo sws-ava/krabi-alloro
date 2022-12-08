@@ -273,16 +273,24 @@
                 type="text" 
               />
             </div>
-              <div class="col-12 mt-2 mb-2">
-                <b>Итого блюд: {{ totalDishesByQuery }}</b>
-              </div>
-            <div v-for="dish in menuItems" :key="dish.item"
+            <div class="col-12 mt-2 mb-2">
+              <b>Итого блюд: {{ totalDishesByQuery }}</b>
+            </div>
+          </div>
+          <div class="row modalItemsScroll">
+            <div v-for="dish in menuItems" :key="dish.id"
               class="col-12 mb-2"
             >
               <div class="d-flex justify-content-between">
-                {{ dish.title_ru }}
+                <div>
+                  <span v-if="dish.title != dish.title_ru">
+                    {{ dish.title }}
+                  </span>
+                   {{ dish.title_ru }}
                 <br>
                 {{ dish.weight }} {{ dish.weightKind }} {{ dish.price }}грн
+                
+                </div>
                 <span 
                   @click="addDishToOrderMenuItems(dish)"
                   class="addDish"
@@ -516,6 +524,7 @@ export default {
       if(this.searchDish.length > 1 ){
         try {
           const response = await axios.post('/admin/fetchDishesByQuery', {query: this.searchDish})
+          console.log(response.data.items)
           this.menuItems = response.data.items
           this.totalDishesByQuery = response.data.query
         } catch (e) {
@@ -527,13 +536,17 @@ export default {
           this.totalDishesByQuery = 0
       }
     },
+
+
+
+    
     addDishToOrderMenuItems(dish){
       console.log(dish)
       this.showAddOrderItemsModal = false
       this.showSpinner = true
       setTimeout(()=> {
         dish.amount = Number(1)
-        dish.price = Number(dish.price.toFixed(2)) 
+        dish.price = Number(dish.price) 
         this.order.orderItems.push(dish)
         this.countTotalSum()
         this.searchDish = ''
@@ -680,5 +693,10 @@ span.edit-item {
   &:hover{
     text-decoration: underline;
   }
+}
+.modalItemsScroll{
+  overflow-y: scroll;
+  max-height: 500px;
+  overflow-x: auto;
 }
 </style>

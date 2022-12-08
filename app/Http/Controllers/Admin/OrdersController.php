@@ -84,17 +84,18 @@ class OrdersController extends Controller
     public function fetchDishesByQuery(Request $request){
         $query = $request['query'];
         
-        $items = GoodsItems::
-            where('title_ru', 'LIKE', "%$query%")
-            ->limit(5)
+        $items = DB::table('goods_items')
+            ->leftJoin('goods', 'goods_items.item', '=', 'goods.id')
+            ->where(DB::raw("CONCAT_WS(' ', goods.title_ru, goods_items.title_ru)"), 'LIKE',  "%$query%")
+            ->select(
+                'goods_items.*',
+                'goods.title_ru AS title',
+            )
             ->get();
-
-        $count = GoodsItems::
-            where('title_ru', 'LIKE', "%$query%")
-            ->count();
         
+        $count = $items->count();
 
-            return ['items' => $items, 'query' => $count];
+        return ['items' => $items, 'query' => $count];
 
     }
 }
