@@ -98,23 +98,39 @@ class OrdersController extends Controller
         return ['items' => $items, 'query' => $count];
 
     }
+
+    public function addDishToOrderMenuItems(Request $request){
+            $goodsItem = GoodsItems::where('id', $request->dish['id'])->first();
+            $goodsItem->title = $goodsItem->title_ru;
+            $goodsItem->order = $request->order;
+            $goodsItem->amount = 1;
+            $catName = Goods::where('id', $goodsItem->item)->first();
+            $goodsItem->catName = $catName->title_ru;
+            $goodsItem->cat = $catName->id;
+            $isMoreDishes = GoodsItems::where('item', $goodsItem->item)->count();
+            $isMoreDishes > 1 ? $goodsItem->isMoreDishes = true : $goodsItem->isMoreDishes = false;
+
+            $newOrderItem = new OrderItems();
+            $newOrderItem->order = $request->order;
+            $newOrderItem->item = $goodsItem->id;
+            $newOrderItem->amount = 1;
+            $newOrderItem->price = $goodsItem->price;
+            $newOrderItem->save();
+            $goodsItem->id = $newOrderItem->id;
+
+            return $goodsItem;
+    }
+
+    public function saveOrder(Request $request){
+        $order = Order::where('id', $request->order['id'])->first();
+
+        $order->address = $request->order['address'];
+        $order->comment = $request->order['comment'];
+        $order->name = $request->order['name'];
+        $order->persons = $request->order['persons'];
+        $order->phone = $request->order['phone'];
+        $order->total = $request->order['total'];
+        $order->save();
+
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-    // id: 2,
-    // item: 37,
-    // cat: 1,
-    // amount: 2,
-    // title: "Coca cola",
-    // weight: "2",
-    // weightKind: "л",
-    // price: 70

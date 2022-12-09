@@ -119,6 +119,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/showSameOrderItemsByCat', [OrdersController::class, 'showSameOrderItemsByCat']);
     Route::post('admin/changeOrderStatus', [OrdersController::class, 'changeOrderStatus']);
     Route::post('admin/fetchDishesByQuery', [OrdersController::class, 'fetchDishesByQuery']);
+    Route::post('admin/addDishToOrderMenuItems', [OrdersController::class, 'addDishToOrderMenuItems']);
+    Route::post('admin/saveOrder', [OrdersController::class, 'saveOrder']);
     
     
 });

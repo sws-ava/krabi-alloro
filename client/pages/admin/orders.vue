@@ -59,6 +59,10 @@
 						<span class="option-title">Адрес:</span>
 						<span class="option-text">{{ order.address }}</span>
 					</div>
+					<div v-if="order.persons" class="mb-2 col-lg-6">
+						<span class="option-title">Персон:</span>
+						<span class="option-text">{{ order.persons }}</span>
+					</div>
 					<div  v-if="order.comment" class="mb-2 col-12">
 						<span class="option-title">Комментарий к заказу:</span>
 						<span class="option-text">{{ order.comment }}</span>

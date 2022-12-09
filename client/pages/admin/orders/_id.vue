@@ -2,6 +2,8 @@
   <div>
     <h5 class="mb-3">Детали заказа</h5>
     <spinner v-if="showSpinner" />
+    
+
     <div>
       <div class="review-header__status mb-2">
         <b>
@@ -55,16 +57,17 @@
             <input 
               v-model="order.persons" 
               class="form-text w-100 form-control" 
-              type="text" 
+              type="number" 
             />
           </div>
-          <div v-if="order.comment" class="form-group mb-2 col-12">
+          <div class="form-group mb-2 col-12">
             <span class="option-title">Комментарий к заказу:</span>
-            <input
+            <textarea
               v-model="order.comment" 
+              style="height: 130px; resize: none;"
               class="form-text w-100 form-control" 
               type="text" 
-            />
+            ></textarea>
           </div>
         </div>
       </div>
@@ -82,7 +85,7 @@
       <div>
         <div
           v-for="(item, idx) in order.orderItems"
-          :key="item.item"
+          :key="item.id"
           class="row mb-4
            d-flex align-items-center"
         >
@@ -92,27 +95,6 @@
               {{item.catName}}
             </span>
             {{ item.title }} {{ item.weight }} {{ item.weightKind }}
-            <span 
-              v-if="item.isMoreDishes"
-              @click="showEditOrderItemsModalHandler(item)"
-              class="edit-item"
-            >
-              <span class="fa-icon-holder">
-                <font-awesome-icon 
-                  :icon="['fas', 'pen']"
-                  style="width:16px; height: 16px"
-                />
-           		</span>
-            </span>
-            <!-- <span class="edit-item ml-4" v-if="item.cat === 5"
-            >
-              <span class="fa-icon-holder">
-                <font-awesome-icon
-                  :icon="['fas', 'plus-circle']"
-                  style="width:17px; height: 17px"
-                />
-              </span>
-            </span> -->
           </div>
 		  <div class="col-lg-2 text-right">
 			{{ item.price }} грн
@@ -276,6 +258,13 @@
             <div class="col-12 mt-2 mb-2">
               <b>Итого блюд: {{ totalDishesByQuery }}</b>
             </div>
+            <div 
+              v-if="searchSpinner"
+              class="spinner-border text-primary spinnerItem mt-4 mb-4 mx-auto" 
+              role="status"
+            >
+              <span class="sr-only">Загрузка...</span>
+            </div>
           </div>
           <div class="row modalItemsScroll">
             <div v-for="dish in menuItems" :key="dish.id"
@@ -310,46 +299,6 @@
           </div>
         </modal-delete-window>
 
-      		<!-- edit(change) item in order modal -->
-        <modal-delete-window
-          :showDeleteModal="showEditOrderItemsModal"
-        >
-          <h5 class="text-center mb-4">Заменить блюдо</h5>
-          <div class="row">
-            <div
-              v-if="!sameOrderItems.length"
-              class="text-center w-100"
-              style="color: red; font-weight: bold;"
-            >
-              Нет похожих блюд
-            </div>
-            <div v-for="sameItem in sameOrderItems" :key="sameItem.id"
-              class="col-12 mb-2"
-            >
-              <div class="d-flex justify-content-between">
-                {{ sameItem.title_ru }}
-                <br>
-                {{ sameItem.weight }}{{ sameItem.weightKind }} {{ sameItem.price }}грн
-                <span 
-                  @click="editDishInOrderMenuItems(sameItem)"
-                  class="addDish"
-                >
-                  Заменить
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex justify-content-around mt-4">
-            <div 
-              @click="showEditOrderItemsModal = false, sameOrderItems = []"
-              class="btn btn-outline-secondary btn-sm"
-            >
-              Отменить
-            </div> 
-          </div>
-        </modal-delete-window>
-
-
   </div>
   
 </template>
@@ -371,6 +320,7 @@ export default {
   data() {
     return {
       showSpinner: false,
+      searchSpinner: false,
       order: {},
       sameOrderItems:[],
       menuItems:[],
@@ -396,7 +346,6 @@ export default {
       } catch (e) {
         console.log('some fetchOrder error')
       }
-      this.countTotalSum()
       this.showSpinner = false
     },
     async incrementOrderItem(orderItem){
@@ -406,7 +355,7 @@ export default {
           el.amount += 1
         }
       })
-      this.countTotalSum(orderItem)
+      this.countTotalSum()
       try {
         const response = await axios.post('/admin/incrementOrderItem', {item:orderItem})
       } catch (e) {
@@ -424,7 +373,7 @@ export default {
           }
           
         })
-        this.countTotalSum(orderItem)
+        this.countTotalSum()
         try {
           const response = await axios.post('/admin/decrementOrderItem', {item:orderItem})
         } catch (e) {
@@ -444,10 +393,9 @@ export default {
       this.showSpinner = true
       this.showDeleteModal = false
       this.order.orderItems = this.order.orderItems.filter(a => a.item !== this.menuItemToRemove.item)
-      this.countTotalSum(this.menuItemToRemove)
+      this.countTotalSum()
       try {
         const response = await axios.post('/admin/removeOrderItem', this.menuItemToRemove)
-        console.log(response.data)
       } catch (e) {
         console.log('some removeOrderItem error')
       }
@@ -461,35 +409,19 @@ export default {
       }
       this.backToOrders()
     },
-    async countTotalSum(orderItem){
+    async countTotalSum(){
       let totalSum = 0
       this.order.orderItems.forEach(el => {
         totalSum += el.amount * el.price
       })
       this.order.total = totalSum.toFixed(2)
       try {
-        const response = await axios.post('/admin/countOrderTotalSum', {sum:totalSum, order:orderItem.order})
+        const response = await axios.post('/admin/countOrderTotalSum', {sum: totalSum, order: this.$route.params.id})
+        
       } catch (e) {
         console.log('some order countTotalSum error')
       }
     },
-
-    // !!!
-    fetchMenuItems(query){
-      setTimeout(()=>{
-        this.menuItems = [
-          // { id: 2, item: 25, cat: 1, title: "Coca cola", weight: "0.5", weightKind: 'л', price: 40 },
-          // { id: 2, item: 26, cat: 1, title: "Coca cola", weight: "1.0", weightKind: 'л', price: 55 },
-          // { id: 2, item: 27, cat: 1, title: "Coca cola", weight: "2.0", weightKind: 'л', price: 70 },
-          // { id: 6, item: 21, cat: 5, title: "Суши", weight: "6", weightKind: 'шт', price: 170 },
-          // { id: 9, item: 22, cat: 4, title: "Том ям коконат", weight: "250", weightKind: 'г', price: 99.95 },
-          // { id: 11, item: 23, cat: 3, title: "Фанта", weight: "2.0", weightKind: 'л', price: 70 },
-        ]
-      }, 500)
-    },
-
-
-
     async changeOrderStatus(){
       this.showSpinner = true
       this.order.status == 1 ? this.order.status = 2 : this.order.status = 1
@@ -500,99 +432,65 @@ export default {
       }
       this.showSpinner = false
     },
-
-
     backToOrders(){
 			this.$router.push('/admin/orders')
     },
-    saveOrder(){
+    async saveOrder(){
       this.showSpinner = true
-      setTimeout(() => {
-        console.log(this.order)
-        // fetch
-        this.showSpinner = false
-      }, 500);
+      try {
+        const response = await axios.post('/admin/saveOrder', {order: this.order})
+        console.log(response.data)
+      } catch (e) {
+        console.log(e.response.data)
+        console.log('saveOrder error')
+      }
+      this.showSpinner = false
     },
     saveOrderAndExit(){
       this.saveOrder()
       this.backToOrders()
     },
-
-
-
     async fetchDishesByQuery(){
+      this.searchSpinner = true
       if(this.searchDish.length > 1 ){
         try {
           const response = await axios.post('/admin/fetchDishesByQuery', {query: this.searchDish})
-          console.log(response.data.items)
           this.menuItems = response.data.items
           this.totalDishesByQuery = response.data.query
         } catch (e) {
-          console.log(e.response.data)
           console.log('fetchDishesByQuery error')
         }
       }else if(this.searchDish.length == 0 ){
         this.menuItems = []
           this.totalDishesByQuery = 0
       }
+      
+      this.searchSpinner = false
     },
-
-
-
-    
-    addDishToOrderMenuItems(dish){
-      console.log(dish)
+    async addDishToOrderMenuItems(dish){
       this.showAddOrderItemsModal = false
       this.showSpinner = true
-      setTimeout(()=> {
-        dish.amount = Number(1)
-        dish.price = Number(dish.price) 
-        this.order.orderItems.push(dish)
+      try {
+        const response = await axios.post('/admin/addDishToOrderMenuItems', {dish : dish, order: this.order.id})
+        this.order.orderItems.push(response.data)
+      } catch (e) {
+        console.log('addDishToOrderMenuItems error')
+      }
         this.countTotalSum()
         this.searchDish = ''
         this.menuItems = []
         this.showSpinner = false
-      }, 500)
-      // console.log(this.order.orderItems)
     },
-    // fetchSameOrderItems(){
-    //   setTimeout(()=>{
-    //     this.sameOrderItems = [
-    //       { id: 4, item: 25, cat: 1, title: "Coca cola", weight: "0.5", weightKind: 'л', price: 40 },
-    //       { id: 5, item: 26, cat: 1, title: "Coca cola", weight: "1.0", weightKind: 'л', price: 55 },
-    //       { id: 6, item: 27, cat: 1, title: "Coca cola", weight: "2.0", weightKind: 'л', price: 70 },
-    //     ]
-    //   }, 500)
-    // },
-    
-    
-    
     async showEditOrderItemsModalHandler(item){
       this.showEditOrderItemsModal = true
       this.orderItemToReplace = item
       try {
         const response = await axios.post('/admin/showSameOrderItemsByCat', {item:item})
-        console.log(response.data);
         this.sameOrderItems = response.data
       } catch (e) {
         console.log('some showEditOrderItemsModalHandler error')
       }
     },
-    
-    
-    
-    editDishInOrderMenuItems(newOrderItemToReplace){
-      this.showEditOrderItemsModal = false
-      this.showSpinner = true
-      setTimeout(() => {
-        this.order.orderItems = this.order.orderItems.filter(a => a.item !== this.orderItemToReplace.item)
-        newOrderItemToReplace.amount = 1
-        this.order.orderItems.push(newOrderItemToReplace)
-        this.countTotalSum()
-        this.showSpinner = false
-      }, 500);
-
-    }
   }
 }
 </script>
