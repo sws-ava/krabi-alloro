@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\InteriorController;
 use App\Http\Controllers\Admin\GoodsCatsController;
 use App\Http\Controllers\Admin\GoodsController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\GoodsItemController;
 use App\Http\Controllers\Admin\OrdersController;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('admin/fetchPage', [PageController::class, 'getPage']);
     Route::post('admin/savePage', [PageController::class, 'savePage']);
 
+    // News
+    Route::post('admin/getNewsByCat', [NewsController::class, 'getNewsByCat']);
+    Route::get('admin/fetchNews', [NewsController::class, 'fetchNews']);
+    Route::post('admin/saveNews', [NewsController::class, 'saveNews']);
+    Route::post('admin/addNews', [NewsController::class, 'addNews']);
+    Route::post('admin/deleteNews', [NewsController::class, 'deleteNews']);
+    Route::post('admin/showPage', [NewsController::class, 'showPage']);
+    
     // Gallery
     Route::get('admin/getPhotos', [GalleryController::class, 'getPhotos']);
     Route::post('admin/photoOrderLeft', [GalleryController::class, 'orderLeft']);

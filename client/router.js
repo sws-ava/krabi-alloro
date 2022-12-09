@@ -32,6 +32,11 @@ const routes = [
   {path: '/admin/pages', name: 'admin-pages', component: page('admin/pages.vue')},
   {path: '/admin/page-edit/:id?', name: 'page-edit', component: page('admin/page/_id.vue')},
 
+  // admin news
+  {path: '/admin/news', name: 'admin-news', component: page('admin/news.vue')},
+  {path: '/admin/news-edit/:id?', name: 'news-edit', component: page('admin/news/_id.vue')},
+  {path: '/admin/news/add', name: 'admin-news-add', component: page('admin/news/add.vue')},
+
   // admin reviews
   {path: '/admin/reviews', name:'admin-reviews', component: page('admin/reviews.vue')},
 

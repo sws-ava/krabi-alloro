@@ -57,10 +57,13 @@
 				Интерьер
 			</router-link>
 
-			<a class="nav-link" href="#">!Новости / Акции</a>
-			<a class="nav-link" href="#">!Блок с уведомлением</a>
-			<span
-			 class="nav-link" href="#">!Блоки на сайте</span>
+			<router-link
+				:to="{name: 'admin-news'}"
+				class="nav-link"
+			>
+				Новости / Акции
+			</router-link>
+			<span class="nav-link" href="#">!Блоки на сайте</span>
 		</nav>
 </div>
 </template>

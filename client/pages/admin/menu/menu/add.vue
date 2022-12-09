@@ -126,7 +126,6 @@ export default {
 				this.showSpinner = true	
 				try {
 					const response = await axios.post('/admin/addItem', {item: this.item})
-					console.log(response.data)
 					this.$router.push('/admin/menu/'+response.data)
 				} catch (e) {
 					console.log('some saveItem error')
