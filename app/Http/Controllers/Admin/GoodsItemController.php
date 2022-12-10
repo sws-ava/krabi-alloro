@@ -106,24 +106,19 @@ class GoodsItemController extends Controller
         }
     }
     public function editItem(Request $request){
-
-
-        $countGoodsInCat = Goods::where('category', $request->item['category'])->orderBy('order', 'asc')->get();
-        $countGoodsInCat = $countGoodsInCat->count();
-
+        $countGoodsInCat = Goods::where('category', $request->item['category'])->orderBy('order', 'asc')->count();
         $item = Goods::where('id', $request->item['id'])->first();
-
-        $oldItemCat = $item->category;
         $oldItemsInCat = Goods::where('category', $item->category)->where('id', '!=',  $item->id)->orderBy('order', 'asc')->get();
-
-        $i = 1;
-        foreach ($oldItemsInCat as $it){
-            $it = Goods::where('id', $it->id)->first();
-            $it->order = $i;
-            $it->save();
-            $i++;
+        if($request->item['category'] != $item->category){
+            $i = 1;
+            foreach ($oldItemsInCat as $it){
+                $it = Goods::where('id', $it->id)->first();
+                $it->order = $i;
+                $it->save();
+                $i++;
+            }
+            $item->order = $countGoodsInCat + 1;
         }
-
         $item->title_ru = $request->item['title_ru'];
         $item->title_ua = $request->item['title_ua'];
         $item->description_ru = $request->item['description_ru'];
@@ -132,9 +127,6 @@ class GoodsItemController extends Controller
         $item->desc_ua = $request->item['desc_ua'];
         $item->category = $request->item['category'];
         $item->slug = $request->item['slug'];
-
-        $item->order = $countGoodsInCat + 1;
-
         $item->save();
     }
     public function addItem(Request $request){

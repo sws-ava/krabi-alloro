@@ -161,7 +161,6 @@ export default {
   methods:{
 		async addPage(){
 			this.showSpinner = true
-      console.log(this.page)
       if(this.page.title_ru && this.page.title_ua && this.page.description_ru && this.page.description_ua && this.page.cat){
         try {
           const response = await axios.post('/admin/addNews', {page: this.page})

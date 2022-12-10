@@ -5,21 +5,20 @@
         <!-- {{ appName }} -->
         Krabi
       </router-link>
-
-      <!-- <button :aria-label="$t('toggle_navigation')" class="navbar-toggler" type="button"
+ <button :aria-label="$t('toggle_navigation')" class="navbar-toggler" type="button"
               data-toggle="collapse" data-target="#navbarToggler"
               aria-controls="navbarToggler" aria-expanded="false"
       >
         <span class="navbar-toggler-icon" />
-      </button> -->
+      </button>
 
       <div id="navbarToggler" class="collapse navbar-collapse">
-        <!-- <ul class="navbar-nav">
+        <ul class="navbar-nav">
           <locale-dropdown />
           <li class="nav-item">
             <a class="nav-link" href="#">Link</a>
           </li>
-        </ul> -->
+        </ul>
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link :to="{name: 'dashboard'}">

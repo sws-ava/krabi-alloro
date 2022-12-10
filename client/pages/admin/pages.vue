@@ -8,6 +8,7 @@
 				<tr>
 				<th scope="col">ID</th>
 				<th scope="col">Заголовок</th>
+				<th scope="col">Просмотров</th>
 				<th scope="col"></th>
 				</tr>
 			</thead>
@@ -15,6 +16,7 @@
 				<tr v-for="page in pages" :key="page.id">
 					<th scope="row">{{ page.id }}</th>
 					<td>{{page.title_ru}}</td>
+					<td>{{page.views}}</td>
 					<td>
 						<router-link 
 							:to="'/admin/page-edit/'+page.id"  

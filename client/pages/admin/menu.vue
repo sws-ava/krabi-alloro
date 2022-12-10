@@ -19,24 +19,8 @@
 				</router-link>
 			</div>
 		</div>
-		<!-- <div class="row seacrh-block mt-4">
-			<div class="form-group col-md-12">
-				<input 
-					type="text" 
-					class="form-control" 
-					placeholder="Поиск"
-				>
-			</div>
-		</div> -->
 		<div class="row seacrh-block mt-4">
 			<div class="form-group col-md-12 mt-4">
-				<!-- <span 
-					:style="$store.state.adminMenuItems.choosedCategory === 'All' ? 'font-weight: bold' : ''"
-					@click="fetchItems()"
-					class="categoryBtn"
-				>
-					Всё	
-				</span> -->
 				<span 
 					@click="getItemsByCategory(cat.id)"
 					v-for="cat in categories" :key="cat.id"

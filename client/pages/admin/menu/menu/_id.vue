@@ -606,23 +606,18 @@ export default {
 				this.item = response.data
 			} catch (e) {
 				console.log('some fetchItem error')
-				// console.log(e.response.data)
 			}
 			
 			this.orderSubItems()
-			// this.showSpinner = false
 		},
 		async fetchCategories(){
-			// this.showSpinner = true	
 			try {
 				const response = await axios.get('/admin/getGoodsCats')
 				this.categories = response.data
 			} catch (e) {
 				console.log('some fetchCategories error')
-				// console.log(e.response.data)
 			}
 			
-			// this.orderSubItems()
 			this.showSpinner = false
 		},
 
@@ -717,7 +712,7 @@ export default {
 			this.showSpinner = true
 			try {
 				const response = await axios.post('/admin/editItem', {item : this.item})
-				// console.log(response.data)
+				console.log(response.data)
 			} catch (e) {
 				console.log('some saveItem error')
 			}

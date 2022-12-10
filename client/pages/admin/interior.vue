@@ -193,14 +193,14 @@ export default {
 			}
 
 
-				this.photos = this.photos.filter(r => r.id !== photo.id)
-				let i = 1
-				this.photos.forEach(el => {
-					el.order = i
-					i++
-				})
-				this.sortPhotos()
-				this.showSpinner = false
+			this.photos = this.photos.filter(r => r.id !== photo.id)
+			let i = 1
+			this.photos.forEach(el => {
+				el.order = i
+				i++
+			})
+			this.sortPhotos()
+			this.showSpinner = false
 		},
 		showDelModal(photo){
 			this.showDeleteModal = true
