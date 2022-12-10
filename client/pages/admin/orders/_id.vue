@@ -307,6 +307,7 @@
 import Spinner from '@/components/admin/spinner.vue';
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
 import axios from 'axios';
+import { mapActions } from 'vuex'
 
 export default {
   components:{
@@ -427,6 +428,7 @@ export default {
       this.order.status == 1 ? this.order.status = 2 : this.order.status = 1
       try {
         const response = await axios.post('/admin/changeOrderStatus', {order: this.order})
+        this.getUnreadedOrders()
       } catch (e) {
         console.log('some changeOrderStatus error')
       }
@@ -491,6 +493,10 @@ export default {
         console.log('some showEditOrderItemsModalHandler error')
       }
     },
+    
+    ...mapActions({
+      getUnreadedOrders: 'countMenuNums/getOrders',
+    }),
   }
 }
 </script>

@@ -20,10 +20,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import Navbar from '~/components/Navbar'
 import AdminNavigation from '@/components/admin/adminNavigation.vue'
 
+import axios from 'axios'
 
 
 
@@ -39,19 +40,27 @@ export default {
 		
     }
   },
+  mounted(){
+	this.getUnreadedMessages()
+  },
   methods:{
-    // countReviews(countReviews){
-		// mapMutations({
-		// 	store.commit('increment', 10),
-		// })
-		// this.countReviews = countReviews
-	// }
+	async getUnreadedMessages(){
+		try {
+			const response = await axios.get('/admin/getUnreadedMessages')
+			this.setReviews(response.data.reviews)
+			this.setFeedbacks(response.data.feedbacks)
+			this.setOrders(response.data.orders)
+		} catch (e) {
+			console.log(e)
+		}
+	},
+	...mapMutations({
+		setReviews: 'countMenuNums/SET_REVIEWS',
+		setFeedbacks: 'countMenuNums/SET_FEEDBACKS',
+		setOrders: 'countMenuNums/SET_ORDERS',
+	}),
 	
   },
-
-//   computed: mapGetters({
-//     countUnreadedReviews: 'countMenuNums/countUnreadedReviews'
-//   }),
 }
 
 </script>

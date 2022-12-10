@@ -10,8 +10,9 @@
 				class="nav-link"
 			>
 				Заказы с сайта
-				<span>2</span>
-				<span class="order-in-progress">2</span>
+				<span v-if="countUnreadedOrders">
+					{{countUnreadedOrders}}
+				</span>
 			</router-link>
 			<router-link 
 				:to="{name: 'admin-reviews'}" 
@@ -83,7 +84,8 @@ export default {
   computed: mapGetters({
 	
     countUnreadedReviews: 'countMenuNums/countUnreadedReviews',
-    countUnreadedFeedbacks: 'countMenuNums/countUnreadedFeedbacks'
+    countUnreadedFeedbacks: 'countMenuNums/countUnreadedFeedbacks',
+    countUnreadedOrders: 'countMenuNums/countUnreadedOrders'
   })
 	
 }

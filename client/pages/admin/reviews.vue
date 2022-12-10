@@ -141,9 +141,9 @@ export default {
 			try {
 				const response = await axios.get('/admin/getReviews')
 				this.reviews = response.data
+				this.setUnrededReviews()
 			} catch (e) {
 				console.log('some fetchReviews error')
-				console.log(e.response.data)
 			} finally {
 				this.showSpinner = false
 			}
@@ -155,7 +155,6 @@ export default {
 				this.fetchReviews()
 			} catch (e) {
 				console.log('some publishReview error')
-				console.log(e.response.data)
 			} finally {
 				this.setUnrededReviews()
 			}
@@ -167,7 +166,6 @@ export default {
 				this.fetchReviews()
 			} catch (e) {
 				console.log('some hideReview error')
-				console.log(e.response.data)
 			} finally {
 				this.setUnrededReviews()
 			}
@@ -180,7 +178,6 @@ export default {
 				this.fetchReviews()
 			} catch (e) {
 				console.log('some reviewRemove error')
-				console.log(e.response.data)
 			} finally {
 				this.setUnrededReviews()
 			}
@@ -221,31 +218,25 @@ export default {
 				this.fetchReviews()
 			} catch (e) {
 				console.log('some saveReview error')
-				console.log(e.response.data)
 			} finally {
 				this.setUnrededReviews()
 			}
-
-
-
-			setTimeout(() => {
-				this.reviews.forEach(element => {
-					if(element.id === reviewToEdit.id){
-						element.text = reviewToEdit.text
-						element.answer = reviewToEdit.answer
-					}
-				});
-				this.showSpinner = false
-			}, 500)	
+			this.reviews.forEach(element => {
+				if(element.id === reviewToEdit.id){
+					element.text = reviewToEdit.text
+					element.answer = reviewToEdit.answer
+				}
+			});
+			this.showSpinner = false
 		},
 		setUnrededReviews(){
 			let num = 0
 			this.reviews.forEach(element => {
-				if(element.show === false){
+				if(element.show === 0){
 					num++
 				}
 			});
-			this.$store.commit('countMenuNums/SET_UNREADEDREVIEWS', num);
+			this.$store.commit('countMenuNums/UPDATE_REVIEWS', num);
 		},
 		
 

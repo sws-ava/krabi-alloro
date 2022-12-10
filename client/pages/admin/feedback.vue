@@ -75,6 +75,7 @@ export default {
 			try {
 				const feed = await axios.get('/admin/getFeedbacks')
 				this.feedbacks = feed.data
+				this.setUnrededFeedbacks()
 			} catch (e) {
 				console.log('some fetchFeedbacks error')
 			} finally {
@@ -86,7 +87,6 @@ export default {
 			try {
 				const response = await axios.post('/admin/feedbackReaded', {feedbackId: feedbackId})
 				this.fetchFeedbacks()
-				this.setUnrededFeedbacks()
 			} catch (e) {
 				console.log('some feedbackReaded error')
 			} finally {
@@ -97,7 +97,6 @@ export default {
 			try {
 				const response = await axios.post('/admin/feedbackNotReaded', {feedbackId: feedbackId})
 				this.fetchFeedbacks()
-				this.setUnrededFeedbacks()
 			} catch (e) {
 				console.log('some feedbackNotReaded error')
 			} finally {
@@ -125,13 +124,14 @@ export default {
 			this.showDeleteModal = true
 		},
 		setUnrededFeedbacks(){
+			
 			let num = 0
 			this.feedbacks.forEach(element => {
-				if(element.isRead == false){
+				if(element.isRead == 0){
 					num++
 				}
 			});
-			this.$store.commit('countMenuNums/SET_UNREADEDFEEDBACKS', num);
+			this.$store.commit('countMenuNums/UPDATE_FEEDBACKS', num);
 		},
 		sortFeedbacksByReaded(){
 			this.feedbacks = this.feedbacks.sort((a,b) => a.id + b.id)

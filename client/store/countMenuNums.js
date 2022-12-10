@@ -1,45 +1,58 @@
+import axios from 'axios'
 
 // state
 export const state = () => ({
-  countUnreadedReviews: 1,
-  countUnreadedFeedbacks: 4,
+  reviews: 0,
+  feedbacks: 0,
+  orders: 0,
 })
 
 // getters
 export const getters = {
-  countUnreadedReviews: state => state.countUnreadedReviews,
-  countUnreadedFeedbacks: state => state.countUnreadedFeedbacks,
+  countUnreadedReviews: state => state.reviews,
+  countUnreadedFeedbacks: state => state.feedbacks,
+  countUnreadedOrders: state => state.orders,
 }
 
 // mutations
 export const mutations = {
-  SET_UNREADEDREVIEWS(state, countUnreadedReviews){
-    state.countUnreadedReviews = countUnreadedReviews
+  SET_REVIEWS(state, reviews){
+    state.reviews = reviews
   },
-  SET_UNREADEDFEEDBACKS(state, countUnreadedFeedbacks){
-    state.countUnreadedFeedbacks = countUnreadedFeedbacks
-  },
-
-  UPDATE_UNREADEDREVIEWS (state, { countUnreadedReviews }) {
-    state.countUnreadedReviews = countUnreadedReviews
+  SET_FEEDBACKS(state, feedbacks){
+    state.feedbacks = feedbacks
   },
 
-  UPDATE_UNREADEDFEEDBACKS (state, { countUnreadedFeedbacks }) {
-    state.countUnreadedFeedbacks = countUnreadedFeedbacks
-  }
+  SET_ORDERS( state, orders ){
+    state.orders = orders
+  },
+
+  UPDATE_REVIEWS (state, reviews ) {
+    state.reviews = reviews
+  },
+
+  UPDATE_FEEDBACKS (state,  feedbacks ) {
+    state.feedbacks = feedbacks
+  },
 }
 
 // actions
 export const actions = {
-  updateCountUnreadedReviews ({ countUnreadedReviews }, payload) {
-    commit('UPDATE_UNREADEDFEEDBACKS', payload)
-  },
-  async countUnreadedFeedbacks(){
-    try {
-      let response = await axios.get('/admin/getUnreadedFeedbacksAndReviews')
-      commit('UPDATE_UNREADEDFEEDBACKS', response.data)
-    } catch (e) {
-      console.log('some updateCountUnreadedReviews error')
-    } 
-  },
+  setReviews({commit}, reviews){
+		commit('SET_REVIEWS', reviews)
+	},
+  setFeedbacks({commit}, feedbacks){
+		commit('SET_REVIEWS', feedbacks)
+	},
+  setOrders({commit}, orders){
+		commit('SET_ORDERS', orders)
+	},
+  async getOrders({commit}, orders){
+		try {
+			const response = await axios.get('/admin/getUnreadedOrders')
+      commit('SET_ORDERS', response.data.orders)
+		} catch (e) {
+			console.log(e)
+		}
+	},
 }

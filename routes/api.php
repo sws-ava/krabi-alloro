@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\GoodsController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\GoodsItemController;
 use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\Admin\SubMainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,9 +41,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
 
-
-    Route::get('admin/getUnreadedFeedbacksAndReviews', [FeedbackController::class, 'getUnreadedFeedbacksAndReviews']);
-
+    // SubMain 
+    Route::get('admin/getUnreadedMessages', [SubMainController::class, 'getUnreadedMessages']);
+    Route::get('admin/getUnreadedOrders', [SubMainController::class, 'getUnreadedOrders']);
+    
     // Feedbacks
     Route::get('admin/getFeedbacks', [FeedbackController::class, 'getFeedbacks']);
     Route::post('admin/feedbackReaded', [FeedbackController::class, 'feedbackReaded']);
