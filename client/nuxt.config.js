@@ -21,11 +21,11 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Pizza' }
+      // { hid: 'description', name: 'description', content: 'Pizza' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    ],
   },
 
   loading: { color: '#007bff' },
@@ -35,7 +35,7 @@ module.exports = {
   },
 
   css: [
-    { src: '~assets/sass/app.scss', lang: 'scss' },
+    // { src: '~assets/sass/app.scss', lang: 'scss' },
     'quill/dist/quill.core.css',
     'quill/dist/quill.snow.css',
   ],
@@ -47,7 +47,7 @@ module.exports = {
     '~plugins/axios',
     '~plugins/fontawesome',
     '~plugins/nuxt-client-init',
-    { src: '~plugins/bootstrap', mode: 'client' },
+    // { src: '~plugins/bootstrap', mode: 'client' },
     { src: '~plugins/nuxt-quill-plugin', ssr: false }
   ],
 

@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .simple-layout {
   color: #636b6f;
   height: 100vh;

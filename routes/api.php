@@ -41,6 +41,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
 
+
+
+    
+
+
+    // Admin
+
     // SubMain 
     Route::get('admin/getUnreadedMessages', [SubMainController::class, 'getUnreadedMessages']);
     Route::get('admin/getUnreadedOrders', [SubMainController::class, 'getUnreadedOrders']);
@@ -148,4 +155,14 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::post('oauth/{driver}', [OAuthController::class, 'redirect']);
     Route::get('oauth/{driver}/callback', [OAuthController::class, 'handleCallback'])->name('oauth.callback');
+
+    
 });
+
+
+
+    // Client
+    Route::get('getMainPage', [PageController::class, 'getMainPage']);
+    Route::get('getConcept', [PageController::class, 'getConcept']);
+    Route::get('getContacts', [PageController::class, 'getContacts']);
+    Route::get('getDelivery', [PageController::class, 'getDelivery']);

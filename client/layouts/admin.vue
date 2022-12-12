@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 import Navbar from '~/components/Navbar'
 import AdminNavigation from '@/components/admin/adminNavigation.vue'
 
@@ -33,6 +33,11 @@ export default {
     Navbar,
 	AdminNavigation
   },
+	head: {
+		link: [
+			{rel: 'stylesheet', type: 'text/css', href: '/css/dashboard.css'}
+		]
+	},
 
   
   data(){
@@ -66,7 +71,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 	.container{
 		max-width: 1280px!important;
 	}

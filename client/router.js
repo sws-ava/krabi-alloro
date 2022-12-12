@@ -7,10 +7,10 @@ Vue.use(Router)
 const page = path => () => import(`~/pages/${path}`).then(m => m.default || m)
 
 const routes = [
-  { path: '/', name: 'welcome', component: page('welcome.vue') },
+
 
   { path: '/login', name: 'login', component: page('auth/login.vue') },
-  { path: '/register', name: 'register', component: page('auth/register.vue') },
+  // { path: '/register', name: 'register', component: page('auth/register.vue') },
   { path: '/password/reset', name: 'password.request', component: page('auth/password/email.vue') },
   { path: '/password/reset/:token', name: 'password.reset', component: page('auth/password/reset.vue') },
   { path: '/email/verify/:id', name: 'verification.verify', component: page('auth/verification/verify.vue') },
@@ -62,6 +62,14 @@ const routes = [
 
   // admin interior
   {path: '/admin/interior', name: 'admin-interior', component: page('admin/interior.vue')},
+
+  
+  // Site pages
+
+  { path: '/', name: 'main-page', component: page('mainPage.vue') },
+  { path: '/kontseptsiya', name: 'kontseptsiya', component: page('concept.vue') },
+  { path: '/kontakty', name: 'contacts', component: page('contacts.vue') },
+  { path: '/dostavka', name: 'delivery', component: page('delivery.vue') },
 ]
 
 export function createRouter () {

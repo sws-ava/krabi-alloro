@@ -26,4 +26,24 @@ class PageController extends Controller
         $page->content_ua = $request->page['content_ua'];
         $page->save();
     }
+
+
+    // client
+    
+    public function getMainPage(){
+        $page = Page::where('id', 1)->first();
+        return $page;
+    }
+    public function getConcept(){
+        $page = Page::where('id', 2)->first();
+        return $page;
+    }
+    public function getContacts(){
+        $page = Page::where('id', 3)->first();
+        return $page;
+    }
+    public function getDelivery(){
+        $page = Page::where('id', 4)->first();
+        return $page;
+    }
 }
