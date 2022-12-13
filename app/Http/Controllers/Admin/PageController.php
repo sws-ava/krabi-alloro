@@ -34,7 +34,7 @@ class PageController extends Controller
         $page = Page::where('id', 1)->first();
         return $page;
     }
-    public function getConcept(){
+    public function getConcept(Request $request){
         $page = Page::where('id', 2)->first();
         return $page;
     }

@@ -1,11 +1,25 @@
 <template>
-  <li class="nav-item dropdown">
+  <!-- <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" role="button"
        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
     >
       {{ locales[locale] }}
     </a>
     <div class="dropdown-menu">
+      <a v-for="(value, key) in locales" :key="key" class="dropdown-item" href="#"
+         @click.prevent="setLocale(key)"
+      >
+        {{ value }}
+      </a>
+    </div>
+  </li> -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+    >
+      {{ locales[locale] }}
+    </a>
+    <div >
       <a v-for="(value, key) in locales" :key="key" class="dropdown-item" href="#"
          @click.prevent="setLocale(key)"
       >
@@ -29,7 +43,6 @@ export default {
     setLocale (locale) {
       if (this.$i18n.locale !== locale) {
         loadMessages(locale)
-
         this.$store.dispatch('lang/setLocale', { locale })
       }
     }

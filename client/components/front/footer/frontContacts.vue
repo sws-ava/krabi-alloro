@@ -8,7 +8,8 @@
 					<div class="cell-sm-12 text-center text-sm-left offset-top-110">
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">Адрес:</span></div>
-							<div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div>
+							<div class="unit-body"><a href="#" class="text-base">{{ $t('address')}}</a></div>
+							<!-- <div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div> -->
 						</div>
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">Телефоны:</span></div>
@@ -40,7 +41,7 @@
 				</div>
 				</div>
 				<div class="cell-sm-6">
-					<div class="img-wrap-1"><img src="images/cont.jpg">
+					<div class="img-wrap-1"><img src="/images/cont.jpg">
 					</div>
 				</div>
 				<div class="cell-xs-12 offset-top-42">

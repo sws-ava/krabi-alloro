@@ -29,7 +29,7 @@
 
         <ul class="navbar-nav ml-auto">
           <!-- Authenticated -->
-          <li v-if="user" class="nav-item dropdown">
+          <!-- <li v-if="user" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-dark"
                href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
             >
@@ -37,16 +37,21 @@
               {{ user.name }}
             </a>
             <div class="dropdown-menu">
-              <!-- <router-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
+              <router-link :to="{ name: 'settings.profile' }" class="dropdown-item pl-3">
                 {{ $t('settings') }}
-              </router-link> -->
+              </router-link>
 
-              <div class="dropdown-divider" />
               <a class="dropdown-item pl-3" href="#" @click.prevent="logout">
                 {{ $t('logout') }}
               </a>
             </div>
-          </li>
+            
+          </li> -->
+            <li v-if="user" class="nav-item">
+              <a class="nav-link dropdown-toggle text-dark pl-3" href="#" @click.prevent="logout">
+                {{ $t('logout') }}
+              </a>
+            </li>
           <!-- Guest -->
           <template v-else>
             <li class="nav-item">

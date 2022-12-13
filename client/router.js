@@ -4,6 +4,7 @@ import { scrollBehavior } from '~/utils'
 
 Vue.use(Router)
 
+
 const page = path => () => import(`~/pages/${path}`).then(m => m.default || m)
 
 const routes = [
@@ -66,10 +67,15 @@ const routes = [
   
   // Site pages
 
+  // { path: '/', name: 'main-page___ru', component: page('mainPage.vue') },
   { path: '/', name: 'main-page', component: page('mainPage.vue') },
+  { path: '/ua/', name: 'main-page-ua', component: page('mainPageUa.vue') },
   { path: '/kontseptsiya', name: 'kontseptsiya', component: page('concept.vue') },
-  { path: '/kontakty', name: 'contacts', component: page('contacts.vue') },
-  { path: '/dostavka', name: 'delivery', component: page('delivery.vue') },
+  { path: '/ua/kontseptsiya', name: 'kontseptsiya-ru', component: page('conceptUa.vue') },
+//   { path: '/kontakty', name: 'contacts___ru', component: page('contacts.vue') },
+//   { path: '/ua/kontakty', name: 'contacts___ua', component: page('contacts.vue') },
+//   { path: '/dostavka', name: 'delivery___ru', component: page('delivery.vue') },
+//   { path: '/ua/dostavka', name: 'delivery___ua', component: page('delivery.vue') },
 ]
 
 export function createRouter () {

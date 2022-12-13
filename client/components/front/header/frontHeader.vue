@@ -9,7 +9,9 @@
                 <div class="rd-navbar-address">
                   <div class="unit unit-horizontal unit-spacing-xs">
                     <div class="unit-left"><span class="icon icon-xxs mdi mdi-map-marker"></span></div>
+                    <!-- <div class="unit-body"><a href="#" class="text-base">{{ $t('address')}}</a></div> -->
                     <div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div>
+
 					<div class="unit-left">
 						<a target="_blank" style="padding-left: 2em;" href="https://www.facebook.com/krabisushicafe/">
 							<span class="icon icon-sm mdi mdi-facebook"></span>
@@ -33,9 +35,13 @@
                     <div class="unit-left"><span class="icon icon-xxs mdi mdi-clock"></span></div>
                     <div class="unit-body">
                     	<time datetime="2016">10:00 - 23:30</time>
-						<div style="margin-top: 10px; text-align: revert; display: flex; justify-content: flex-end; gap: 6px;">
-							<a href="/">RU</a> | <a href="http://ua.sushi-krabi.od.ua">UKR</a>
-						</div>
+						<front-locales />
+						
+						<!-- <nuxt-link :to="localePath('/')">{{ $t('welcome1') }}</nuxt-link>
+
+						<nuxt-link :to="switchLocalePath('ua')">Ukrainian</nuxt-link>
+						<nuxt-link :to="switchLocalePath('ru')">Russian</nuxt-link> -->
+
                     </div>
                   </div>
                 </div>
@@ -49,8 +55,13 @@
                   <button data-rd-navbar-toggle=".rd-navbar-nav-wrap" type="submit" class="rd-navbar-toggle"><span></span></button>
                   <!-- Little logo-->
 				  
+					<router-link 
+						:to="{ path: '/' }" 
+						class="little-logo"
+					>
+						<img src="/images/logo-mini.png">
+					</router-link>
 
-				  <a class="little-logo" href="/"><img src="/images/logo-mini.png"></a>
 				  <!-- RD Navbar Brand-->
                   <div class="rd-navbar-brand">
 					<router-link 
@@ -108,9 +119,15 @@
 
 <script>
 
+import frontLocales from '@/components/front/header/frontLocales.vue'
+
 
 export default {
-  	
+  	components: {
+		frontLocales,
+	}
+
+
 }
 
 </script>

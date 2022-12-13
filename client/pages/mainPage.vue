@@ -1,6 +1,9 @@
 <template>
-<div>
-  <div v-html="page.content_ru"></div>
+  <div>
+    {{ $t('ttl') }}
+
+    
+    <div v-html="page.content_ru"></div>
   </div>
 </template>
 
@@ -29,7 +32,12 @@ export default {
         page: {}
       }
     },
+    computed: mapGetters({
+      locale: 'lang/locale',
+      locales: 'lang/locales'
+    }),
     async fetch() {
+			console.log('main Page vue')
       this.page = await fetch(
         process.env.imagesBaseUrl + 'api/getMainPage'
       ).then(res => res.json())

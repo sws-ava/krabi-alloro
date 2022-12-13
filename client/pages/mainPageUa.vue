@@ -3,7 +3,7 @@
     {{ $t('ttl') }}
 
     
-    <div v-html="page.content_ru"></div>
+    <div v-html="page.content_ua"></div>
   </div>
 </template>
 
@@ -37,8 +37,9 @@ export default {
       locales: 'lang/locales'
     }),
     async fetch() {
+			console.log('main Page ua vue')
       this.page = await fetch(
-        process.env.imagesBaseUrl + 'api/getConcept'
+        process.env.imagesBaseUrl + 'api/getMainPage'
       ).then(res => res.json())
     }
   }

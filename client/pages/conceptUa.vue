@@ -3,7 +3,7 @@
     {{ $t('ttl') }}
 
     
-    <div v-html="page.content_ru"></div>
+    <div v-html="page.content_ua"></div>
   </div>
 </template>
 

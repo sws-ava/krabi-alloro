@@ -37,5 +37,10 @@
   "failed_to_verify_email": "Failed to verify email.",
   "verify_email_address": "We sent you an email with an the verification link.",
   "dashboard_title": "Dashboard",
-  "ttl": "Название en"
+  "ttl": "Название на ру",
+  "main_title": "Концепция",
+  "main_desc": "Кафе японской и тайской кухни в Одессе Краби Суши. Акции, подарки, скидки. Доставка суши Krabi Одесса. Уютная атмосфера, перенесет вас в атмосферу востока. ",
+  "main_cont": "контент концепции на ру",
+  "address": "г. Одесса, Греческая площадь / Дерибасовская"
+
 }
