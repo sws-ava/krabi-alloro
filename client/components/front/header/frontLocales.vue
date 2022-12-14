@@ -23,26 +23,26 @@ export default {
   }),
 
   methods: {
-    setLocale (locale) {
-		console.log(locale)
-		console.log(this.$i18n.locale)
-		if(locale != 'ru'){
-			let pathArr = this.$route.fullPath.split('/')
-			if(pathArr[1] != locale){
-				this.$router.push('/'+locale+this.$route.fullPath)
-			}
-		}else{
+    // setLocale (locale) {
+	// 	console.log(locale)
+	// 	console.log(this.$i18n.locale)
+	// 	if(locale != 'ru'){
+	// 		let pathArr = this.$route.fullPath.split('/')
+	// 		if(pathArr[1] != locale){
+	// 			this.$router.push('/'+locale+this.$route.fullPath)
+	// 		}
+	// 	}else{
 
-			let path = this.$route.fullPath.replace('/ua/', '/')
-			// this.$store.dispatch('lang/setLocale', { locale: 'ru' })
-			this.$router.push(path)
-		}
+	// 		let path = this.$route.fullPath.replace('/ua/', '/')
+	// 		// this.$store.dispatch('lang/setLocale', { locale: 'ru' })
+	// 		this.$router.push(path)
+	// 	}
 	
-		// if (this.$i18n.locale !== locale) {
-			loadMessages(locale)
-			this.$store.dispatch('lang/setLocale', { locale })
-		// }
-    }
+	// 	// if (this.$i18n.locale !== locale) {
+	// 		loadMessages(locale)
+	// 		this.$store.dispatch('lang/setLocale', { locale })
+	// 	// }
+    // }
   }
 }
 

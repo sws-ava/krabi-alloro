@@ -66,12 +66,15 @@ const routes = [
 
   
   // Site pages
-
+  { path: '/', name: 'mainPage___ru', component: page('mainPage.vue') },
+  { path: '/ua/', name: 'mainPage___ua', component: page('mainPage.vue') },
+  { path: '/kontseptsiya', name: 'kontseptsiya___ru', component: page('concept.vue') },
+  { path: '/ua/kontseptsiya', name: 'kontseptsiya___ua', component: page('concept.vue') },
   // { path: '/', name: 'main-page___ru', component: page('mainPage.vue') },
-  { path: '/', name: 'main-page', component: page('mainPage.vue') },
-  { path: '/ua/', name: 'main-page-ua', component: page('mainPageUa.vue') },
-  { path: '/kontseptsiya', name: 'kontseptsiya', component: page('concept.vue') },
-  { path: '/ua/kontseptsiya', name: 'kontseptsiya-ru', component: page('conceptUa.vue') },
+  // { path: '/', name: 'main-page', component: page('mainPage.vue') },
+  // { path: '/ua/', name: 'main-page-ua', component: page('mainPageUa.vue') },
+  // { path: '/kontseptsiya', name: 'kontseptsiya', component: page('concept.vue') },
+  // { path: '/ua/kontseptsiya', name: 'kontseptsiya-ru', component: page('conceptUa.vue') },
 //   { path: '/kontakty', name: 'contacts___ru', component: page('contacts.vue') },
 //   { path: '/ua/kontakty', name: 'contacts___ua', component: page('contacts.vue') },
 //   { path: '/dostavka', name: 'delivery___ru', component: page('delivery.vue') },

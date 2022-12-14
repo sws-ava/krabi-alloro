@@ -1,8 +1,11 @@
 <template>
 	<div class="page text-center">
-		<front-header />
+		<nuxt-link :to="switchLocalePath('ru')">RU</nuxt-link>
+		<nuxt-link :to="switchLocalePath('ua')">UA</nuxt-link>
+		<!-- <front-header /> -->
 		<main>
-			<nuxt />
+			<nuxt  keep-alive />
+			<!-- <nuxt /> -->
 		</main>
 		<front-footer />
 	</div>
@@ -38,23 +41,23 @@ export default {
 		}
 	},
 	mounted(){
-		this.getCookieLocale()
+		// this.getCookieLocale()
 	},
 	methods: {
 		
-		getCookieLocale(){
-			let pathLocale = this.$route.fullPath.split('/')[1];
-			if(pathLocale == 'ua'){
-				this.setLocale({locale: 'ua'})
-			}else if(pathLocale == ''){
-				this.setLocale({locale: 'ru'})
-			}else{
-				this.setLocale({locale: 'ru'})
-			}
-		},
-		...mapActions({
-			setLocale: 'lang/setLocale',
-		}),
+		// getCookieLocale(){
+		// 	let pathLocale = this.$route.fullPath.split('/')[1];
+		// 	if(pathLocale == 'ua'){
+		// 		this.setLocale({locale: 'ua'})
+		// 	}else if(pathLocale == ''){
+		// 		this.setLocale({locale: 'ru'})
+		// 	}else{
+		// 		this.setLocale({locale: 'ru'})
+		// 	}
+		// },
+		// ...mapActions({
+		// 	setLocale: 'lang/setLocale',
+		// }),
 	},
 
 

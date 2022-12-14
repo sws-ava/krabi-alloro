@@ -1,48 +1,49 @@
 <template>
   <div>
-    {{ $t('ttl') }}
+      <div v-html="$t('address')"></div>
 
-    
-    <div v-html="page.content_ru"></div>
+
+
+    {{ $t('main.title') }}
+
+
+
+   
+      <div v-html="$t('main.content')"></div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import axios from 'axios'
 
-
+import Cookies from 'js-cookie'
 
 export default {
   layout: 'front',
 
-
-
-  head: {
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        // content: this.page.description_ru
-      }
-    ],
-     },
-    data() {
-      return {
-        page: {}
-      }
-    },
-    computed: mapGetters({
-      locale: 'lang/locale',
-      locales: 'lang/locales'
-    }),
-    async fetch() {
-			console.log('main Page vue')
-      this.page = await fetch(
-        process.env.imagesBaseUrl + 'api/getMainPage'
-      ).then(res => res.json())
+  head(){
+    return{
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$i18n.t('main.description'),
+        },
+      ]
     }
+  },
+  mounted(){
   }
+  // data: () => ({
+  //   page: {},
+  //   // locale: '',
+  // }),
+  // async fetch(){
+  //   this.page = await fetch(
+  //     process.env.imagesBaseUrl + 'api/getMainPage?locale='+Cookies.get('i18n_redirected'),
+  //   ).then(res => res.json())
+  // },
+    
+}
 </script>
 
 

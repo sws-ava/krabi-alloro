@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ $t('ttl') }}
+    {{ $t('welcome') }}
 
     
     <div v-html="page.content_ru"></div>

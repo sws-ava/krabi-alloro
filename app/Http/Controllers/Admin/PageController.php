@@ -30,8 +30,18 @@ class PageController extends Controller
 
     // client
     
-    public function getMainPage(){
+    public function getMainPage(Request $request){
+        // return 123;
         $page = Page::where('id', 1)->first();
+        if($request->locale == 'ua'){
+            $page->title = $page->title_ua;
+            $page->description = $page->description_ua;
+            $page->content = $page->content_ua;
+        }else{
+            $page->title = $page->title_ru;
+            $page->description = $page->description_ru;
+            $page->content = $page->content_ru;
+        }
         return $page;
     }
     public function getConcept(Request $request){
@@ -46,4 +56,41 @@ class PageController extends Controller
         $page = Page::where('id', 4)->first();
         return $page;
     }
+
+    
+    public function getTranslateRu(){
+        $main = Page::where('id', 1)->first();
+
+        $main->title = $main->title_ru;
+        $main->content = $main->content_ru;
+        $main->description = $main->description_ru;
+        
+        $address = '<b>г. Одесса, Греческая площадь / Дерибасовская</b>';
+
+        return response()->json(
+            collect([
+                'main' => $main,
+                'address' => $address,
+            ])
+        );
+    }
+
+    public function getTranslateUa(){
+        $main = Page::where('id', 1)->first();
+
+        $main->title = $main->title_ua;
+        $main->content = $main->content_ua;
+        $main->description = $main->description_ua;
+        
+        $address = 'г. Одеса, Грецька площа / Дерибасівська';
+
+        return response()->json(
+            collect([
+                'main' => $main,
+                'address' => $address,
+            ])
+        );
+    }
+
+    
 }

@@ -166,3 +166,6 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::get('getConcept', [PageController::class, 'getConcept']);
     Route::get('getContacts', [PageController::class, 'getContacts']);
     Route::get('getDelivery', [PageController::class, 'getDelivery']);
+
+    Route::get('getTranslateRu', [PageController::class, 'getTranslateRu']);
+    Route::get('getTranslateUa', [PageController::class, 'getTranslateUa']);

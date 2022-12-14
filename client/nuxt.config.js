@@ -15,45 +15,70 @@ module.exports = {
     imagesBaseUrl: process.env.BASE_URL,
   },
  
-  head: {
-    title: process.env.APP_NAME,
-    titleTemplate: '%s - ' + process.env.APP_NAME,
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      // { hid: 'description', name: 'description', content: 'Pizza' }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-    ],
+
+  head () {
+    const i18nHead = this.$nuxtI18nHead({ addSeoAttributes: true })
+    return{
+      title: process.env.APP_NAME,
+      titleTemplate: '%s - ' + process.env.APP_NAME,
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
+    }
   },
 
   loading: { color: '#007bff' },
 
   router: {
-    middleware: ['locale', 'check-auth']
+    middleware: [
+      'check-auth'
+    ]
   },
 
   css: [
-    // { src: '~assets/sass/app.scss', lang: 'scss' },
     'quill/dist/quill.core.css',
     'quill/dist/quill.snow.css',
   ],
 
   plugins: [
     '~components/global',
-    '~plugins/i18n',
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/fontawesome',
     '~plugins/nuxt-client-init',
-    // { src: '~plugins/bootstrap', mode: 'client' },
     { src: '~plugins/nuxt-quill-plugin', ssr: false },
+    { src: '~plugins/i18n.js' }
   ],
 
   modules: [
     '@nuxtjs/router',
-    // '@nuxtjs/i18n',
+    [
+      '@nuxtjs/i18n',
+      {
+        locales: [
+          {
+            code: 'ru', 
+            iso: 'ru-RU',
+            file: 'ru.js', 
+          },
+          {
+            code: 'ua', 
+            iso: 'ua-UA',
+            file: 'ua.js', 
+          },
+        ],
+        langDir: 'lang/',
+        strategy: 'prefix_except_default',
+        defaultLocale: 'ru',
+        vueI18n: {
+          fallbackLocale: 'ru',
+        }
+      }
+    ],
   ],
   
 
