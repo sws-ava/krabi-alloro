@@ -19,6 +19,7 @@ export default {
 
   head(){
     return{
+      title: this.$i18n.t('static.siteName'),
       meta: [
         {
           hid: 'description',

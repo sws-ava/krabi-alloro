@@ -81,7 +81,8 @@ class PageController extends Controller
             'phone2' => '(063) 877 78 51',
             'phone2full' => '+380638777851',
             'workHours' => '10:00 - 23:30',
-            'email' => 'sushi.thai.krabi@gmail.com'
+            'email' => 'sushi.thai.krabi@gmail.com',
+            'siteName' => 'Krabi - Thai & Japanese | Кафе Краби - тайская и японская кухня в Одессе. Доставка суши, WOK'
         ];
         
         $concept = Page::where('id', 2)->first();
@@ -141,7 +142,8 @@ class PageController extends Controller
             'phone2' => '(063) 877 78 51',
             'phone2full' => '+380638777851',
             'workHours' => '10:00 - 23:30',
-            'email' => 'sushi.thai.krabi@gmail.com'
+            'email' => 'sushi.thai.krabi@gmail.com',
+            'siteName' => 'Krabi - Thai & Japanese | Кафе Крабі - тайська та японська кухня в Одесі. Доставка суші, WOK'
         ];
 
         $concept = Page::where('id', 2)->first();

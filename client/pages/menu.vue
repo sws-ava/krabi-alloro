@@ -11,6 +11,7 @@ export default {
   layout: 'front',
   head(){
     return{
+      title: this.$i18n.t('delivery.title'),
       meta: [
         {
           hid: 'description',

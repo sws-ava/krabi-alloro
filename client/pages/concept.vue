@@ -18,6 +18,7 @@ export default {
   layout: 'front',
   head(){
     return{
+      title: this.$i18n.t('concept.title') + ' ' + this.$i18n.t('static.siteName'),
       meta: [
         {
           hid: 'description',

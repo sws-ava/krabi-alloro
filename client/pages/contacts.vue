@@ -18,6 +18,7 @@ export default {
   layout: 'front',
   head(){
     return{
+      title: this.$i18n.t('contacts.title') + ' ' + this.$i18n.t('static.siteName'),
       meta: [
         {
           hid: 'description',
