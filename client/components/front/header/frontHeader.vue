@@ -1,16 +1,25 @@
 <template>
       <header class="page-head section-top-15 section-lg-top-0">
         <!-- RD Navbar-->
-        <div class="rd-navbar-wrap rd-navbar-variant-1">
-          <nav class="rd-navbar" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fullwidth" data-md-layout="rd-navbar-fullwidth" data-lg-layout="rd-navbar-fullwidth" data-device-layout="rd-navbar-fixed" data-sm-device-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-device-layout="rd-navbar-fullwidth" data-lg-stick-up-offset="207px">
+        <div 
+			style="    height: 301px;"
+			class="rd-navbar-wrap rd-navbar-variant-1"
+		>
+          <nav class="rd-navbar rd-navbar-original rd-navbar-fullwidth" 
+		  	data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fullwidth" data-md-layout="rd-navbar-fullwidth" 
+			data-lg-layout="rd-navbar-fullwidth" data-device-layout="rd-navbar-fixed" data-sm-device-layout="rd-navbar-fixed" 
+			data-md-device-layout="rd-navbar-fixed" data-lg-device-layout="rd-navbar-fullwidth" data-lg-stick-up-offset="207px">
+
+
+
             <button data-rd-navbar-toggle=".rd-navbar-top-panel" type="submit" class="rd-navbar-collapse-toggle"><span></span></button>
 			            <div class="rd-navbar-top-panel">
               <div class="rd-navbar-top-panel-inner">
                 <div class="rd-navbar-address">
                   <div class="unit unit-horizontal unit-spacing-xs">
                     <div class="unit-left"><span class="icon icon-xxs mdi mdi-map-marker"></span></div>
-                    <!-- <div class="unit-body"><a href="#" class="text-base">{{ $t('address')}}</a></div> -->
-                    <div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div>
+                    <div class="unit-body"><a v-html="$t('address')" href="#" class="text-base"></a></div>
+                    <!-- <div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div> -->
 
 					<div class="unit-left">
 						<a target="_blank" style="padding-left: 2em;" href="https://www.facebook.com/krabisushicafe/">
@@ -36,12 +45,6 @@
                     <div class="unit-body">
                     	<time datetime="2016">10:00 - 23:30</time>
 						<front-locales />
-						
-						<!-- <nuxt-link :to="localePath('/')">{{ $t('welcome1') }}</nuxt-link>
-
-						<nuxt-link :to="switchLocalePath('ua')">Ukrainian</nuxt-link>
-						<nuxt-link :to="switchLocalePath('ru')">Russian</nuxt-link> -->
-
                     </div>
                   </div>
                 </div>
@@ -64,14 +67,20 @@
 
 				  <!-- RD Navbar Brand-->
                   <div class="rd-navbar-brand">
-					<router-link 
-						:to="{ path: '/' }" 
+					
+					<nuxt-link 
+						:to="localePath('mainPage')"
 						class="brand-name" 
 					>
 						<span title="Кафе Краби, кафе krabi, суши краби, sushi krabi" alt="Кафе Краби, кафе krabi, суши краби, sushi krabi" >Sushi Krabi</span>
 						<span>Thai & Japanese Cafe</span>
                     	<div class="rd-navbar-address"></div>
-					</router-link>
+					</nuxt-link>
+					<!-- <router-link 
+						:to="{ path: '/' }" 
+						class="brand-name" 
+					>
+					</router-link> -->
 					<!-- <a href="/" class="brand-name"></a> -->
 					</div>
                 </div>
@@ -82,11 +91,11 @@
 					<ul class="rd-navbar-nav">
 						<li><a href="/menyu">Меню</a></li>
 						<li>
-							<router-link 
-								:to="{ path: '/kontseptsiya' }" 
+							<nuxt-link 
+								:to="localePath('kontseptsiya')"
 							>
 								Концепция
-							</router-link>
+							</nuxt-link>
 						</li>
 						<li><a href="/interer">Интерьер</a></li>
 						<li>

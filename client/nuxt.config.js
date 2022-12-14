@@ -19,7 +19,9 @@ module.exports = {
   head () {
     const i18nHead = this.$nuxtI18nHead({ addSeoAttributes: true })
     return{
-      title: process.env.APP_NAME,
+      
+      // title: process.env.APP_NAME,
+      title: "Krabi - Thai & Japanese | Кафе Краби - тайская и японская кухня в Одессе. Доставка суши, WOK",
       titleTemplate: '%s - ' + process.env.APP_NAME,
       meta: [
         { charset: 'utf-8' },

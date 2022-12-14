@@ -64,13 +64,21 @@ class PageController extends Controller
         $main->title = $main->title_ru;
         $main->content = $main->content_ru;
         $main->description = $main->description_ru;
+
         
-        $address = '<b>г. Одесса, Греческая площадь / Дерибасовская</b>';
+        $concept = Page::where('id', 2)->first();
+
+        $concept->title = $concept->title_ru;
+        $concept->content = $concept->content_ru;
+        $concept->description = $concept->description_ru;
+        
+        $address = 'г. Одесса, Греческая площадь / Дерибасовская';
 
         return response()->json(
             collect([
                 'main' => $main,
                 'address' => $address,
+                'concept' => $concept,
             ])
         );
     }
@@ -81,6 +89,13 @@ class PageController extends Controller
         $main->title = $main->title_ua;
         $main->content = $main->content_ua;
         $main->description = $main->description_ua;
+
+        
+        $concept = Page::where('id', 2)->first();
+
+        $concept->title = $concept->title_ua;
+        $concept->content = $concept->content_ua;
+        $concept->description = $concept->description_ua;
         
         $address = 'г. Одеса, Грецька площа / Дерибасівська';
 
@@ -88,6 +103,7 @@ class PageController extends Controller
             collect([
                 'main' => $main,
                 'address' => $address,
+                'concept' => $concept,
             ])
         );
     }
