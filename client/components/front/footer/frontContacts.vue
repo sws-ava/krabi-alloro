@@ -1,7 +1,9 @@
 <template>
 	<section class="section-top-50 section-sm-top-70 text-center text-sm-left">
 		<div class="shell">
-			<h3 class="text-center">Контакты</h3>
+			<h3 class="text-center">
+				{{$t('contacts.title')}}
+			</h3>
 			<div class="range range-xs-center offset-top-34">
 				<div class="cell-sm-6">
 					<div class="range">
@@ -9,22 +11,42 @@
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">Адрес:</span></div>
 							<!-- <div class="unit-body"><a href="#" class="text-base">{{ $t('address')}}</a></div> -->
-							<div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div>
+							<div class="unit-body">
+								<a 
+								v-html="$t('static.address')"
+								href="#"
+								class="text-base">
+
+								 </a></div>
 						</div>
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">Телефоны:</span></div>
 							<div class="unit-body">
-							<a href="tel:+380681689695" class="text-base">(068) 168 96 95,</a>
-							<a href="tel:+380638777851" class="text-base">(063) 877 78 51</a>
+							<a 
+								:href="'tel:'+$t('static.phone1full')" 
+								class="text-base"
+							>
+								{{$t('static.phone1')}},
+
+							</a>
+							<a 
+								:href="'tel:'+$t('static.phone2full')" 
+								class="text-base"
+							>
+								{{$t('static.phone2')}}
+
+							</a>
 							</div>
 						</div>
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">E-mail:</span></div>
-							<div class="unit-body">sushi.thai.krabi@gmail.com</div>
+							<div class="unit-body">
+								{{ $t('static.email') }}
+							</div>
 						</div>					
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">Мы открыты:</span></div>
-							<div class="unit-body"> 10:00 - 23:30</div>
+							<div class="unit-body"> {{ $t('static.workHours') }}</div>
 						</div>				
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
 							<div class="unit-left min-width-sm"><span class="h6 text-regular">Мы в соцсетях:</span></div>

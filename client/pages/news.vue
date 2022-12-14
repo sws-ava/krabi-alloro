@@ -1,6 +1,7 @@
 <template>
   <div> 
-    <div v-html="$t('delivery.content')"></div>
+    <h1>News</h1>
+    <!-- <div v-html="$t('delivery.content')"></div> -->
   </div>
 </template>
 

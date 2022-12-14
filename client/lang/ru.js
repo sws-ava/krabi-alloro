@@ -4,7 +4,7 @@ export default async (context, locale) => {
       process.env.imagesBaseUrl + 'api/getTranslateRu'
     ).then(res => res.json())
 
-      // console.log(ress)
+      console.log(ress)
 
       return ress
 

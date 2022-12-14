@@ -60,50 +60,126 @@ class PageController extends Controller
     
     public function getTranslateRu(){
         $main = Page::where('id', 1)->first();
-
         $main->title = $main->title_ru;
         $main->content = $main->content_ru;
         $main->description = $main->description_ru;
+        $main->ourMenu = 'Наше меню';
+        $main->interior = 'Интерьер';
+        $main->lookAll = 'Посмотреть все';
+        
+        $main->address = '';
+        $main->phone1 = '(068) 168 96 95';
+        $main->phone1full = '+380681689695';
+        $main->phone2 = '(063) 877 78 51';
+        $main->phone2full = '+380638777851';
+        $main->workHours = '10:00 - 23:30';
 
+        $static = [
+            'address' => 'г. Одесса, Греческая площадь / Дерибасовская',
+            'phone1' => '(068) 168 96 95',
+            'phone1full' => '+380681689695',
+            'phone2' => '(063) 877 78 51',
+            'phone2full' => '+380638777851',
+            'workHours' => '10:00 - 23:30',
+            'email' => 'sushi.thai.krabi@gmail.com'
+        ];
         
         $concept = Page::where('id', 2)->first();
-
         $concept->title = $concept->title_ru;
         $concept->content = $concept->content_ru;
         $concept->description = $concept->description_ru;
         
-        $address = 'г. Одесса, Греческая площадь / Дерибасовская';
+        $contacts = Page::where('id', 3)->first();
+        $contacts->title = $contacts->title_ru;
+        $contacts->content = $contacts->content_ru;
+        $contacts->description = $contacts->description_ru;
+        
+        $delivery = Page::where('id', 4)->first();
+        $delivery->title = $delivery->title_ru;
+        $delivery->content = $delivery->content_ru;
+        $delivery->description = $delivery->description_ru;
+        
+
+        // Menu items
+        $navigation = [
+            'menu' => 'Меню',
+            'concept' => 'Концепция',
+            'interior' => 'Интерьер',
+            'delivery' => 'Доставка',
+            'news' => 'Новости',
+            'sale' => 'Акции',
+            'gallery' => 'Галерея',
+            'contacts' => 'Контакты',
+        ];
+
 
         return response()->json(
             collect([
                 'main' => $main,
-                'address' => $address,
                 'concept' => $concept,
+                'contacts' => $contacts,
+                'delivery' => $delivery,
+                'navigation' => $navigation,
+                'static' => $static,
             ])
         );
     }
 
     public function getTranslateUa(){
         $main = Page::where('id', 1)->first();
-
         $main->title = $main->title_ua;
         $main->content = $main->content_ua;
         $main->description = $main->description_ua;
+        $main->ourMenu = 'Наше меню';
+        $main->interior = 'Інтер\'єр';
+        $main->lookAll = 'ПОДИВИТИСЬ ВСЕ';
 
-        
+        $static = [
+            'address' => 'г. Одеса, Грецька площа / Дерибасівська',
+            'phone1' => '(068) 168 96 95',
+            'phone1full' => '+380681689695',
+            'phone2' => '(063) 877 78 51',
+            'phone2full' => '+380638777851',
+            'workHours' => '10:00 - 23:30',
+            'email' => 'sushi.thai.krabi@gmail.com'
+        ];
+
         $concept = Page::where('id', 2)->first();
-
         $concept->title = $concept->title_ua;
         $concept->content = $concept->content_ua;
         $concept->description = $concept->description_ua;
         
-        $address = 'г. Одеса, Грецька площа / Дерибасівська';
+        $contacts = Page::where('id', 3)->first();
+        $contacts->title = $contacts->title_ua;
+        $contacts->content = $contacts->content_ua;
+        $contacts->description = $contacts->description_ua;
+        
+        $delivery = Page::where('id', 4)->first();
+        $delivery->title = $delivery->title_ua;
+        $delivery->content = $delivery->content_ua;
+        $delivery->description = $delivery->description_ua;
+        
+
+        // Menu items
+        $navigation = [
+            'menu' => 'Меню',
+            'concept' => 'Концепція',
+            'interior' => 'Інтер\'єр',
+            'delivery' => 'Доставка',
+            'news' => 'Новини',
+            'sale' => 'Акції',
+            'gallery' => 'Галерея',
+            'contacts' => 'Контакти',
+        ];
 
         return response()->json(
             collect([
                 'main' => $main,
-                'address' => $address,
                 'concept' => $concept,
+                'contacts' => $contacts,
+                'delivery' => $delivery,
+                'navigation' => $navigation,
+                'static' => $static,
             ])
         );
     }

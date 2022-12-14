@@ -1,21 +1,11 @@
 <template>
   <div>
-      <div v-html="$t('address')"></div>
-
-
-
-    {{ $t('main.title') }}
-
-
-
-   
       <div v-html="$t('main.content')"></div>
   </div>
 </template>
 
 <script>
 
-import Cookies from 'js-cookie'
 
 export default {
   layout: 'front',
@@ -31,17 +21,7 @@ export default {
       ]
     }
   },
-  mounted(){
-  }
-  // data: () => ({
-  //   page: {},
-  //   // locale: '',
-  // }),
-  // async fetch(){
-  //   this.page = await fetch(
-  //     process.env.imagesBaseUrl + 'api/getMainPage?locale='+Cookies.get('i18n_redirected'),
-  //   ).then(res => res.json())
-  // },
+
     
 }
 </script>

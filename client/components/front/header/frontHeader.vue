@@ -18,8 +18,7 @@
                 <div class="rd-navbar-address">
                   <div class="unit unit-horizontal unit-spacing-xs">
                     <div class="unit-left"><span class="icon icon-xxs mdi mdi-map-marker"></span></div>
-                    <div class="unit-body"><a v-html="$t('address')" href="#" class="text-base"></a></div>
-                    <!-- <div class="unit-body"><a href="#" class="text-base">г. Одесса, Греческая площадь / Дерибасовская</a></div> -->
+                    <div class="unit-body"><a v-html="$t('static.address')" href="#" class="text-base"></a></div>
 
 					<div class="unit-left">
 						<a target="_blank" style="padding-left: 2em;" href="https://www.facebook.com/krabisushicafe/">
@@ -35,15 +34,26 @@
                   <div class="unit unit-horizontal unit-spacing-xs">
                     <div class="unit-left"><span class="icon icon-xxs mdi mdi-phone"></span></div>
                     <div class="unit-body">
-						<a href="tel:+380681689695" class="text-base">(068) 168 96 95</a>
-						&nbsp;&nbsp;&nbsp;
-						<a href="tel:+380638777851" class="text-base">(063) 877 78 51</a>
+						<a
+							:href="'tel:'+$t('static.phone1full')" 
+							class="text-base"
+							style="display: block; margin-bottom: 5px;"
+						>
+							{{$t('static.phone1')}}
+						</a>
+						<a
+							:href="'tel:'+$t('static.phone2full')" 
+							class="text-base"
+							
+						>
+							{{$t('static.phone2')}}
+						</a>
 					</div>
                   </div> 
                   <div class="unit unit-horizontal unit-spacing-xs">
                     <div class="unit-left"><span class="icon icon-xxs mdi mdi-clock"></span></div>
                     <div class="unit-body">
-                    	<time datetime="2016">10:00 - 23:30</time>
+                    	<time datetime="2016">{{ $t('static.workHours') }}</time>
 						<front-locales />
                     </div>
                   </div>
@@ -89,31 +99,62 @@
                 <div class="rd-navbar-nav-wrap">
                   <!-- RD Navbar Nav-->
 					<ul class="rd-navbar-nav">
-						<li><a href="/menyu">Меню</a></li>
+						
+						<li>
+							<nuxt-link 
+								:to="localePath('menu')"
+							>
+								{{ $t('navigation.menu') }}
+							</nuxt-link>
+						</li>
 						<li>
 							<nuxt-link 
 								:to="localePath('kontseptsiya')"
 							>
-								Концепция
+								{{ $t('navigation.concept') }}
 							</nuxt-link>
 						</li>
-						<li><a href="/interer">Интерьер</a></li>
 						<li>
-							<router-link 
-								:to="{ path: '/dostavka' }" 
+							<nuxt-link 
+								:to="localePath('interior')"
 							>
-								Доставка
-							</router-link>
+								{{ $t('navigation.interior') }}
+							</nuxt-link>
 						</li>
-						<li><a href="/novosti">Новости</a></li>
-						<li><a href="/aktsii">Акции</a></li>
-						<li><a href="/galereya">Галерея</a></li>
 						<li>
-							<router-link 
-								:to="{ path: '/kontakty' }" 
+							<nuxt-link 
+								:to="localePath('delivery')"
 							>
-								Контакты
-							</router-link>
+								{{ $t('navigation.delivery') }}
+							</nuxt-link>
+						</li>
+						<li>
+							<nuxt-link 
+								:to="localePath('news')"
+							>
+								{{ $t('navigation.news') }}
+							</nuxt-link>
+						</li>
+						<li>
+							<nuxt-link 
+								:to="localePath('sale')"
+							>
+								{{ $t('navigation.sale') }}
+							</nuxt-link>
+						</li>
+						<li>
+							<nuxt-link 
+								:to="localePath('gallery')"
+							>
+								{{ $t('navigation.gallery') }}
+							</nuxt-link>
+						</li>
+						<li>
+							<nuxt-link 
+								:to="localePath('contacts')"
+							>
+								{{ $t('navigation.contacts') }}
+							</nuxt-link>
 						</li>
                   </ul>
                 </div>

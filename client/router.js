@@ -70,15 +70,25 @@ const routes = [
   { path: '/ua/', name: 'mainPage___ua', component: page('mainPage.vue') },
   { path: '/kontseptsiya', name: 'kontseptsiya___ru', component: page('concept.vue') },
   { path: '/ua/kontseptsiya', name: 'kontseptsiya___ua', component: page('concept.vue') },
-  // { path: '/', name: 'main-page___ru', component: page('mainPage.vue') },
-  // { path: '/', name: 'main-page', component: page('mainPage.vue') },
-  // { path: '/ua/', name: 'main-page-ua', component: page('mainPageUa.vue') },
-  // { path: '/kontseptsiya', name: 'kontseptsiya', component: page('concept.vue') },
-  // { path: '/ua/kontseptsiya', name: 'kontseptsiya-ru', component: page('conceptUa.vue') },
-//   { path: '/kontakty', name: 'contacts___ru', component: page('contacts.vue') },
-//   { path: '/ua/kontakty', name: 'contacts___ua', component: page('contacts.vue') },
-//   { path: '/dostavka', name: 'delivery___ru', component: page('delivery.vue') },
-//   { path: '/ua/dostavka', name: 'delivery___ua', component: page('delivery.vue') },
+  { path: '/kontakty', name: 'contacts___ru', component: page('contacts.vue') },
+  { path: '/ua/kontakty', name: 'contacts___ua', component: page('contacts.vue') },
+  { path: '/dostavka', name: 'delivery___ru', component: page('delivery.vue') },
+  { path: '/ua/dostavka', name: 'delivery___ua', component: page('delivery.vue') },
+  
+  { path: '/menu', name: 'menu___ru', component: page('menu.vue') },
+  { path: '/ua/menu', name: 'menu___ua', component: page('menu.vue') },
+  
+  { path: '/interior', name: 'interior___ru', component: page('interior.vue') },
+  { path: '/ua/interior', name: 'interior___ua', component: page('interior.vue') },
+  
+  { path: '/news', name: 'news___ru', component: page('news.vue') },
+  { path: '/ua/news', name: 'news___ua', component: page('news.vue') },
+  
+  { path: '/sale', name: 'sale___ru', component: page('sale.vue') },
+  { path: '/ua/sale', name: 'sale___ua', component: page('sale.vue') },
+  
+  { path: '/gallery', name: 'gallery___ru', component: page('gallery.vue') },
+  { path: '/ua/gallery', name: 'gallery___ua', component: page('gallery.vue') },
 ]
 
 export function createRouter () {
