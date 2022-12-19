@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\Page;
+use App\Models\Admin\Interior;
+use App\Models\Admin\Gallery;
+use App\Models\Blocks;
 
 class PageController extends Controller
 {
@@ -56,6 +59,11 @@ class PageController extends Controller
         $page = Page::where('id', 4)->first();
         return $page;
     }
+    public function addView(Request $request){
+        $page = Page::where('id', $request->id)->first();
+        $page->views = $page->views + 1;
+        $page->save();
+    }
 
     
     public function getTranslateRu(){
@@ -74,16 +82,19 @@ class PageController extends Controller
         $main->phone2full = '+380638777851';
         $main->workHours = '10:00 - 23:30';
 
-        $static = [
-            'address' => 'г. Одесса, Греческая площадь / Дерибасовская',
-            'phone1' => '(068) 168 96 95',
-            'phone1full' => '+380681689695',
-            'phone2' => '(063) 877 78 51',
-            'phone2full' => '+380638777851',
-            'workHours' => '10:00 - 23:30',
-            'email' => 'sushi.thai.krabi@gmail.com',
-            'siteName' => 'Krabi - Thai & Japanese | Кафе Краби - тайская и японская кухня в Одессе. Доставка суши, WOK'
-        ];
+        $static = Blocks::where('locale', 'ru')->first();
+
+        $static->siteName = "Krabi - Thai & Japanese | Кафе Краби - тайская и японская кухня в Одессе. Доставка суши, WOK";
+        $static->newsTitle = "Новости";
+        $static->salesTitle = "Акции";
+        $static->galleryTitle = "Галерея";
+        $static->interiorTitle = "Интерьер";
+        $static->addressName = "Адрес";
+        $static->phones = "Телефоны";
+        $static->opened = "Мы открыты";
+        $static->socs = "Мы в соцсетя";
+        $static->to_site = 'На сайт';
+        $static->page_not_found = 'Страница не найдена';
         
         $concept = Page::where('id', 2)->first();
         $concept->title = $concept->title_ru;
@@ -132,19 +143,22 @@ class PageController extends Controller
         $main->content = $main->content_ua;
         $main->description = $main->description_ua;
         $main->ourMenu = 'Наше меню';
-        $main->interior = 'Інтер\'єр';
+        $main->interior = "Інтер'єр";
         $main->lookAll = 'ПОДИВИТИСЬ ВСЕ';
 
-        $static = [
-            'address' => 'г. Одеса, Грецька площа / Дерибасівська',
-            'phone1' => '(068) 168 96 95',
-            'phone1full' => '+380681689695',
-            'phone2' => '(063) 877 78 51',
-            'phone2full' => '+380638777851',
-            'workHours' => '10:00 - 23:30',
-            'email' => 'sushi.thai.krabi@gmail.com',
-            'siteName' => 'Krabi - Thai & Japanese | Кафе Крабі - тайська та японська кухня в Одесі. Доставка суші, WOK'
-        ];
+        $static = Blocks::where('locale', 'ua')->first();
+        
+        $static->siteName = 'Krabi - Thai & Japanese | Кафе Крабі - тайська та японська кухня в Одесі. Доставка суші, WOK';
+        $static->newsTitle = 'Новини';
+        $static->salesTitle = 'Акції';
+        $static->galleryTitle = 'Галерея';
+        $static->interiorTitle = "Інтер'єр";
+        $static->addressName = 'Адреса';
+        $static->phones = 'Телефони';
+        $static->opened = 'Ми відкриті';
+        $static->socs = 'Ми у соцмережах';
+        $static->to_site = 'До сайту';
+        $static->page_not_found = 'Сторінку не знайдено';
 
         $concept = Page::where('id', 2)->first();
         $concept->title = $concept->title_ua;
@@ -166,7 +180,7 @@ class PageController extends Controller
         $navigation = [
             'menu' => 'Меню',
             'concept' => 'Концепція',
-            'interior' => 'Інтер\'єр',
+            'interior' => "Інтер'єр",
             'delivery' => 'Доставка',
             'news' => 'Новини',
             'sale' => 'Акції',
@@ -186,5 +200,16 @@ class PageController extends Controller
         );
     }
 
+    public function getInteriorImages(){
+        $images = Interior::orderBy('order', 'asc')->get();
+        $images = $images->chunk(9);
+        return $images;
+    }
+
+    public function getGalleryImages(){
+        $images = Gallery::orderBy('order', 'asc')->get();
+        $images = $images->chunk(9);
+        return $images;
+    }
     
 }

@@ -2,7 +2,7 @@
 	<div class="page text-center">
 		<front-header />
 		<main>
-			<nuxt  keep-alive />
+			<nuxt />
 		</main>
 		<front-footer />
 	</div>

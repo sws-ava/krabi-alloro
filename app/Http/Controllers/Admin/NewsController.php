@@ -55,4 +55,17 @@ class NewsController extends Controller
         
         return $page->show;
     }
+
+
+    // Client
+    public function getNews(){
+        $news = News::where('cat', 1)->orderBy('id', 'desc')->get();
+        return $news;
+    }
+    public function getSales(){
+        $sales = News::where('cat', 2)->orderBy('id', 'desc')->get();
+        return $sales;
+    }
+
+
 }

@@ -14,11 +14,13 @@
 
 <script>
 
+import axios from 'axios'
+
 export default {
   layout: 'front',
   head(){
     return{
-      title: this.$i18n.t('delivery.title') + ' ' + this.$i18n.t('static.siteName'),
+      title: this.$i18n.t('delivery.title') + ' ::  ' + this.$i18n.t('static.siteName'),
       meta: [
         {
           hid: 'description',
@@ -28,6 +30,18 @@ export default {
       ]
     }
   },
+  mounted(){
+    this.addView()
+  },
+  methods:{
+    async addView(){
+      try{
+        const view = await axios.post('/addView', { id:4})
+      } catch (e) {
+        console.log('some addView error ')
+      }
+    },
+  }
 }
 </script>
 

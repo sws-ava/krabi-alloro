@@ -64,7 +64,12 @@
 			>
 				Новости / Акции
 			</router-link>
-			<span class="nav-link" href="#">!Блоки на сайте</span>
+			<router-link
+				:to="{name: 'admin-blocks'}"
+				class="nav-link"
+			>
+				Блоки
+			</router-link>
 		</nav>
 </div>
 </template>

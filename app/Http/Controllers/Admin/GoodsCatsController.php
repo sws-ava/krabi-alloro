@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\GoodsCats;
+use App\Models\Admin\Goods;
 
 class GoodsCatsController extends Controller
 {
@@ -14,6 +15,7 @@ class GoodsCatsController extends Controller
     }
     public function getCategory(Request $request){
         $cat = GoodsCats::find($request->id);
+        $cat->isChilds = Goods::where('category', $cat->id)->count();
         return $cat;
     }
     public function saveCategory(Request $request){

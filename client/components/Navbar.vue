@@ -22,7 +22,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link :to="{name: 'dashboard'}">
-              {{ $t('dashboard_title') }}
+              Админ панель
             </router-link>
           </li>
         </ul>
@@ -60,9 +60,9 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
+              <!-- <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
                 {{ $t('register') }}
-              </router-link>
+              </router-link> -->
             </li>
           </template>
         </ul>

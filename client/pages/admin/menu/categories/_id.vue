@@ -121,8 +121,9 @@
 				<div class="d-flex justify-content-between mt-4 pt-4 col-12">
 					<div class="form-group mt-2">
 						<button 
-						@click="showDeleteModal = true"
-						class="btn btn-sm btn-danger"
+							v-if="!category.isChilds"
+							@click="showDeleteModal = true"
+							class="btn btn-sm btn-danger"
 						>
 							Удалить
 
@@ -191,6 +192,7 @@ export default {
 					}
 				})
 				this.category = category.data
+				console.log(category.data)
 			} catch (e) {
 				console.log('some fetchCategory error ')
 				console.log(e.response.data)
@@ -224,9 +226,6 @@ export default {
 		},
 		async deleteCategory(){
 		  this.showSpinner = true
-		  // Проверка на товары внутри категории
-		  // Если есть товары, то выводить модалку, что есть товары
-		  // Если нет товаров, то код ниже 
 			try{
 				this.showDeleteModal = false
 				const response = await axios.post('/admin/deleteCategory/', {

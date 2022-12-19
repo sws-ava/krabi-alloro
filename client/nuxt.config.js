@@ -22,13 +22,28 @@ module.exports = {
       
       // title: process.env.APP_NAME,
       title: "Krabi - Thai & Japanese | Кафе Краби - тайская и японская кухня в Одессе. Доставка суши, WOK",
-      titleTemplate: '%s - ' + process.env.APP_NAME,
+      // titleTemplate: '%s - ' + process.env.APP_NAME,
+      titleTemplate: '%s',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'robots', content: 'noindex, nofollow' },
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes:'57x57',  href: '/favi-icons/apple-icon-57x57.png' },
+        { rel: 'apple-touch-icon', sizes:'60x60',  href: '/favi-icons/apple-icon-60x60.png' },
+        { rel: 'apple-touch-icon', sizes:'72x72',  href: '/favi-icons/apple-icon-72x72.png' },
+        { rel: 'apple-touch-icon', sizes:'76x76',  href: '/favi-icons/apple-icon-76x76.png' },
+        { rel: 'apple-touch-icon', sizes:'114x114',  href: '/favi-icons/apple-icon-114x114.png' },
+        { rel: 'apple-touch-icon', sizes:'120x120',  href: '/favi-icons/apple-icon-120x120.png' },
+        { rel: 'apple-touch-icon', sizes:'144x144',  href: '/favi-icons/apple-icon-144x144.png' },
+        { rel: 'apple-touch-icon', sizes:'152x152',  href: '/favi-icons/apple-icon-152x152.png' },
+        { rel: 'apple-touch-icon', sizes:'180x180',  href: '/favi-icons/apple-icon-180x180.png' },
+        { rel: 'icon', type:'image/png', sizes:'192x192',  href: '/favi-icons/apple-icon-192x192.png' },
+        { rel: 'icon', type:'image/png', sizes:'32x32',  href: '/favi-icons/apple-icon-32x32.png' },
+        { rel: 'icon', type:'image/png', sizes:'96x96',  href: '/favi-icons/apple-icon-96x96.png' },
+        { rel: 'icon', type:'image/png', sizes:'16x16',  href: '/favi-icons/apple-icon-16x16.png' },
       ],
     }
   },
@@ -81,7 +96,13 @@ module.exports = {
         }
       }
     ],
+    '@nuxtjs/google-analytics'
   ],
+
+  
+  googleAnalytics: {
+    id: process.env.GOOGLE_ANALYTICS_ID
+  },
   
 
 

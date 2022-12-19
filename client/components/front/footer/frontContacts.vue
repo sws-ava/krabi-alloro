@@ -9,7 +9,9 @@
 					<div class="range">
 					<div class="cell-sm-12 text-center text-sm-left offset-top-110">
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom">
-							<div class="unit-left min-width-sm"><span class="h6 text-regular">Адрес:</span></div>
+							<div class="unit-left min-width-sm"><span class="h6 text-regular">
+								{{$t('static.addressName')}}:
+								</span></div>
 							<!-- <div class="unit-body"><a href="#" class="text-base">{{ $t('address')}}</a></div> -->
 							<div class="unit-body">
 								<a 
@@ -20,7 +22,7 @@
 								 </a></div>
 						</div>
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
-							<div class="unit-left min-width-sm"><span class="h6 text-regular">Телефоны:</span></div>
+							<div class="unit-left min-width-sm"><span class="h6 text-regular">{{$t('static.phones')}}:</span></div>
 							<div class="unit-body">
 							<a 
 								:href="'tel:'+$t('static.phone1full')" 
@@ -45,11 +47,11 @@
 							</div>
 						</div>					
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
-							<div class="unit-left min-width-sm"><span class="h6 text-regular">Мы открыты:</span></div>
+							<div class="unit-left min-width-sm"><span class="h6 text-regular">{{$t('static.opened')}}:</span></div>
 							<div class="unit-body"> {{ $t('static.workHours') }}</div>
 						</div>				
 						<div class="unit unit-sm-horizontal unit-spacing-xs unit-sm-bottom offset-top-12">
-							<div class="unit-left min-width-sm"><span class="h6 text-regular">Мы в соцсетях:</span></div>
+							<div class="unit-left min-width-sm"><span class="h6 text-regular">{{$t('static.socs')}}:</span></div>
 							<div class="unit-body">
 								<a target="_blank" style="padding-left: 2em;" href="https://www.facebook.com/krabisushicafe/">
 									<span class="icon icon-sm mdi mdi-facebook"></span>

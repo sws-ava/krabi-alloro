@@ -3,11 +3,6 @@
 		<div >
 			<nuxt-link :to="switchLocalePath('ru')">RU</nuxt-link>
 			<nuxt-link :to="switchLocalePath('ua')">UA</nuxt-link>
-			<!-- <a v-for="(value, key) in locales" :key="key"   href="#"
-				@click.prevent="setLocale(key)"
-			>
-				{{ value }}
-			</a> -->
 		</div>
 	</div>
 </template>

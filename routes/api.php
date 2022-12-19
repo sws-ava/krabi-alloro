@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\GoodsItemController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\SubMainController;
+use App\Http\Controllers\BlocksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -139,6 +140,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/fetchDishesByQuery', [OrdersController::class, 'fetchDishesByQuery']);
     Route::post('admin/addDishToOrderMenuItems', [OrdersController::class, 'addDishToOrderMenuItems']);
     Route::post('admin/saveOrder', [OrdersController::class, 'saveOrder']);
+
+    // Blocks
+    Route::get('admin/getBlocks', [BlocksController::class, 'getBlocks']);
+    Route::post('admin/saveBlocks', [BlocksController::class, 'saveBlocks']);
     
     
 });
@@ -162,10 +167,23 @@ Route::group(['middleware' => 'guest:api'], function () {
 
 
     // Client
-    Route::get('getMainPage', [PageController::class, 'getMainPage']);
-    Route::get('getConcept', [PageController::class, 'getConcept']);
-    Route::get('getContacts', [PageController::class, 'getContacts']);
-    Route::get('getDelivery', [PageController::class, 'getDelivery']);
+
+    // Pages
+    // Route::get('getMainPage', [PageController::class, 'getMainPage']);
+    // Route::get('getConcept', [PageController::class, 'getConcept']);
+    // Route::get('getContacts', [PageController::class, 'getContacts']);
+    // Route::get('getDelivery', [PageController::class, 'getDelivery']);
+    
+    Route::post('addView', [PageController::class, 'addView']);
+
+    
+    Route::get('getNews', [NewsController::class, 'getNews']);
+    Route::get('getSales', [NewsController::class, 'getSales']);
 
     Route::get('getTranslateRu', [PageController::class, 'getTranslateRu']);
     Route::get('getTranslateUa', [PageController::class, 'getTranslateUa']);
+
+    Route::get('getInteriorImages', [PageController::class, 'getInteriorImages']);
+    Route::get('getGalleryImages', [PageController::class, 'getGalleryImages']);
+
+    

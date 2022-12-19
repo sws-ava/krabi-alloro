@@ -67,7 +67,12 @@ export default {
   }),
 
   head () {
-    return { title: this.$t('login') }
+    return {
+      title: this.$t('login'),
+      link: [
+        {rel: 'stylesheet', type: 'text/css', href: '/css/dashboard.css'}
+      ]
+    }
   },
 
   methods: {
@@ -97,3 +102,5 @@ export default {
   }
 }
 </script>
+
+

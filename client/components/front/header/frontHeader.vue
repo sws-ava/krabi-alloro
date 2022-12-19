@@ -68,12 +68,12 @@
                   <button data-rd-navbar-toggle=".rd-navbar-nav-wrap" type="submit" class="rd-navbar-toggle"><span></span></button>
                   <!-- Little logo-->
 				  
-					<router-link 
-						:to="{ path: '/' }" 
+					<nuxt-link 
+						:to="localePath('mainPage')"
 						class="little-logo"
 					>
 						<img src="/images/logo-mini.png">
-					</router-link>
+					</nuxt-link>
 
 				  <!-- RD Navbar Brand-->
                   <div class="rd-navbar-brand">

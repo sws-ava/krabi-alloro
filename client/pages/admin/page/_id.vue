@@ -40,7 +40,12 @@
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на русском </small>
-          <client-only>
+          <textarea 
+              v-model="page.content_ru"
+              class="form-control"
+              style="min-height: 1000px;"
+          ></textarea>
+          <!-- <client-only>
             <quill-editor
               ref="editor"
               v-model="page.content_ru"
@@ -49,11 +54,16 @@
               @focus="onEditorFocus($event)"
               @ready="onEditorReady($event)"
             />
-          </client-only>
+          </client-only> -->
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на украинском </small>
-          <client-only>
+          <textarea 
+              v-model="page.content_ua"
+              class="form-control"
+              style="min-height: 1000px;"
+          ></textarea>
+          <!-- <client-only>
             <quill-editor
               ref="editor"
               v-model="page.content_ua"
@@ -62,7 +72,7 @@
               @focus="onEditorFocus($event)"
               @ready="onEditorReady($event)"
             />
-          </client-only>
+          </client-only> -->
         </div>
         <div class="d-flex justify-content-between col-12">
           <div class="form-group mt-2">
@@ -125,22 +135,22 @@ export default {
     return{
       page: {},
 			showSpinner: false,
-      editorOption: {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            ['link', 'image'],
-            ["showHtml"]
-          ],
-        }
-      }
+      // editorOption: {
+      //   theme: 'snow',
+      //   modules: {
+      //     toolbar: [
+      //       ['bold', 'italic', 'underline', 'strike'],
+      //       ['link', 'image'],
+      //       ["showHtml"]
+      //     ],
+      //   }
+      // }
     }
   },
   computed:{
-    editor() {
-      return this.$refs.myQuillEditor.quill
-    }
+    // editor() {
+    //   return this.$refs.myQuillEditor.quill
+    // }
   },
   mounted(){
     this.showSpinner = true
@@ -157,7 +167,6 @@ export default {
         this.page = page.data
 			} catch (e) {
         console.log('some fetchPage error ')
-				console.log(e.response.data)
       }finally{
         this.showSpinner = false
       }
@@ -183,15 +192,15 @@ export default {
     backToPages(){
       this.$router.push('/admin/pages')
     },
-    onEditorBlur(editor) {
-      // console.log('editor blur!', editor)
-    },
-    onEditorFocus(editor) {
-      // console.log('editor focus!', editor)
-    },
-    onEditorReady(editor) {
-      // console.log('editor ready!', editor)
-    },
+    // onEditorBlur(editor) {
+    //   // console.log('editor blur!', editor)
+    // },
+    // onEditorFocus(editor) {
+    //   // console.log('editor focus!', editor)
+    // },
+    // onEditorReady(editor) {
+    //   // console.log('editor ready!', editor)
+    // },
   },
 }
 </script>
