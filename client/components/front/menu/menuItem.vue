@@ -81,8 +81,12 @@ export default {
 	},
 	data(){
 		return{
-			imagesBaseUrl: process.env.imagesBaseUrl + 'storage/'
+			// imagesBaseUrl: process.env.imagesBaseUrl + 'storage/'
+			imagesBaseUrl: ''
 		}
+	},
+	computed(){
+		imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
 	},
 	methods:{
 		addToCart(item){

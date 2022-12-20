@@ -45,34 +45,6 @@
               <menu-item
                 :menuItems="menuItem.goods"
               />
-              <!-- <div class="range">
-                <div class="cell-sm-6 cell-md-4 item_holder">
-                  <div class="image_holder">
-                    <img class="image 2" src="/images/1/640_480_752_95340_1586443458.jpeg">
-                  </div>
-                  <h4>Рисовая лапша Wok с манго</h4>
-                  <p class="description"></p>
-                  <div class="price_weight text_left" style="justify-content: space-between; align-items: center;">
-                    <span style="font-size: 12px; text-align: left;padding-right: 20px;">С МОРЕПРОДУКТАМИ (250 Г)</span>
-                    <span class="price">249.00</span>
-                  </div>
-                  <div class="price_weight text_left" style="justify-content: space-between; align-items: center;">
-                    <span style="font-size: 12px; text-align: left;padding-right: 20px;">С ТЕЛЯТИНОЙ (250 Г)</span>
-                    <span class="price">229.00</span>
-                  </div>
-                </div>
-                <div class="cell-sm-6 cell-md-4 item_holder">
-                  <div class="image_holder">
-                    <img class="image 2" src="/images/1/640_480_752_77904_1586444750.jpeg">
-                  </div>
-                  <h4>Суп Том-Ям-Коконат</h4>
-                  <p class="description">кокосовое молоко, микс морепродуктов, окунь, лемонграсс, тайские секреты Том-Ям</p>
-                  <div class="price_weight">
-                    <span>300 мл</span>
-                    <span class="price">199.00</span>
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>

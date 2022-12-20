@@ -1,49 +1,8 @@
 <template>
   <div>
-
-
-
-
-
-<!-- <div class="shell">
-  <div class="interiorPhotos">
-    <div class="interiorPhoto interiorPhoto0">
-      <img src="images/main/10.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto1">
-      <img src="images/main/11.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto2">
-      <img src="images/main/12.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto3">
-      <img src="images/main/14.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto4">
-      <img src="images/main/15.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto5">
-      <img src="images/main/13.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto6">
-      <img src="images/main/17.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto7">
-      <img src="images/main/18.jpg" alt="">
-    </div>
-    <div class="interiorPhoto interiorPhoto8">
-      <img src="images/main/16.jpg" alt="">
-    </div>
-  </div>
-</div> -->
-
-
-
-
-
     <section 
       class="section-top-50 section-bottom-66 section-lg-top-160 section-lg-bottom-160 inset-left-15 inset-right-15" 
-      style="background-image: url(/images/main_images/main.jpg); background-position-x: 50%; padding-top: 15%; padding-bottom: 15%; background-position-y: 50%;"
+      style="background-image: url(/images/main_images/main.jpg); background-position-x: 50%; padding-top: 15%; padding-bottom: 15%; background-position-y: 50%; background-size:100%;"
     >
       <div class="header-divider">
       <h3 class="text-uppercase font-logo text-regular letter-spacing-200">{{$t('main.title')}}</h3>
@@ -144,6 +103,7 @@ export default {
   },
   data() {
     return {
+      imagesBaseUrl: '',
       menuImages: [
         "/images/main/01.jpg",
         "/images/main/02.jpg",
