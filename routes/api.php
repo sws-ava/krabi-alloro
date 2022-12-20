@@ -185,5 +185,7 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::get('getInteriorImages', [PageController::class, 'getInteriorImages']);
     Route::get('getGalleryImages', [PageController::class, 'getGalleryImages']);
+    
+    Route::get('getMenu', [PageController::class, 'getMenu']);
 
     

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Admin\Page;
 use App\Models\Admin\Interior;
 use App\Models\Admin\Gallery;
+use App\Models\Admin\GoodsCats;
+use App\Models\Admin\Goods;
+use App\Models\Admin\GoodsItems;
 use App\Models\Blocks;
 
 class PageController extends Controller
@@ -89,6 +92,7 @@ class PageController extends Controller
         $static->salesTitle = "Акции";
         $static->galleryTitle = "Галерея";
         $static->interiorTitle = "Интерьер";
+        $static->menuTitle = "Меню";
         $static->addressName = "Адрес";
         $static->phones = "Телефоны";
         $static->opened = "Мы открыты";
@@ -153,6 +157,7 @@ class PageController extends Controller
         $static->salesTitle = 'Акції';
         $static->galleryTitle = 'Галерея';
         $static->interiorTitle = "Інтер'єр";
+        $static->menuTitle = "Меню";
         $static->addressName = 'Адреса';
         $static->phones = 'Телефони';
         $static->opened = 'Ми відкриті';
@@ -210,6 +215,17 @@ class PageController extends Controller
         $images = Gallery::orderBy('order', 'asc')->get();
         $images = $images->chunk(9);
         return $images;
+    }
+
+    public function getMenu(){
+        $goodsCats = GoodsCats::orderBy('order', 'asc')->get();
+        foreach ($goodsCats as $goodsCat) {
+            $goodsCat->goods = Goods::where('category', $goodsCat->id)->orderBy('order', 'asc')->get();
+            foreach ($goodsCat->goods as $good) {
+                $good->goodsItems = GoodsItems::where('item', $good->id)->orderBy('order', 'asc')->get();
+            }
+        }
+        return $goodsCats;
     }
     
 }

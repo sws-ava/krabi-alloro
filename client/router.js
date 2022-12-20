@@ -94,6 +94,9 @@ const routes = [
   
   { path: '/galereya', name: 'gallery___ru', component: page('gallery.vue') },
   { path: '/ua/galereya', name: 'gallery___ua', component: page('gallery.vue') },
+  
+  { path: '/cart', name: 'cart___ru', component: page('cart.vue') },
+  { path: '/ua/cart', name: 'cart___ua', component: page('cart.vue') },
 ]
 
 export function createRouter () {
