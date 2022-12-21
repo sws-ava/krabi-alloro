@@ -56,7 +56,8 @@
           <template v-else>
             <li class="nav-item">
               <router-link :to="{ name: 'login' }" class="nav-link" active-class="active">
-                {{ $t('login') }}
+                <!-- {{ $t('login') }} -->
+                login
               </router-link>
             </li>
             <li class="nav-item">

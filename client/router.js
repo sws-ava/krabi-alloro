@@ -11,6 +11,8 @@ const routes = [
 
 
   { path: '/login', name: 'login', component: page('auth/login.vue') },
+  // { path: '/login', name: 'login___ru', component: page('auth/login.vue') },
+  // { path: '/ua/login', name: 'login___ua', component: page('auth/login.vue') },
   // { path: '/register', name: 'register', component: page('auth/register.vue') },
   { path: '/password/reset', name: 'password.request', component: page('auth/password/email.vue') },
   { path: '/password/reset/:token', name: 'password.reset', component: page('auth/password/reset.vue') },
@@ -95,8 +97,8 @@ const routes = [
   { path: '/galereya', name: 'gallery___ru', component: page('gallery.vue') },
   { path: '/ua/galereya', name: 'gallery___ua', component: page('gallery.vue') },
   
-  { path: '/cart', name: 'cart___ru', component: page('cart.vue') },
-  { path: '/ua/cart', name: 'cart___ua', component: page('cart.vue') },
+    { path: '/cart', name: 'cart___ru', component: page('cart.vue') },
+    { path: '/ua/cart', name: 'cart___ua', component: page('cart.vue') },
 ]
 
 export function createRouter () {

@@ -7,7 +7,7 @@
       <h3 class="text-uppercase font-logo text-regular letter-spacing-200">Меню</h3>
       </div>
     </section>
-
+    <loading v-if="isLoading" />
     <div class="shell">
       <div class="panel-group menu_all" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="range">
@@ -30,7 +30,7 @@
                   :aria-controls="'collapse-' + idx" 
                   class="collapsed"
                 >
-                  {{ menuItem.title_ru }}       
+                  {{ menuItem.title }}       
                 </a>
               </h3>
             </div>
@@ -61,11 +61,13 @@
 <script>
 
 import menuItem from '@/components/front/menu/menuItem.vue'
+import loading from '@/components/front/loading.vue'
 
 export default {
   layout: 'front',
   components:{
     menuItem,
+    loading,
   },
   head(){
     return{
@@ -82,15 +84,26 @@ export default {
   data(){
     return{
       menuItems: [],
+      isLoading: false,
+      imagesBaseUrl: '',
     }
   },
-	async fetch() {
-		this.imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
+  async fetch() {
+
+
+
+    try {
+          this.isLoading = true
+    this.imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
+    
+    let locale = this.$i18n.t('static.locale')
     this.menuItems = await fetch(
-      process.env.imagesBaseUrl + 'api/getMenu'
+      process.env.imagesBaseUrl + 'api/getMenu?locale=' + locale
     ).then(res => res.json())
-    // console.log(this.menuItems)
-  },
+    this.isLoading = false
+    } catch (e) {
+    }
+  },  
 }
 </script>
 

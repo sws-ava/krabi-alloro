@@ -187,5 +187,8 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::get('getGalleryImages', [PageController::class, 'getGalleryImages']);
     
     Route::get('getMenu', [PageController::class, 'getMenu']);
+    Route::post('getCartItems', [PageController::class, 'getCartItems']);
+    Route::post('setNewOrder', [PageController::class, 'setNewOrder']);
 
+    
     

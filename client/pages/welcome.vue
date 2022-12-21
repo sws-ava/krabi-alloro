@@ -1,6 +1,5 @@
 <template>
   <div>
-    111
     <div class="top-right links">
       <template v-if="authenticated">
         <router-link :to="{ name: 'home' }">
@@ -9,11 +8,12 @@
       </template>
       <template v-else>
         <router-link :to="{ name: 'login' }">
-          {{ $t('login') }}
+          login
+          <!-- {{ $t('login') }} -->
         </router-link>
-        <router-link :to="{ name: 'register' }">
+        <!-- <router-link :to="{ name: 'register' }">
           {{ $t('register') }}
-        </router-link>
+        </router-link> -->
       </template>
     </div>
 

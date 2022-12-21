@@ -10,5 +10,3 @@
 //   }
 //   await loadMessages(store.getters['lang/locale'])
 // }
-
-	

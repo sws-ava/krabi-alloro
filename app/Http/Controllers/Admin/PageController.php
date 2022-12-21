@@ -10,6 +10,8 @@ use App\Models\Admin\Gallery;
 use App\Models\Admin\GoodsCats;
 use App\Models\Admin\Goods;
 use App\Models\Admin\GoodsItems;
+use App\Models\Admin\Order;
+use App\Models\Admin\OrderItems;
 use App\Models\Blocks;
 
 class PageController extends Controller
@@ -99,6 +101,20 @@ class PageController extends Controller
         $static->socs = "Мы в соцсетя";
         $static->to_site = 'На сайт';
         $static->page_not_found = 'Страница не найдена';
+        $static->locale = 'ru';
+        $static->yourOrder = 'Ваш заказ:';
+        $static->orderSum = 'Итого:';
+        $static->toDesignOrder = 'К оформлению заказа';
+        $static->orderName = 'Имя';
+        $static->orderPhone = 'Телефон';
+        $static->orderAddress = 'Адрес';
+        $static->orderPersons = 'Персон';
+        $static->orderComment = 'Комментарий к заказу';
+        $static->orderNow = 'Оформить заказ';
+        $static->orderEpmty = 'Список пуст';
+        $static->toMenu = 'В меню';
+        $static->orderGet = 'Спасибо! Ваш заказ принят!';
+        
         
         $concept = Page::where('id', 2)->first();
         $concept->title = $concept->title_ru;
@@ -164,6 +180,19 @@ class PageController extends Controller
         $static->socs = 'Ми у соцмережах';
         $static->to_site = 'До сайту';
         $static->page_not_found = 'Сторінку не знайдено';
+        $static->locale = 'ua';
+        $static->yourOrder = 'Ваше замовлення:';
+        $static->orderSum = 'Разом:';
+        $static->toDesignOrder = 'До оформлення замовлення';
+        $static->orderName = "Ім'я";
+        $static->orderPhone = 'Телефон';
+        $static->orderAddress = 'Адреса';
+        $static->orderPersons = 'Персон';
+        $static->orderComment = 'Коментар для замовлення';
+        $static->orderNow = 'Оформити замовленн';
+        $static->orderEpmty = 'Список порожній';
+        $static->toMenu = 'До меню';
+        $static->orderGet = 'Дякуємо! Ваше замовлення прийнято!';
 
         $concept = Page::where('id', 2)->first();
         $concept->title = $concept->title_ua;
@@ -217,15 +246,89 @@ class PageController extends Controller
         return $images;
     }
 
-    public function getMenu(){
+    public function getMenu(Request $request){
+        // return $request->locale;
+        $locale = $request->locale;
         $goodsCats = GoodsCats::orderBy('order', 'asc')->get();
         foreach ($goodsCats as $goodsCat) {
             $goodsCat->goods = Goods::where('category', $goodsCat->id)->orderBy('order', 'asc')->get();
+            if($locale === 'ua'){
+                $goodsCat->title = $goodsCat->title_ua;
+                $goodsCat->description = $goodsCat->description_ua;
+            }else if($locale === 'ru'){
+                $goodsCat->title = $goodsCat->title_ru;
+                $goodsCat->description = $goodsCat->description_ru;
+            }
             foreach ($goodsCat->goods as $good) {
-                $good->goodsItems = GoodsItems::where('item', $good->id)->orderBy('order', 'asc')->get();
+                if($request->locale == 'ua'){
+                    $good->title = $good->title_ua;
+                    $good->description = $good->description_ua;
+                }else{
+                    $good->title = $good->title_ru;
+                    $good->description = $good->description_ru;
+                }
+                $goodsItems = GoodsItems::where('item', $good->id)->orderBy('order', 'asc')->get();
+                foreach ($goodsItems as $goodsItem) {
+                    if($request->locale == 'ua'){
+                        $goodsItem->title = $goodsItem->title_ua;
+                    }else{
+                        $goodsItem->title = $goodsItem->title_ru;
+                    }
+                }
+                $good->goodsItems = $goodsItems;
             }
         }
         return $goodsCats;
     }
+    public function getCartItems(Request $request){
+        $itemsArr = [];
+        $itemsToClient = [];
+        foreach ($request->itemsToServer as $item) {
+            array_push($itemsArr, $item['id']) ;
+        }
+        $itemsToClient = GoodsItems::whereIn('id', $itemsArr)->get();
+        foreach ($itemsToClient as $itemToClient) {
+            $mainItem = Goods::where('id', $itemToClient['item'])->first();
+            foreach ($request->itemsToServer as $requestAmount) {
+                if($itemToClient->id == $requestAmount['id']){
+                    $itemToClient->amount = $requestAmount['amount'];
+                }
+            }
+            if($request->locale == 'ua'){
+                $itemToClient->titleMain = $mainItem->title_ua;
+                $itemToClient->title = $itemToClient->title_ua;
+            }else{
+                $itemToClient->titleMain = $mainItem->title_ru;
+                $itemToClient->title = $itemToClient->title_ru;
+            }
+        }
+        return $itemsToClient;
+    }
+
     
+    public function setNewOrder(Request $request){
+
+        $order = new Order();
+        $order->name = $request->formData['name'];
+        $order->address = $request->formData['address'];
+        $order->phone = $request->formData['phone'];
+        $order->persons = $request->formData['persons'];
+        if(isset($request->formData['comment'])){
+            $order->comment = $request->formData['comment'];
+        }
+        $order->status = 1;
+        $order->total = $request->totalSum;
+        $order->save();
+
+        foreach ($request->items as $item) {
+            $newItem = new OrderItems();
+            $newItem->order = $order->id;
+            $newItem->item = $item['id'];
+            $newItem->amount = $item['amount'];
+            $newItem->price = $item['price'];
+            $newItem->save();
+        }
+
+        return $request;
+    }
 }

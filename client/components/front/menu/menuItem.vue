@@ -15,8 +15,8 @@
 				class="image 2"
 				:src="imagesBaseUrl + menuItem.picture">
 		</div>
-		<h4>{{ menuItem.title_ru }}</h4>
-		<p class="description">{{ menuItem.description_ru }}</p>
+		<h4>{{ menuItem.title }}</h4>
+		<p class="description">{{ menuItem.description }}</p>
 		<template
 			v-if="menuItem.goodsItems.length > 1"
 		>
@@ -26,7 +26,7 @@
 				class="price_weight text_left" style="justify-content: space-between; align-items: center;"	
 			>
 				<span style="font-size: 12px; text-align: left;padding-right: 20px;">
-					{{ item.title_ru }} {{ item.weight }} {{ item.weightKind }}
+					{{ item.title }} {{ item.weight }} {{ item.weightKind }}
 				</span>
 				<span 
 					@click="addToCart(item)"
@@ -81,12 +81,8 @@ export default {
 	},
 	data(){
 		return{
-			// imagesBaseUrl: process.env.imagesBaseUrl + 'storage/'
-			imagesBaseUrl: ''
+			imagesBaseUrl: process.env.imagesBaseUrl + 'storage/'
 		}
-	},
-	computed(){
-		imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
 	},
 	methods:{
 		addToCart(item){

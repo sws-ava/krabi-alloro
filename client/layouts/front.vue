@@ -3,6 +3,7 @@
 		<front-header />
 		<cart-block />
 		<main>
+			<!-- <nuxt /> -->
 			<nuxt keep-alive/>
 		</main>
 		<front-footer />
@@ -41,14 +42,16 @@ export default {
 	methods:{
 		async countCartNums(){
 			let cartList = JSON.parse(localStorage.getItem("cart"))
-			let cartAmount = 0
-			let cartSum = 0
-			cartList.forEach(el => {
-				cartAmount += el.amount
-				cartSum += el.amount * el.price
-			});
-			this.setCartAmount(cartAmount)
-			this.setCartSum(cartSum)
+			if(cartList){
+				let cartAmount = 0
+				let cartSum = 0
+				cartList.forEach(el => {
+					cartAmount += el.amount
+					cartSum += el.amount * el.price
+				});
+				this.setCartAmount(cartAmount)
+				this.setCartSum(cartSum)
+			}
 		},
 		
 		...mapActions({
