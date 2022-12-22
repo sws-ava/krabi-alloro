@@ -1,19 +1,23 @@
 <template>
-	<div class="page text-center">
-		<front-header />
-		<warning-block />
-		<cart-block ref="cartBlock" />
-		<main>
-			<nuxt />
-		</main>
-		<front-footer />
-		<a  
-			:class="scY > 1000 ? 'active' : ''"
-			@click="toTop" 
-			href="#" 
-			id="ui-to-top" 
-			class="ui-to-top fa fa-angle-up"
-		></a>
+	<div
+		:class="scX > 767 ? 'desktop  rd-navbar-fullwidth-linked' : 'desktop  rd-navbar-fixed-linked'"
+	>
+		<div class="page text-center">
+			<front-header />
+			<warning-block />
+			<cart-block ref="cartBlock" />
+			<main>
+				<nuxt />
+			</main>
+			<front-footer />
+			<a  
+				:class="scY > 1000 ? 'active' : ''"
+				@click="toTop" 
+				href="#" 
+				id="ui-to-top" 
+				class="ui-to-top fa fa-angle-up"
+			></a>
+		</div>
 	</div>
 </template>
 
@@ -48,12 +52,18 @@ export default {
 		return{
         	scTimer: 0,
         	scY: 0,
+        	scX: '',
 		}
 	},
 	mounted(){
+		this.getWidth()
 		this.countCartNums()
 		window.addEventListener('scroll', this.handleScroll);
+		window.addEventListener('resize', this.adaptiveHandler);
+		
 	},
+	// created(){
+	// },
 	methods:{
 		async countCartNums(){
 			let cartList = JSON.parse(localStorage.getItem("cart"))
@@ -68,6 +78,12 @@ export default {
 				this.setCartSum(cartSum)
 			}
 		},
+		getWidth(){
+			this.scX = window.innerWidth
+		},
+		adaptiveHandler: function (){
+			this.scX = window.innerWidth;
+		},
 		handleScroll: function () {
 		if (this.scTimer) return;
 		this.scTimer = setTimeout(() => {
@@ -77,10 +93,10 @@ export default {
 		}, 100);
 		},
 		toTop: function () {
-		window.scrollTo({
-			top: 0,
-			behavior: "smooth"
-		});
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth"
+			});
 		},
 		
 		...mapActions({
