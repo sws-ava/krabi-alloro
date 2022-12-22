@@ -18,6 +18,8 @@ class BlocksController extends Controller
         );
     }
     public function saveBlocks(Request $request){
+        // return $request;
+
         $ruBlock = Blocks::where('locale', 'ru')->first();
         $ruBlock->address = $request->ru['address'];
         $ruBlock->email = $request->ru['email'];
@@ -26,6 +28,8 @@ class BlocksController extends Controller
         $ruBlock->phone2 = $request->ru['phone2'];
         $ruBlock->phone2full = $request->ru['phone2full'];
         $ruBlock->workHours = $request->ru['workHours'];
+        $ruBlock->showWarning =  $request->ru['showWarning'];
+        $ruBlock->warning = $request->ru['warning'];
         $ruBlock->save();
 
         
@@ -37,8 +41,11 @@ class BlocksController extends Controller
         $uaBlock->phone2 = $request->ru['phone2'];
         $uaBlock->phone2full = $request->ru['phone2full'];
         $uaBlock->workHours = $request->ru['workHours'];
+        $uaBlock->showWarning =  $request->ru['showWarning'];
+        $uaBlock->warning = $request->ua['warning'];
         $uaBlock->save();
 
+        return $request;
     }
 
 }

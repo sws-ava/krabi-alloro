@@ -14,7 +14,7 @@
       <div v-for="item in items" :key="item.id" class="shell">
         <div class="range range-xs-center offset-top-34">
           <div 
-            v-html="item.content_ru"
+            v-html="item.content"
             class="cell-sm-12">
           </div>
           <div class="cell-xs-12 offset-top-42">
@@ -48,8 +48,9 @@ export default {
     }
   },
   async fetch(){
+    let locale = this.$i18n.t('static.locale')
     this.items = await fetch(
-      process.env.imagesBaseUrl + 'api/getNews'
+      process.env.imagesBaseUrl + 'api/getNews?locale=' + locale
     ).then(items => items.json())
   }
 

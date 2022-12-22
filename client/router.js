@@ -69,6 +69,12 @@ const routes = [
   // admin blocks
   {path: '/admin/blocks', name: 'admin-blocks', component: page('admin/blocks.vue')},
 
+  // admin site images
+  {path: '/admin/images', name: 'admin-images', component: page('admin/images.vue')},
+
+  // admin paper menu
+  {path: '/admin/paper', name: 'admin-paper', component: page('admin/paper.vue')},
+
   
   // Site pages
   { path: '/', name: 'mainPage___ru', component: page('mainPage.vue') },

@@ -55,8 +55,5 @@ class GalleryController extends Controller
         $photo->path = $path;
         $photo->order = $countPhotos + 1;
         $photo->save();
-
-
-
     }
 }

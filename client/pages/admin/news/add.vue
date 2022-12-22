@@ -57,29 +57,19 @@
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на русском </small>
-          <client-only>
-            <quill-editor
-              ref="editor"
+          <textarea 
               v-model="page.content_ru"
-              :options="editorOption"
-              @blur="onEditorBlur($event)"
-              @focus="onEditorFocus($event)"
-              @ready="onEditorReady($event)"
-            />
-          </client-only>
+              class="form-control"
+              style="min-height: 600px;"
+          ></textarea>
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на украинском </small>
-          <client-only>
-            <quill-editor
-              ref="editor"
+          <textarea 
               v-model="page.content_ua"
-              :options="editorOption"
-              @blur="onEditorBlur($event)"
-              @focus="onEditorFocus($event)"
-              @ready="onEditorReady($event)"
-            />
-          </client-only>
+              class="form-control"
+              style="min-height: 600px;"
+          ></textarea>
         </div>
         <div class="d-flex justify-content-between col-12">
           <div class="form-group mt-2">
@@ -103,6 +93,7 @@
         </div>
       </div>
     </form>
+    <site-images />
   </div>
 
 
@@ -118,6 +109,7 @@
 
 import spinner from '@/components/admin/spinner.vue'
 import axios from 'axios'
+import siteImages from '@/components/admin/siteImages.vue'
 
 
 
@@ -125,6 +117,7 @@ import axios from 'axios'
 export default {
   components: {
     spinner,
+    siteImages
   },
   layout: 'admin',
   data(){

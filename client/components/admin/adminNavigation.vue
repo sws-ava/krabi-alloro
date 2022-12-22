@@ -70,6 +70,18 @@
 			>
 				Блоки
 			</router-link>
+			<router-link
+				:to="{name: 'admin-images'}"
+				class="nav-link"
+			>
+				Картинки
+			</router-link>
+			<router-link
+				:to="{name: 'admin-paper'}"
+				class="nav-link"
+			>
+				Фото меню
+			</router-link>
 		</nav>
 </div>
 </template>

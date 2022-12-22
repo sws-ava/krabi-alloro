@@ -12,6 +12,7 @@ use App\Models\Admin\Goods;
 use App\Models\Admin\GoodsItems;
 use App\Models\Admin\Order;
 use App\Models\Admin\OrderItems;
+use App\Models\Admin\PaperMenu;
 use App\Models\Blocks;
 
 class PageController extends Controller
@@ -280,6 +281,12 @@ class PageController extends Controller
         }
         return $goodsCats;
     }
+
+    public function getMenuPhotos(){
+        $menuPhotos = PaperMenu::get();
+        return $menuPhotos;
+    }
+
     public function getCartItems(Request $request){
         $itemsArr = [];
         $itemsToClient = [];

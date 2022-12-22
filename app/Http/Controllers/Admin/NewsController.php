@@ -58,12 +58,34 @@ class NewsController extends Controller
 
 
     // Client
-    public function getNews(){
+    public function getNews(Request $request){
         $news = News::where('cat', 1)->orderBy('id', 'desc')->get();
+        foreach ($news as $new) {
+            if($request->locale == 'ua'){
+                $new->title = $new->title_ua;
+                $new->description = $new->description_ua;
+                $new->content = $new->content_ua;
+            }else{
+                $new->title = $new->title_ru;
+                $new->description = $new->description_ru;
+                $new->content = $new->content_ru;
+            }
+        }
         return $news;
     }
-    public function getSales(){
+    public function getSales(Request $request){
         $sales = News::where('cat', 2)->orderBy('id', 'desc')->get();
+        foreach ($sales as $new) {
+            if($request->locale == 'ua'){
+                $new->title = $new->title_ua;
+                $new->description = $new->description_ua;
+                $new->content = $new->content_ua;
+            }else{
+                $new->title = $new->title_ru;
+                $new->description = $new->description_ru;
+                $new->content = $new->content_ru;
+            }
+        }
         return $sales;
     }
 

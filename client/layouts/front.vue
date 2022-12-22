@@ -1,12 +1,19 @@
 <template>
 	<div class="page text-center">
 		<front-header />
-		<cart-block />
+		<warning-block />
+		<cart-block ref="cartBlock" />
 		<main>
-			<!-- <nuxt /> -->
-			<nuxt keep-alive/>
+			<nuxt />
 		</main>
 		<front-footer />
+		<a  
+			:class="scY > 1000 ? 'active' : ''"
+			@click="toTop" 
+			href="#" 
+			id="ui-to-top" 
+			class="ui-to-top fa fa-angle-up"
+		></a>
 	</div>
 </template>
 
@@ -17,12 +24,14 @@ import {  mapActions } from 'vuex'
 import frontFooter from '@/components/front/footer/frontFooter.vue'
 import frontHeader from '@/components/front/header/frontHeader.vue'
 import cartBlock from '@/components/front/header/cartBlock.vue'
+import warningBlock from '@/components/front/warningBlock.vue'
 
 export default {
   	components: {
 		frontFooter,
 		frontHeader,
-		cartBlock
+		cartBlock,
+		warningBlock
 	},
 	head() {
 		return {
@@ -30,14 +39,20 @@ export default {
 				{rel: 'stylesheet', type: 'text/css', href: '/css/style.css'}
 			],
 			script: [
-				{src: '/js/core.min.js', defer: true},
-				{src: '/js/script.js', defer: true},
+				// {src: '/js/core.min.js', defer: true},
+				// {src: '/js/script.js', defer: true},
 			],
+		}
+	},
+	data(){
+		return{
+        	scTimer: 0,
+        	scY: 0,
 		}
 	},
 	mounted(){
 		this.countCartNums()
-
+		window.addEventListener('scroll', this.handleScroll);
 	},
 	methods:{
 		async countCartNums(){
@@ -52,6 +67,20 @@ export default {
 				this.setCartAmount(cartAmount)
 				this.setCartSum(cartSum)
 			}
+		},
+		handleScroll: function () {
+		if (this.scTimer) return;
+		this.scTimer = setTimeout(() => {
+			this.scY = window.scrollY;
+			clearTimeout(this.scTimer);
+			this.scTimer = 0;
+		}, 100);
+		},
+		toTop: function () {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth"
+		});
 		},
 		
 		...mapActions({

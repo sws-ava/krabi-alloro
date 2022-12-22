@@ -43,36 +43,16 @@
           <textarea 
               v-model="page.content_ru"
               class="form-control"
-              style="min-height: 1000px;"
+              style="min-height: 600px;"
           ></textarea>
-          <!-- <client-only>
-            <quill-editor
-              ref="editor"
-              v-model="page.content_ru"
-              :options="editorOption"
-              @blur="onEditorBlur($event)"
-              @focus="onEditorFocus($event)"
-              @ready="onEditorReady($event)"
-            />
-          </client-only> -->
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на украинском </small>
           <textarea 
               v-model="page.content_ua"
               class="form-control"
-              style="min-height: 1000px;"
+              style="min-height: 600px;"
           ></textarea>
-          <!-- <client-only>
-            <quill-editor
-              ref="editor"
-              v-model="page.content_ua"
-              :options="editorOption"
-              @blur="onEditorBlur($event)"
-              @focus="onEditorFocus($event)"
-              @ready="onEditorReady($event)"
-            />
-          </client-only> -->
         </div>
         <div class="d-flex justify-content-between col-12">
           <div class="form-group mt-2">
@@ -107,6 +87,7 @@
         </div>
       </div>
     </form>
+    <site-images />
   </div>
 
 
@@ -121,6 +102,7 @@
 
 
 import spinner from '@/components/admin/spinner.vue'
+import siteImages from '@/components/admin/siteImages.vue'
 import axios from 'axios'
 
 
@@ -129,12 +111,14 @@ import axios from 'axios'
 export default {
   components: {
     spinner,
+    siteImages
   },
   layout: 'admin',
   data(){
     return{
       page: {},
 			showSpinner: false,
+      imagesBaseUrl: '',
       // editorOption: {
       //   theme: 'snow',
       //   modules: {
@@ -153,6 +137,8 @@ export default {
     // }
   },
   mounted(){
+    
+		this.imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
     this.showSpinner = true
     this.fetchPage()
   },

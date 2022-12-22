@@ -51,7 +51,24 @@
       </div>
     </div>
 
-
+    <div class="shell">
+        <div v-viewer="{inline: false, navbar: false, title: false, toolbar: true, tooltip: false, movable: true, zoomable: true, rotatable: false, scalable: false, transition: true, fullscreen: false, keyboard: true}">
+          
+      <div class="range">
+          <div 
+            v-for="photo in menuPhotos"
+            :key="photo.id"
+            class="cell-12 cell-sm-6 cell-md-4 cell-lg-3 mb-4"
+            style="margin-bottom: 30px;"
+          >
+            <img
+              :src="imagesBaseUrl + photo.path" 
+              class="paperMenuPhoto"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -62,6 +79,8 @@
 
 import menuItem from '@/components/front/menu/menuItem.vue'
 import loading from '@/components/front/loading.vue'
+import 'viewerjs/dist/viewer.css'
+import { directive as viewer } from "v-viewer"
 
 export default {
   layout: 'front',
@@ -81,26 +100,34 @@ export default {
       ]
     }
   },
+
+  directives: {
+    viewer: viewer({
+      debug: true,
+    }),
+  },
   data(){
     return{
       menuItems: [],
+      menuPhotos: [],
       isLoading: false,
       imagesBaseUrl: '',
     }
   },
   async fetch() {
-
-
-
     try {
-          this.isLoading = true
-    this.imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
-    
-    let locale = this.$i18n.t('static.locale')
-    this.menuItems = await fetch(
-      process.env.imagesBaseUrl + 'api/getMenu?locale=' + locale
-    ).then(res => res.json())
-    this.isLoading = false
+      this.isLoading = true
+      this.imagesBaseUrl = process.env.imagesBaseUrl + 'storage/'
+      let locale = this.$i18n.t('static.locale')
+
+      this.menuItems = await fetch(
+        process.env.imagesBaseUrl + 'api/getMenu?locale=' + locale
+      ).then(res => res.json())
+
+      this.menuPhotos = await fetch(
+        process.env.imagesBaseUrl + 'api/getMenuPhotos'
+      ).then(res => res.json())
+      this.isLoading = false
     } catch (e) {
     }
   },  
@@ -111,6 +138,12 @@ export default {
 <style scoped>
   h3{
     margin-bottom: 20px;
+  }
+  .paperMenuPhoto{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    cursor: pointer;
   }
 </style>
 

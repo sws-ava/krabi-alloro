@@ -75,6 +75,33 @@
             >
           </div>
         </div>
+        <div class="row">
+          
+          <div class="form-group col-lg-12">
+            <small class="form-text text-muted">Показывать на сайте информациооные блоки? </small>
+            <input
+              v-model="ru.showWarning"
+              type="checkbox"
+            >  
+          </div>
+          
+          <div class="form-group col-lg-12">
+            <small class="form-text text-muted">Информационный блок везде вверху страницы ру </small>
+            <textarea 
+                v-model="ru.warning"
+                class="form-control"
+                style="min-height: 200px;"
+            ></textarea>
+          </div>
+          <div class="form-group col-lg-12">
+            <small class="form-text text-muted">Информационный блок везде вверху страницы укр </small>
+            <textarea 
+                v-model="ua.warning"
+                class="form-control"
+                style="min-height: 200px;"
+            ></textarea>
+          </div>
+        </div>
 
 
 
@@ -160,14 +187,14 @@ export default {
     async savePage(){
 		  this.showSpinner = true
       try{
+        console.log()
+        this.ru.showWarning == true ? this.ru.showWarning = 1 : this.ru.showWarning = 0
         const response = await axios.post('/admin/saveBlocks', {
           ru: this.ru,
           ua: this.ua
         })     
-        console.log(response.data)
       } catch (e){
         console.log('some savePage error')
-        console.log(e.response.data)
       } finally{
 		    this.showSpinner = false
       }

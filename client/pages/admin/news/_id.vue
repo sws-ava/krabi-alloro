@@ -88,7 +88,12 @@
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на русском </small>
-          <client-only>
+          <textarea 
+              v-model="page.content_ru"
+              class="form-control"
+              style="min-height: 600px;"
+          ></textarea>
+          <!-- <client-only>
             <quill-editor
               ref="editor"
               v-model="page.content_ru"
@@ -97,11 +102,16 @@
               @focus="onEditorFocus($event)"
               @ready="onEditorReady($event)"
             />
-          </client-only>
+          </client-only> -->
         </div>
         <div class="form-group col-lg-12">
           <small class="form-text text-muted">Контент страницы на украинском </small>
-          <client-only>
+          <textarea 
+              v-model="page.content_ua"
+              class="form-control"
+              style="min-height: 600px;"
+          ></textarea>
+          <!-- <client-only>
             <quill-editor
               ref="editor"
               v-model="page.content_ua"
@@ -110,7 +120,7 @@
               @focus="onEditorFocus($event)"
               @ready="onEditorReady($event)"
             />
-          </client-only>
+          </client-only> -->
         </div>
         <div class="d-flex justify-content-between col-12">
           <div class="form-group mt-2">
@@ -153,6 +163,7 @@
 				</div>
       </div>
     </form>
+    <site-images />
 		<!-- delete modal -->
 		<modal-delete-window
 			:showDeleteModal="showDeleteModal"
@@ -189,6 +200,7 @@
 import spinner from '@/components/admin/spinner.vue'
 import axios from 'axios'
 import ModalDeleteWindow from '@/components/admin/modalDeleteWindow.vue';
+import siteImages from '@/components/admin/siteImages.vue'
 
 
 
@@ -197,6 +209,7 @@ export default {
   components: {
     spinner,
     ModalDeleteWindow,
+    siteImages
   },
   layout: 'admin',
   data(){

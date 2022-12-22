@@ -20,6 +20,8 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\GoodsItemController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\SubMainController;
+use App\Http\Controllers\Admin\SiteImagesController;
+use App\Http\Controllers\Admin\PaperMenuController;
 use App\Http\Controllers\BlocksController;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +87,19 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/photoOrderRight', [GalleryController::class, 'orderRight']);
     Route::post('admin/deletePhoto', [GalleryController::class, 'deletePhoto']);
     Route::post('admin/uploadPhoto', [GalleryController::class, 'uploadPhoto']);
+    
+    // Images
+    Route::get('admin/getSiteImages', [SiteImagesController::class, 'getPhotos']);
+    Route::post('admin/deleteSiteImage', [SiteImagesController::class, 'deletePhoto']);
+    Route::post('admin/uploadSiteImage', [SiteImagesController::class, 'uploadPhoto']);
+
+    // Paper
+    Route::get('admin/getPaper', [PaperMenuController::class, 'getPhotos']);
+    Route::post('admin/paperOrderLeft', [PaperMenuController::class, 'orderLeft']);
+    Route::post('admin/paperOrderRight', [PaperMenuController::class, 'orderRight']);
+    Route::post('admin/deletePaper', [PaperMenuController::class, 'deletePhoto']);
+    Route::post('admin/deleteAllPaper', [PaperMenuController::class, 'deleteAllPhoto']);
+    Route::post('admin/uploadPaper', [PaperMenuController::class, 'uploadPhoto']);
 
     // Interior
     Route::get('admin/getPhotosInterior', [InteriorController::class, 'getPhotosInterior']);
@@ -187,6 +202,7 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::get('getGalleryImages', [PageController::class, 'getGalleryImages']);
     
     Route::get('getMenu', [PageController::class, 'getMenu']);
+    Route::get('getMenuPhotos', [PageController::class, 'getMenuPhotos']);
     Route::post('getCartItems', [PageController::class, 'getCartItems']);
     Route::post('setNewOrder', [PageController::class, 'setNewOrder']);
 
