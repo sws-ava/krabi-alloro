@@ -105,11 +105,10 @@ export default {
 			showSpinner: false,
 		}
 	},
-	mounted(){
-		this.fetchCategories()
+	async mounted(){
+		await this.fetchCategories()
 	},
 	methods:{
-		
 		async fetchCategories(){
 			this.showSpinner = true	
 			try {

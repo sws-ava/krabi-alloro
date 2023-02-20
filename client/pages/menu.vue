@@ -8,7 +8,31 @@
       </div>
     </section>
     <loading v-if="isLoading" />
-    <div class="shell">
+
+    <div class="shell menuList menu_all">
+      <vsa-list :init-active="false" :auto-collapse="false">
+        <vsa-item v-for="(menuItem, idx) in menuItems" :key="menuItem.id">
+          <vsa-heading>
+            <div class="range">
+              <div class="cell-sm-12">
+                <h2>
+                  <a href='javascript:void(0)'>
+                    {{ menuItem.title }}
+                  </a>  
+                </h2>  
+              </div>
+            </div>
+          </vsa-heading>
+
+          <vsa-content>
+            <menu-item
+                :menuItems="menuItem.goods"
+              />
+          </vsa-content>
+        </vsa-item>
+      </vsa-list>
+    </div>
+    <!-- <div class="shell">
       <div class="panel-group menu_all" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="range">
           <div
@@ -23,7 +47,7 @@
             >
               <h3 class="">
                 <a 
-                  role="button" 
+                  role="button"  
                   data-toggle="collapse" 
                   :href="'#collapse-' + idx" 
                   aria-expanded="false" 
@@ -49,7 +73,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="shell">
         <div v-viewer="{inline: false, navbar: false, title: false, toolbar: true, tooltip: false, movable: true, zoomable: true, rotatable: false, scalable: false, transition: true, fullscreen: false, keyboard: true}">
@@ -81,12 +105,31 @@ import menuItem from '@/components/front/menu/menuItem.vue'
 import loading from '@/components/front/loading.vue'
 import 'viewerjs/dist/viewer.css'
 import { directive as viewer } from "v-viewer"
+// import VueFaqAccordion from 'vue-faq-accordion'
+
+import {
+  VsaList,
+  VsaItem,
+  VsaHeading,
+  VsaContent,
+  VsaIcon
+} from 'vue-simple-accordion';
+// import 'vue-simple-accordion/dist/vue-simple-accordion.css';
+
+// import TransitionExpand from '@/components/TransitionExpand.vue'
 
 export default {
   layout: 'front',
   components:{
     menuItem,
     loading,
+    // VueFaqAccordion
+    // TransitionExpand
+    VsaList,
+    VsaItem,
+    VsaHeading,
+    VsaContent,
+    VsaIcon
   },
   head(){
     return{
@@ -135,7 +178,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
   h3{
     margin-bottom: 20px;
   }
@@ -144,6 +187,11 @@ export default {
     height: auto;
     object-fit: cover;
     cursor: pointer;
+  }
+  .vsa-item__trigger{
+    border:none;
+    outline: none;
+    background: none;
   }
 </style>
 
