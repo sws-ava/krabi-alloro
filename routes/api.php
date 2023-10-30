@@ -44,17 +44,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
 
-
-
-    
-
-
     // Admin
 
-    // SubMain 
+    // SubMain
     Route::get('admin/getUnreadedMessages', [SubMainController::class, 'getUnreadedMessages']);
     Route::get('admin/getUnreadedOrders', [SubMainController::class, 'getUnreadedOrders']);
-    
+
     // Feedbacks
     Route::get('admin/getFeedbacks', [FeedbackController::class, 'getFeedbacks']);
     Route::post('admin/feedbackReaded', [FeedbackController::class, 'feedbackReaded']);
@@ -80,14 +75,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('admin/addNews', [NewsController::class, 'addNews']);
     Route::post('admin/deleteNews', [NewsController::class, 'deleteNews']);
     Route::post('admin/showPage', [NewsController::class, 'showPage']);
-    
+
     // Gallery
     Route::get('admin/getPhotos', [GalleryController::class, 'getPhotos']);
     Route::post('admin/photoOrderLeft', [GalleryController::class, 'orderLeft']);
     Route::post('admin/photoOrderRight', [GalleryController::class, 'orderRight']);
     Route::post('admin/deletePhoto', [GalleryController::class, 'deletePhoto']);
     Route::post('admin/uploadPhoto', [GalleryController::class, 'uploadPhoto']);
-    
+
     // Images
     Route::get('admin/getSiteImages', [SiteImagesController::class, 'getPhotos']);
     Route::post('admin/deleteSiteImage', [SiteImagesController::class, 'deletePhoto']);
@@ -159,8 +154,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Blocks
     Route::get('admin/getBlocks', [BlocksController::class, 'getBlocks']);
     Route::post('admin/saveBlocks', [BlocksController::class, 'saveBlocks']);
-    
-    
+
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
@@ -176,7 +171,7 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('oauth/{driver}', [OAuthController::class, 'redirect']);
     Route::get('oauth/{driver}/callback', [OAuthController::class, 'handleCallback'])->name('oauth.callback');
 
-    
+
 });
 
 
@@ -188,10 +183,10 @@ Route::group(['middleware' => 'guest:api'], function () {
     // Route::get('getConcept', [PageController::class, 'getConcept']);
     // Route::get('getContacts', [PageController::class, 'getContacts']);
     // Route::get('getDelivery', [PageController::class, 'getDelivery']);
-    
+
     Route::post('addView', [PageController::class, 'addView']);
 
-    
+
     Route::get('getNews', [NewsController::class, 'getNews']);
     Route::get('getSales', [NewsController::class, 'getSales']);
 
@@ -200,11 +195,10 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::get('getInteriorImages', [PageController::class, 'getInteriorImages']);
     Route::get('getGalleryImages', [PageController::class, 'getGalleryImages']);
-    
+
     Route::get('getMenu', [PageController::class, 'getMenu']);
     Route::get('getMenuPhotos', [PageController::class, 'getMenuPhotos']);
     Route::post('getCartItems', [PageController::class, 'getCartItems']);
     Route::post('setNewOrder', [PageController::class, 'setNewOrder']);
 
-    
-    
+
